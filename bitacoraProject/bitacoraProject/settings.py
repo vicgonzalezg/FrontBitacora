@@ -58,7 +58,7 @@ ROOT_URLCONF = 'bitacoraProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['C:/Project/FrontBitacora/bitacoraProject/frontProject/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +122,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# rutas para css, javascritp e imagenes
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/frontPrject/static/',
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

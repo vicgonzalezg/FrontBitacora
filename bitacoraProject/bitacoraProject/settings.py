@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 # rutas para css, javascritp e imagenes
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/frontPrject/static/',
+    '/frontProject/static/',
 ]
 
 

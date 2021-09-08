@@ -1,0 +1,1 @@
+Bienvenidos a la aplicación de FRONT END del proyecto Bitacora THINKGO

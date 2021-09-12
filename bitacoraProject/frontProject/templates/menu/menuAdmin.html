@@ -1,8 +1,28 @@
 {% extends "menu/layoutMenu.html" %}
-
-{% block title %} Menu {% endblock%}
-
+{% load static %}
+{% block title %} Menu Administrador {% endblock%}
 {% block content %}
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="">
+        <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+    </a>
+    <a href="#">Procesos</a>
+    <a href="#">Usuarios</a>
+</div>
+
+<div class="dropdown" id="main">
+    <div class="header">
+        <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
+        <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            style="float:right;">Hola María José</button>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Perfil</a>
+            <a class="dropdown-item" href="/">Cerrar Sesión</a>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row row-cols-2">
         <div class="col">
@@ -11,14 +31,14 @@
                 <div class="card-body">
                     <h5 class="card-title">Proceso Empresa: Enjoy</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Estado: Segunda Sesión</h6>
-                    <p class="card-subtitle">Coach: Nelson Danilo Gómez</p>
-                    <p class="card-subtitle">Coachee: Victor González</p>
+                    <p class="card-subtitle">Coach: Ivan Espindola</p>
+                    <p class="card-subtitle">Coachee: Danilo Gómez</p>
                   </div>
             </div>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Proceso Empresa: Latam</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Estado: Primera Sesión</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Estado: Reunión Inicial</h6>
                     <p class="card-subtitle">Coach: Carlos Jatib</p>
                     <p class="card-subtitle">Coachee: Stefano Ledezma</p>
                   </div>  
@@ -26,9 +46,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Proceso Empresa: Provida</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Estado: Reunion Inicial</h6>
-                    <p class="card-subtitle">Coach: Ivan Espindola</p>
-                    <p class="card-subtitle">Coachee: Danilo Gómez</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Estado: Primera Sesión</h6>
+                    <p class="card-subtitle">Coach: Nelson Danilo Gómez</p>
+                    <p class="card-subtitle">Coachee: Victor González</p>
                   </div>  
             </div>
         </div>
@@ -80,7 +100,7 @@
                             <span class="date">10</span>
                         </div>
                         <div class="day">
-                            <span class="date today">11</span>
+                            <span class="date">11</span>
                         </div>
                         <div class="day">
                             <span class="date">12</span>
@@ -88,7 +108,7 @@
                     </div>
                     <div id="three" class="week">
                         <div class="day">
-                            <span class="date">13</span>
+                            <span class="date today">13</span>
                         </div>
                         <div class="day">
                             <span class="date">14</span>

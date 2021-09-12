@@ -33,13 +33,13 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100">
-                    <form style="background-color: #002b49 !important;" class="login100-form validate-form">
+                    <form method="POST" style="background-color: #002b49 !important;" class="login100-form validate-form">{% csrf_token %}
                         <div align = "center"><img src="{% static 'imagenes/logo-thinkgo.png' %}"></div>
                         <span style="color: #fff !important;" class="login100-form-title p-b-43">
                             Bienvenido a nuestra Bitácora de coaching
                         </span>
                         <div class="wrap-input100 validate-input" data-validate="Se requiere un correo electrónico válido.">
-                            <input class="input100" type="text" name="email">
+                            <input class="input100" type="text" name="user">
                                 <span class="focus-input100"></span>
                                     <span style="color: #fff !important;"  class="label-input100">Usuario</span>
                         </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" onclick="location.href='menu/'" >
+                            <button class="login100-form-btn"  type="submit">
                                 Ingresar
                             </button>
                         </div>

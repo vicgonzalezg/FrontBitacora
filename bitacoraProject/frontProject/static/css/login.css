@@ -1,0 +1,19 @@
+/* Utilizar el 100% de la pantalla*/
+html,body {
+    height: 100%;
+    
+  }
+/* Color del texto en el login */
+h3,label {
+    color: white;
+}
+/* Incorporar la imagen al lado izquierdo */
+.img-login {
+    background-image: url(../imagenes/banner-coaching.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+/* Fondo de la parte derecha del login */
+.form-login{
+    background-color: #002b49
+}

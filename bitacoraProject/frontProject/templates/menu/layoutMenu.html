@@ -24,16 +24,19 @@
     {% if usuario.perfil == 1 or usuario.perfil == 2 %}
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="">
+        <a href="{% url 'menuAdmin' %}">
             <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
         </a>
         <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
         <!-- Opciones segun perfil -->
         {% if usuario.perfil == 1 %}
-        <a href="{% url 'procesosAdmin' %}">Procesos</a>
-        <a href="#">Usuarios</a>
+        <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
+        <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
+        <a href="#" id="sidebarmenu">Usuarios</a>
+        <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
+        -->
         {% elif usuario.perfil == 2 %}
         <a href="#">Procesos Asignados</a>
         <a href="#">Listar Procesos</a>

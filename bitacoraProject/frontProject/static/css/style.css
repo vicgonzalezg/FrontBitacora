@@ -548,3 +548,17 @@ tbody td:active {
   -webkit-transform: scale(0.8);
   -ms-transform: scale(0.8);
   transform: scale(0.8); }
+
+#barra1{
+  border-radius: 5px;
+  background-color: #002b49;
+  color: #fff;
+  margin: 10px;
+}
+
+#barra2 a{
+  border-radius: 5px;
+  background-color: #002b49;
+  color: #fff;
+  margin: 5px;
+}

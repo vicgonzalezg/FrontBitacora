@@ -12,7 +12,7 @@
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - Cambiar esto con JavaScript */
   position: fixed; /* Permanezca en su sitio */
-  z-index: 1; /* Mantener en la cima */
+  z-index: 100; /* Mantener en la cima */
   top: 0;
   left: 0;
   background-color: #002b49; /* Black*/
@@ -67,7 +67,11 @@
 
 .header {
   background-color: #002b49;
-  margin-block-end: 20px;
+  margin-block-end: 5px;
+}
+
+#sidebarmenu{
+  padding-top: 8%;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

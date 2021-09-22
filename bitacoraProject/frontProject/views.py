@@ -21,7 +21,7 @@ def login(request):
     return render(request, 'login/login.html')
 
 #Menu
-def menu(request):
+#def menu(request):
     #if request.method == 'POST':
         #username = request.POST.get('user')
         #password = request.POST.get('pass')
@@ -31,11 +31,12 @@ def menu(request):
         #elif username== 'juan.topo' and password == 'inicio2021':
         #    return render(request,'menu/menuCoach.html')
 
-    return render(request, 'login/login.html')
+#    return render(request, 'login/login.html')
 
 #Paginas de Menu por Peril
 def menuAdmin(request):
-    return render(request,'menu/menuAdmin.html')
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'menu/menuAdmin.html',{'usuario': admin})
 
 def menuCoach(request):
     return render(request,'menu/menuCoach.html')
@@ -50,4 +51,11 @@ def menuCoachee(request):
 
 #Paginas de Procesos
 def procesosAdmin(request):
-    return render(request,'procesos/procesosAdmin.html')
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/procesosAdmin.html',{'usuario': admin})
+
+#Nuevo Proceso
+def nuevoProceso(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/nuevoProceso.html',{'usuario': admin})
+

@@ -59,3 +59,18 @@ def nuevoProceso(request):
     admin={'nombre': 'María José','perfil':1}
     return render(request,'procesos/nuevoProceso.html',{'usuario': admin})
 
+#modificar Proceso
+def modProceso(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/modProceso.html',{'usuario': admin})    
+
+#listar Proceso
+def listProceso(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/listProceso.html',{'usuario': admin})
+
+#terminar Proceso
+def termiProceso(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/termiProceso.html',{'usuario': admin})     
+

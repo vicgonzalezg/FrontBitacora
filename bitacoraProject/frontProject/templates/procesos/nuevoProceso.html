@@ -20,16 +20,16 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
   <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
   <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-  <a href="#" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
-  <a href="#" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-  <a href="#" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+  <a href="{% url 'modProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+  <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
+  <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
 </div>
 
 <!--Ultimos Procesos Creados y Calendario -->
 
 <div class="container">
   <div class="row">
-    <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-5">
+    <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
       <form class="list-group-item">{% csrf_token %}
         <div class="row mb-3">
           <label for="nombreEmp" class="col-sm-2 col-form-label">Nombre Empresa</label>
@@ -77,8 +77,7 @@
     <!-- Calendario -->
     <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
       <div class="col-md-12">
-        <h3 class="text-center fw-bold">Calendario</h3>
-        <div class="elegant-calencar d-md-flex py-1">
+        <div class="elegant-calencar d-md-flex">
           <div class="wrap-header d-flex align-items-center img"
             style="background-image: url(../../static/imagenes/bg.jpg);">
             <p id="reset">Hoy</p>
@@ -169,9 +168,34 @@
             </table>
           </div>
         </div>
+        <table id="listSesion" class="table thead-dark">
+          <thead class="thead-dark">
+            <tr class="cabecera">
+              <th scope="col">Sesión</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-light">
+              <th scope="row">1</th>
+              <th scope="row">05/06/2021</th>
+              <th scope="row">10:00</th>
+            </tr>
+            <tr class="bg-light">
+              <th scope="row">2</th>
+              <th scope="row">15/06/2021</th>
+              <th scope="row">10:00</th>
+            </tr>
+            <tr class="bg-light">
+              <th scope="row">3</th>
+              <th scope="row">25/06/2021</th>
+              <th scope="row">10:00</th>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-
   </div>
 
   <script src="{% static '/js/jquery.min_calendar.js' %}"></script>

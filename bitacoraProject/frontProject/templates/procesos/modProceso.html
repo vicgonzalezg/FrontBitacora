@@ -29,61 +29,56 @@
 
 <div class="container">
     <div class="row">
-        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-            <h3 class="text-center fw-bold">Últimos Procesos Creados</h3>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
+        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <form class="list-group-item">{% csrf_token %}
+                <div class="row mb-3">
+                    <label for="nombreEmp" class="col-sm-2 col-form-label">Nombre Empresa</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nombreEmp" placeholder="ThinkGo">
+                    </div>
                 </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
+                <div class="row mb-3">
+                    <label for="cantSesiones" class="col-sm-2 col-form-label">Cantidad de Sesiones</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="cantSesiones" placeholder="N° de Sesiones">
+                    </div>
                 </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
+                <div class="row mb-3">
+                    <label for="fechaInicio" class="col-sm-2 col-form-label">Fecha de Inicio</label>
+                    <div class="col-sm-10">
+                        <input disabled type="date" class="form-control" id="fechaInicio">
+                    </div>
                 </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
+                <div class="row mb-3 py-1">
+                    <!--<label for="coach" class="col-sm-2 col-form-label">Coach</label>-->
+                    <div class="col-sm-10">
+                        <select class="form-select">
+                            <option style="display: none" selected>Seleccione un Coach</option>
+                            <option value="1">Ivan Espindola</option>
+                            <option value="2">Stefano Ledezma</option>
+                            <option value="3">Victor Gonzalez</option>
+                        </select>
+                    </div>
                 </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <!-- Paginación -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center p-1">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+                <div class="row mb-3 py-1">
+                    <!--<label for="coach" class="col-sm-2 col-form-label">Coachee</label>-->
+                    <div class="col-sm-10">
+                        <select class="form-select">
+                            <option style="display: none" selected>Seleccione un Coachee</option>
+                            <option value="1">Carlos Jatib</option>
+                            <option value="2">Nelson Gomez</option>
+                            <option value="3">Felipe Segura</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn mr-2 mb-2 btn-primary" type="button">Guardar modificaciones</button>
+                <button class="btn mr-2 mb-2 btn-primary pull-right" type="button">Cancelar</button>
+            </form>
         </div>
         <!-- Calendario -->
         <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="col-md-12">
-                <h3 class="text-center fw-bold">Calendario</h3>
-                <div class="elegant-calencar d-md-flex py-1">
+                <div class="elegant-calencar d-md-flex">
                     <div class="wrap-header d-flex align-items-center img"
                         style="background-image: url(../../static/imagenes/bg.jpg);">
                         <p id="reset">Hoy</p>
@@ -174,14 +169,38 @@
                         </table>
                     </div>
                 </div>
+                <table id="listSesion" class="table thead-dark">
+                    <thead class="thead-dark">
+                        <tr class="cabecera">
+                            <th scope="col">Sesión</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-light">
+                            <th scope="row">1</th>
+                            <th scope="row">05/06/2021</th>
+                            <th scope="row">10:00</th>
+                        </tr>
+                        <tr class="bg-light">
+                            <th scope="row">2</th>
+                            <th scope="row">15/06/2021</th>
+                            <th scope="row">10:00</th>
+                        </tr>
+                        <tr class="bg-light">
+                            <th scope="row">3</th>
+                            <th scope="row">25/06/2021</th>
+                            <th scope="row">10:00</th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
 
     <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
     <script src="{% static '/js/popper_calendar.js' %}"></script>
     <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
     <script src="{% static '/js/main.js' %}"></script>
-
     {% endblock %}

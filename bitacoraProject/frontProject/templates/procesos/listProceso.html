@@ -1,0 +1,115 @@
+{% extends "menu/layoutMenu.html" %}
+{% load static %}
+{% block title %}Menu Administrador{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
+{% endblock %}
+{% block content %}
+<!--Menu Procesos-->
+<!--
+<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
+    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
+</nav>
+<p></p>
+-->
+<div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
+    <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
+    <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
+    <a href="{% url 'modProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+    <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
+    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+</div>
+
+<div class="filtroList">
+    <!--<label for="coach" class="col-sm-2 col-form-label">Coachee</label>-->
+    <div class="inputList">
+        <input class="col-lg-6" type="text" placeholder="Buscar usuario">
+        <select id="tipFilt" class="col-lg-6 form-select" >
+            <option style="display: none" selected>Tipo usuario</option>
+            <option value="1">Coach</option>
+            <option value="2">Coachee</option>
+        </select>
+    </div>
+</div>
+
+<div id="listProceso">
+    <table class="table thead-dark">
+        <thead class="thead-dark">
+            <tr class="cabecera">
+                <th scope="col">Proceso empresa</th>
+                <th scope="col">Nombre coachee</th>
+                <th scope="col">email</th>
+                <th scope="col">Contacto</th>
+                <th scope="col">estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-light">
+                <th scope="row">Falabella</th>
+                <th scope="row">Emilia</th>
+                <th scope="row">Emilia@gmail.com</th>
+                <th scope="row">945852612</th>
+                <th scope="row">Reunion inicial</th>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">Ripley</th>
+                <th scope="row">Miguel</th>
+                <th scope="row">Miguel@gmail.com</th>
+                <th scope="row">9785463215</th>
+                <th scope="row">Primera sesión</th>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">VTR</th>
+                <th scope="row">Rodolfo</th>
+                <th scope="row">Rodolfo@gmail.com</th>
+                <th scope="row">785468554</th>
+                <th scope="row">Cuarta sesión</th>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">Paris</th>
+                <th scope="row">Andrea</th>
+                <th scope="row">Andrea@gmail.com</th>
+                <th scope="row">945852612</th>
+                <th scope="row">Reunion de seguimiento</th>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">Jumbo</th>
+                <th scope="row">David</th>
+                <th scope="row">David@gmail.com</th>
+                <th scope="row">9785463215</th>
+                <th scope="row">Quinta sesión</th>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">Adidas</th>
+                <th scope="row">Jorge</th>
+                <th scope="row">Jorge@gmail.com</th>
+                <th scope="row">785468554</th>
+                <th scope="row">Primera sesión</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+ <!-- Paginación -->
+ <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center p-1">
+        <li class="page-item">
+            <a class="page-link" href="#">Anterior</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+        </li>
+    </ul>
+</nav>
+
+
+
+{% endblock %}

@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
+    <!--<link rel="stylesheet" href="../../static/fonts/font-awesome.min.css">-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Se agrega bloque para el head -->
     {% block head %} {% endblock %}
     <!-- Se agrega bloque para los titulos -->
@@ -40,8 +42,10 @@
         {% elif usuario.perfil == 2 %}
         <a href="#">Procesos Asignados</a>
         <a href="#">Listar Procesos</a>
+        <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
+        -->
         {% endif %}
     </div>
     {% endif %}

@@ -3,7 +3,6 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-<link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
 {% endblock %}
 {% block content %}
 <!--Menu Procesos-->
@@ -20,15 +19,17 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'modProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
+        Proceso</a>
     <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
+        Proceso</a>
 </div>
-
+<!--
 <div class="filtroList">
-    <!--<label for="coach" class="col-sm-2 col-form-label">Coachee</label>-->
-    <div class="inputList">
-        <input class="col-lg-6" type="text" placeholder="Buscar usuario">
+    <label for="coach" class="col-sm-2 col-form-label">Coachee</label>
+    <div class="inputList mt-1">
+        <input class="col-lg-6" type="text" placeholder="Buscar Empresa">
         <select id="tipFilt" class="col-lg-6 form-select" >
             <option style="display: none" selected>Tipo usuario</option>
             <option value="1">Coach</option>
@@ -36,16 +37,27 @@
         </select>
     </div>
 </div>
-
+-->
+<div class="row mx-md-n5">
+    <div class="col col-sm-6 col-md-6 mt-1"><input class=" p-3 py-2 px-2 px-5" type="text" placeholder="Buscar Coach">
+    </div>
+    <div class="col col-sm-6 col-md-6 mt-1 ">
+        <select id="tipFilt" class="col-lg-6 form-select">
+            <option style="display: none" selected>Tipo usuario</option>
+            <option value="1">Coach</option>
+            <option value="2">Coachee</option>
+        </select>
+    </div>
+</div>
 <div id="listProceso">
     <table class="table thead-dark">
         <thead class="thead-dark">
             <tr class="cabecera">
                 <th scope="col">Proceso empresa</th>
                 <th scope="col">Nombre coachee</th>
-                <th scope="col">email</th>
+                <th scope="col">Email</th>
                 <th scope="col">Contacto</th>
-                <th scope="col">estado</th>
+                <th scope="col">Estado</th>
             </tr>
         </thead>
         <tbody>
@@ -94,8 +106,8 @@
         </tbody>
     </table>
 </div>
- <!-- Paginación -->
- <nav aria-label="Page navigation example">
+<!-- Paginación -->
+<nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center p-1">
         <li class="page-item">
             <a class="page-link" href="#">Anterior</a>

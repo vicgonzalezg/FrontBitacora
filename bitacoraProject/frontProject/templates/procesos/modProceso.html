@@ -19,9 +19,11 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
+        Proceso</a>
     <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
+        Proceso</a>
 </div>
 
 <!--Ultimos Procesos Creados y Calendario -->
@@ -39,7 +41,8 @@
                 <div class="row mb-3">
                     <label for="cantSesiones" class="col-sm-2 col-form-label">Cantidad de Sesiones</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="cantSesiones" placeholder="N° de Sesiones" value="4">
+                        <input type="number" class="form-control" id="cantSesiones" placeholder="N° de Sesiones"
+                            value="4">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -70,8 +73,8 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn mr-2 mb-2 btn-primary" type="button">Guardar modificaciones</button>
-                <a href="{% url 'buscaProceso'%}" class="btn mr-2 mb-2 btn-primary pull-right">Cancelar</a>
+                    <button class="btn mr-4 mb-2 btn-primary" type="button">Guardar modificaciones</button>
+                    <a href="{% url 'buscaProceso'%}" class="btn mr-2 mb-2 btn-primary float-end">Cancelar</a>
                 <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
             </form>
         </div>
@@ -212,5 +215,5 @@
         if (day < 10) day = "0" + day;
         var today = year + "-" + month + "-" + day;
         document.getElementById('fechaInicio').value = today;
-      </script>
+    </script>
     {% endblock %}

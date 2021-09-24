@@ -19,14 +19,21 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
+        Proceso</a>
     <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
+        Proceso</a>
 </div>
-<div class="row mx-md-n5">
-    <div class="col col-sm-6 col-md-6 mt-1"><input class="p-3 py-2 px-2 px-5" type="text" placeholder="Buscar Empresa"></div>
-</div>  
-
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-xs-4 col-md-4 py-1">
+            <div class="form-group">
+                <input class="contactInput form-control" placeholder="Buscar por Empresa">
+            </div>
+        </div>
+    </div>
+</div>
 <div id="listProceso">
     <table class="table thead-dark">
         <thead class="thead-dark">
@@ -84,8 +91,8 @@
         </tbody>
     </table>
 </div>
- <!-- Paginación -->
- <nav aria-label="Page navigation example">
+<!-- Paginación -->
+<nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center p-1">
         <li class="page-item">
             <a class="page-link" href="#">Anterior</a>
@@ -100,6 +107,12 @@
     </ul>
 </nav>
 
-<button class="btn mx-sm-4 my-sm-2 btn-primary pull-right" type="button">Terminar Proceso</button>
+<div class="container">
+    <div class="row">
+        <div class="col text-end">
+            <button class="btn me-1 mx-sm-5 my-sm-3 btn-primary" type="button">Finalizar Proceso</button>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

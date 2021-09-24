@@ -11,8 +11,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
-    <!--<link rel="stylesheet" href="../../static/fonts/font-awesome.min.css">-->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Se agrega bloque para el head -->
     {% block head %} {% endblock %}
     <!-- Se agrega bloque para los titulos -->
@@ -42,10 +40,8 @@
         {% elif usuario.perfil == 2 %}
         <a href="#">Procesos Asignados</a>
         <a href="#">Listar Procesos</a>
-        <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
-        -->
         {% endif %}
     </div>
     {% endif %}
@@ -63,7 +59,7 @@
             <!-- Bienvenida al usuario por su nombre -->
             <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
                 style="float:right;">Hola {{ usuario.nombre }}</button>
-            
+
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Perfil</a>
@@ -71,7 +67,7 @@
             </div>
         </div>
     </div>
-       
+
     <!-- Se agrega bloque para el body -->
     {% block content%} {% endblock%}
 
@@ -84,5 +80,18 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/menu.js' %}"></script>
+
+
+<!-- Footer -->
+<footer class="page-footer font-small mdb-color darken-3 pt-4">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
 
 </html>

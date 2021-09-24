@@ -12,4 +12,5 @@ urlpatterns = [
     path('modProceso/', views.modProceso, name='modProceso'),
     path('listProceso/', views.listProceso, name='listProceso'),
     path('termiProceso/', views.termiProceso, name='termiProceso'),
+    path('infoProceso/', views.infoProceso, name='infoProceso'),
 ]

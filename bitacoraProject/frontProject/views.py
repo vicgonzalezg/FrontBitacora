@@ -78,5 +78,10 @@ def listProceso(request):
 #terminar Proceso
 def termiProceso(request):
     admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/termiProceso.html',{'usuario': admin})     
+    return render(request,'procesos/termiProceso.html',{'usuario': admin})    
+
+#información Proceso
+def infoProceso(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/infoProceso.html',{'usuario': admin})  
 

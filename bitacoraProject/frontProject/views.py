@@ -85,3 +85,13 @@ def infoProceso(request):
     admin={'nombre': 'María José','perfil':1}
     return render(request,'procesos/infoProceso.html',{'usuario': admin})  
 
+#usuarios admin
+def usuariosAdmin(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/usuariosAdmin.html',{'usuario': admin}) 
+
+#nuevo usuario
+def nuevoUsuario(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/nuevoUsuario.html',{'usuario': admin}) 
+

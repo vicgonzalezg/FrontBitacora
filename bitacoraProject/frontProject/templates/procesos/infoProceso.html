@@ -3,209 +3,210 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
 {% endblock %}
 {% block content %}
 
 <H2 for="">Proceso Empresa: </H2>
 
 
-<!--Ultimos Procesos Creados y Calendario -->
-<div class="container">
-    <div class="panel panel-primary mt-2 px-2 bg-light">
-        <div class="panel-body">
-            <form id="form" class="form-horizontal" role="form">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
+<!--Formulario del proceso y sus sesiones -->
+<div class="container bg-light">
+    <form class="form-horizontal">
+        <div class="container">
+            <div class="panel panel-primary mt-2 px-2 bg-light">
+                <div class="panel-body mt-2">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
 
-                        <div class="col-md-12">
-                            <input class="form-control" />
+                            <div class="col-md-12">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
-
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-md-4 control-label">Email Coachee</label>
+                            <div class="col-md-12">
+                                <input class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control">
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
+
+                            <div class="col-md-12">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="col-md-4 control-label">Email Coachee</label>
-
-                        <div class="col-md-12">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
-
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
-
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
-
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <br>
-            </form>
-        </div>
-    </div>
-    <div class="panel panel-primary mt-4 px-2 bg-light">
-        <div class="panel-body">
-            <form id="form" class="form-horizontal" role="form">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
-
-                        <div class="col-md-12">
-                            <textarea class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
-
-                        <div class="col-md-12 col-lg-8">
-                            <textarea class="form-control"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <br>
-            </form>
-        </div>
-    </div>
-    <div class="panel panel-primary mt-4 px-2 bg-light">
-        <div class="panel-body">
-            <form id="form" class="form-horizontal" role="form">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
-
-                        <div class="col-md-12">
-                            <textarea class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <table id="listSesion" class="table thead-dark">
-                            <thead class="thead-dark">
-                                <tr class="cabecera">
-                                    <th scope="col">Sesión</th>
-                                    <th scope="col">Fecha</th>
-                                    <th scope="col">Hora</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="bg-light">
-                                    <th scope="row">1</th>
-                                    <th scope="row">05/06/2021</th>
-                                    <th scope="row">10:00</th>
-                                </tr>
-                                <tr class="bg-light">
-                                    <th scope="row">2</th>
-                                    <th scope="row">15/06/2021</th>
-                                    <th scope="row">10:00</th>
-                                </tr>
-                                <tr class="bg-light">
-                                    <th scope="row">3</th>
-                                    <th scope="row">25/06/2021</th>
-                                    <th scope="row">10:00</th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <div class="card text-center">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Opcion 1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Opcion 2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Opcion 3</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Opcion 4</a>
-                        </li>
-                    </ul>
-                </div>
+            </div>
+            <div class="panel panel-primary mt-4 px-2 bg-light">
                 <div class="panel-body">
-                    <form class="form-horizontal">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label" name="nombre">Descripción sesión:</label>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 col-lg-4 control-label">Asignaciones/Acuerdos:</label>
-
-                                <div class="col-md-12 col-lg-8">
-                                    <textarea class="form-control"></textarea>
-                                </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label" name="nombre">Avances:</label>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="col-md-6 control-label" name="nombre">Avances:</label>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="col-md-6 col-lg-4 control-label">Links:</label>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control"></textarea>
-                                </div>
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
+                            <div class="col-md-12 col-lg-8">
+                                <textarea class="form-control"></textarea>
                             </div>
                         </div>
-                        <br>
-                    </form>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="panel panel-primary mt-4 px-2 bg-light">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <table id="listSesion" class="table thead-dark border border-dark">
+                                <thead class="thead-dark">
+                                    <tr class="cabecera">
+                                        <th scope="col">Sesión</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-light">
+                                        <th scope="row">1</th>
+                                        <th scope="row">05/06/2021</th>
+                                        <th scope="row">10:00</th>
+                                    </tr>
+                                    <tr class="bg-light">
+                                        <th scope="row">2</th>
+                                        <th scope="row">15/06/2021</th>
+                                        <th scope="row">10:00</th>
+                                    </tr>
+                                    <tr class="bg-light">
+                                        <th scope="row">3</th>
+                                        <th scope="row">25/06/2021</th>
+                                        <th scope="row">10:00</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Opcion 1</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Opcion 2</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#">Opcion 3</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Opcion 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="nombre">Descripción
+                                                sesión:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="nombre">Asignaciones/Acuerdos:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="nombre">Avances:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="col-md-6 control-label" name="nombre">Links:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="col-md-6 col-lg-4 control-label">Documentos:</label>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <input type="file" multiple>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    </form>
+    <br>
+    <button class="btn btn-primary float-end col-md-2">Grabar</button>
+    <br>
+    <br>
+    <br>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 {% endblock %}

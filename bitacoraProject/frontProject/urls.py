@@ -13,4 +13,6 @@ urlpatterns = [
     path('listProceso/', views.listProceso, name='listProceso'),
     path('termiProceso/', views.termiProceso, name='termiProceso'),
     path('infoProceso/', views.infoProceso, name='infoProceso'),
+    path('usuariosAdmin/', views.usuariosAdmin, name='usuariosAdmin'),
+    path('nuevoUsuario/', views.nuevoUsuario, name='nuevoUsuario'),
 ]

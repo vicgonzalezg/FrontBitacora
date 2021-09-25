@@ -32,7 +32,7 @@
         {% if usuario.perfil == 1 %}
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
-        <a href="#" id="sidebarmenu">Usuarios</a>
+        <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
         <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
@@ -80,7 +80,6 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/menu.js' %}"></script>
-
 
 <!-- Footer -->
 <footer class="page-footer font-small mdb-color darken-3 pt-4">

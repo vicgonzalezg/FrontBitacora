@@ -6,16 +6,7 @@
 {% endblock %}
 {% block content %}
 <!--Menu Procesos-->
-<!--
-<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
-    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
-</nav>
-<p></p>
--->
+
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
@@ -25,33 +16,6 @@
     <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
         Proceso</a>
 </div>
-<!--
-<div class="filtroList">
-    <label for="coach" class="col-sm-2 col-form-label">Coachee</label>
-    <div class="inputList mt-1">
-        <input class="col-lg-6" type="text" placeholder="Buscar Empresa">
-        <select id="tipFilt" class="col-lg-6 form-select" >
-            <option style="display: none" selected>Tipo usuario</option>
-            <option value="1">Coach</option>
-            <option value="2">Coachee</option>
-        </select>
-    </div>
-</div>
-
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-xs-6 col-md-6 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Empresa">
-            </div>
-        </div>
-        <div class="col-xs-6 col-md-6 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Coachee">
-            </div>
-        </div>
-    </div>
-</div>-->
 
 <div class="col-md-12">
     <div class="row">

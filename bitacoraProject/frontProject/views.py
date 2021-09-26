@@ -95,3 +95,17 @@ def nuevoUsuario(request):
     admin={'nombre': 'María José','perfil':1}
     return render(request,'usuarios/nuevoUsuario.html',{'usuario': admin}) 
 
+#lista usuario
+def modUsuario(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/modUsuario.html',{'usuario': admin}) 
+
+#lista usuario
+def listUsuarios(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/listUsuarios.html',{'usuario': admin}) 
+
+#estado usuario
+def estadoUsuarios(request):
+    admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/estadoUsuarios.html',{'usuario': admin})

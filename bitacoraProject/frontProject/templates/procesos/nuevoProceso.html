@@ -24,8 +24,8 @@
   <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
 </div>
 
-<!--Ultimos Procesos Creados y Calendario -->
-
+<!--Formulario para crear proceso y Calendario -->
+<!--Formulario-->
 <div class="container">
   <div class="row">
     <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -73,7 +73,7 @@
         <button type="submit" class="btn btn-primary">Crear Proceso</button>
       </form>
     </div>
-    <!-- Calendario -->
+<!-- Calendario -->
     <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
       <div class="col-md-12">
         <div class="elegant-calencar d-md-flex">
@@ -167,6 +167,7 @@
             </table>
           </div>
         </div>
+<!--Tabla para visualizar la fecha y hora de las sesiones -->
         <table id="listSesion" class="table thead-dark">
           <thead class="thead-dark">
             <tr class="cabecera">
@@ -201,6 +202,7 @@
   <script src="{% static '/js/popper_calendar.js' %}"></script>
   <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
   <script src="{% static '/js/main.js' %}"></script>
+  <!--Se obtine fecha actual-->
   <script>
     var date = new Date();
     var day = date.getDate();

@@ -6,16 +6,6 @@
 {% endblock %}
 {% block content %}
 <!--Menu Procesos-->
-<!--
-<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
-    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
-</nav>
-<p></p>
--->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
@@ -26,7 +16,7 @@
         Proceso</a>
 </div>
 
-<!--Ultimos Procesos Creados y Calendario -->
+<!--Formulario con datos cargados para modificar-->
 
 <div class="container">
     <div class="row">
@@ -172,6 +162,7 @@
                         </table>
                     </div>
                 </div>
+                <!--Tabla con las fechas y horario de sesiones-->
                 <table id="listSesion" class="table thead-dark">
                     <thead class="thead-dark">
                         <tr class="cabecera">
@@ -206,6 +197,7 @@
     <script src="{% static '/js/popper_calendar.js' %}"></script>
     <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
     <script src="{% static '/js/main.js' %}"></script>
+<!--Se obtine fecha actual-->
     <script>
         var date = new Date();
         var day = date.getDate();

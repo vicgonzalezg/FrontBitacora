@@ -6,24 +6,12 @@
 {% endblock %}
 {% block content %}
 <!--Menu Procesos-->
-<!--
-<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
-    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
-</nav>
-<p></p>
--->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
-    <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
-        Proceso</a>
-    <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
-        Proceso</a>
+    <a href="{% url 'nuevoUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Usuario</a>
+    <a href="{% url 'modUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Usuario</a>
+    <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar Usuarios</a>
+    <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado Usuario</a>
 </div>
 
 <!--Crear Usuario -->
@@ -38,9 +26,16 @@
                     <button id="coach1" class="btn btn-primary ms-1">Coach</button><br><br>
                 </div>
             </div>
+            <span class="col-xs-1 col-md-1"></span>
             <div class="col-xs-1 col-md-1 mt-4">
                 <div class="form-group">
                     <button id="coachee2" class="btn btn-primary ms-1">Coachee</button><br><br>
+                </div>
+            </div>
+            <span class="col-xs-1 col-md-1"></span>
+            <div class="col-xs-1 col-md-1 mt-4">
+                <div class="form-group">
+                    <button id="administrador3" class="btn btn-primary ms-1">Administrador</button><br><br>
                 </div>
             </div>
         </div>
@@ -49,25 +44,39 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
+<!--Despliega formulario para crear Coach y esconde a los demas-->
 <script>
     $(document).ready(function () {
         $("#coach1").click(function () {
             $("#div1").fadeToggle(2000);
             $('#div2').hide();
+            $('#div3').hide();
         });
     });
 </script>
+<!--Despliega formulario para crear Coachee y esconde a los demas-->
 <script>
     $(document).ready(function () {
         $("#coachee2").click(function () {
             $("#div2").fadeToggle(2000);
             $('#div1').hide();
+            $('#div3').hide();
+        });
+    });
+</script>
+<!--Despliega formulario para crear Administrador y esconde a los demas-->
+<script>
+    $(document).ready(function () {
+        $("#administrador3").click(function () {
+            $("#div3").fadeToggle(2000);
+            $('#div1').hide();
+            $('#div2').hide();
         });
     });
 </script>
 <div class="container bg-light">
     <div class="container">
+        <!--Formulario para crear usuarios tipo Coach-->
         <div id="div1" style="display: none;" class="panel panel-primary px-2 bg-light">
             <div class="panel-body">
                 <div class="row">
@@ -139,6 +148,7 @@
 </div>
 <div class="container bg-light">
     <div class="container">
+        <!--Formulario para crear usuarios tipo Coachee-->
         <div id="div2" style="display: none;" class="panel panel-primary px-2 bg-light">
             <div class="panel-body">
                 <div class="row">
@@ -176,6 +186,7 @@
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="col-md-12">
                     <div class="row">
                         <label class="control-label col-md-2" name="nombre">Estado</label>
@@ -192,12 +203,76 @@
                 </div>
             </div>
             <br>
-        <br>
-        <button class="btn btn-primary float-end col-md-2">Grabar</button>
-        <br>
-        <br>
+            <br>
+            <button class="btn btn-primary float-end col-md-2">Grabar</button>
+            <br>
+            <br>
+        </div>
     </div>
 </div>
+<div class="container bg-light">
+    <div class="container">
+        <!--Formulario para crear usuarios tipo Administrador-->
+        <div id="div3" style="display: none;" class="panel panel-primary px-2 bg-light">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="col-md-6 control-label" name="nombre">Nombre Coach</label>
+
+                        <div class="col-md-12">
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="col-md-4 control-label">Email Coach</label>
+                        <div class="col-md-12">
+                            <input class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-6 control-label" name="nombre">Telefono Coach</label>
+
+                        <div class="col-md-6">
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-6 control-label" name="nombre">Idioma Coach</label>
+
+                        <div class="col-md-6">
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="control-label col-md-2" name="nombre">Estado</label>
+                        <span class="col-md-1"></span>
+                        <div class="col-md-2 form-check">
+                            <input class="form-check-input ms-1" type="radio" name="radioDefault" id="radioDefault1">
+                            <label class="form-check-label" for="radioDefault1">Habilitado</label>
+                        </div>
+                        <div class="col-md-2 form-check float-end">
+                            <input class="form-check-input ms-1" type="radio" name="radioDefault" id="radioDefault2">
+                            <label class="form-check-label " for="radioDefault2">Deshabilitado</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-primary float-end col-md-2">Grabar</button>
+            <br>
+            <br>
+        </div>
+    </div>
 </div>
 <br>
 <br>

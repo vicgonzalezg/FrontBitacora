@@ -1,0 +1,225 @@
+{% extends "menu/layoutMenu.html" %}
+{% load static %}
+{% block title %}Menu Administrador{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+{% block content %}
+<!--Menu Procesos-->
+<div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
+    <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
+    <a href="{% url 'nuevoUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Usuario</a>
+    <a href="{% url 'modUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Usuario</a>
+    <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar Usuarios</a>
+    <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado Usuario</a>
+</div>
+
+<!--Despliega formulario para crear Coach y esconde a los demas-->
+<script>
+    $(document).ready(function () {
+        $("#coach1").click(function () {
+            $("#div1").fadeToggle(2000);
+            $('#div2').hide();
+            $('#div3').hide();
+        });
+    });
+</script>
+<!--Despliega formulario para crear Coachee y esconde a los demas-->
+<script>
+    $(document).ready(function () {
+        $("#coachee2").click(function () {
+            $("#div2").fadeToggle(2000);
+            $('#div1').hide();
+            $('#div3').hide();
+        });
+    });
+</script>
+<!--Despliega formulario para crear Administrador y esconde a los demas-->
+<script>
+    $(document).ready(function () {
+        $("#administrador3").click(function () {
+            $("#div3").fadeToggle(2000);
+            $('#div1').hide();
+            $('#div2').hide();
+        });
+    });
+</script>
+<!--Filtro de usuarios-->
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Nombre usuario">
+                </div>
+            </div>
+            <span class="col-xs-4 col-md-4 py-1"></span>
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <select type="checkbox" class="form-select form-control" placeholder="Buscar por Coachee">
+                        <option style="display: none" selected>Tipo de Usuario</option>
+                        <option value="1">Coach</option>
+                        <option value="2">Coachee</option>
+                        <option value="2">Administrador</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Listado de usuarios-->
+    <div id="listProceso">
+        <table class="table thead-dark">
+            <thead class="thead-dark">
+                <tr class="cabecera">
+                    <th scope="col">Nombre Usuario</th>
+                    <th scope="col">Tipo Usuario</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-light">
+                    <th scope="row">Emilia</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Emilia@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row">
+                        <i type="button" class="fas fa-user-edit d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i>
+                    </th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Miguel</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Miguel@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Rodolfo</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Rodolfo@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Andrea</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Andrea@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">David</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">David@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Jorge</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Jorge@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+</div>
+<br>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class="container mt-2">
+                        <!--formulario para modificar al usuarios-->
+                        <div class="row mt-2">
+                            <div class="mt-2 form-group col-md-6">
+                                <label class="col-md-6 control-label">Nombre Empresa</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="mt-2 form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Idioma Coachee</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-5 control-label">Email Coachee</label>
+                                <div class="col-md-12">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <span class="col-md-1"></span>
+                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

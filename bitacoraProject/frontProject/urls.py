@@ -15,4 +15,7 @@ urlpatterns = [
     path('infoProceso/', views.infoProceso, name='infoProceso'),
     path('usuariosAdmin/', views.usuariosAdmin, name='usuariosAdmin'),
     path('nuevoUsuario/', views.nuevoUsuario, name='nuevoUsuario'),
+    path('modUsuario/', views.modUsuario, name='modUsuario'),
+    path('listUsuarios/', views.listUsuarios, name='listUsuarios'),
+    path('estadoUsuarios/', views.estadoUsuarios, name='estadoUsuarios'),
 ]

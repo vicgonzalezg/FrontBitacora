@@ -570,3 +570,15 @@ tbody td:active {
   color: #fff;
   margin: 5px;
 }
+
+@media screen and (max-width: 428px) {
+  #barra2{
+    display: none;
+  }
+
+  .sidebar ul a {
+    font-size: 20px;
+    color: #fff;
+  }
+}
+

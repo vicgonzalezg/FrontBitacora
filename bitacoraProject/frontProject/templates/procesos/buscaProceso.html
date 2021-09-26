@@ -3,9 +3,62 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block content %}
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+    function modProceso(id) {
+        Swal.fire({
+            title: '¿Estas seguro de realizar los cambios?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Realizar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'success',
+                    timer: 2000,
+                    title: 'Modificado!',
+                    text: 'El proceso ha sido actualizado.',
+                    showConfirmButton: false,               
+                })
+                $('#exampleModal').modal('hide');
+                $(".modal-backdrop").remove();
+            }
+        })
+    }
+</script>
+
+<!--
+<script>
+    $(document).ready(function() {
+    $('#sampleButton').click(function(e){
+      e.preventDefault();
+
+        Swal.fire({
+        title: "Successfully Added!",
+        text: "New student has been added!",
+        icon: "success"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $('#exampleModal').modal('hide');
+        }
+      })
+        
+      });
+    });
+      
+</script>
+-->
+
 <!--Menu Procesos-->
+
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
@@ -32,159 +85,167 @@
             </div>
         </div>
     </div>
+    <!--Listado de los procesos-->
 
+    <div id="listProceso">
+        <table class="table thead-dark">
+            <thead class="thead-dark">
+                <tr class="cabecera">
+                    <th scope="col">Proceso Empresa</th>
+                    <th scope="col">Nombre Coach</th>
+                    <th scope="col">Nombre Coachee</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="border-start text-center">Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-light">
+                    <th scope="row">Enjoy</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Reunion inicial</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Falabella</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Primera Sesión</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">MK Solutions</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Reunion de Avances</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Latam</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Octava Sesión</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Vapores</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Primera Sesión</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Bitcoin</th>
+                    <th scope="row">Emilia Mardones</th>
+                    <th scope="row">Patricio Perez</th>
+                    <th scope="row">Tercera Sesión</th>
+                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Paginación -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center p-1">
+        <li class="page-item">
+            <a class="page-link" href="#">Anterior</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+        </li>
+    </ul>
+</nav>
 
-    <!--Listado de procesos para modificar-->
-    <div class="row">
-        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-            <a href="{% url 'modProceso'%}" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <!-- Paginación -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center p-1">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <!-- Calendario -->
-        <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12">
-                <div class="elegant-calencar mt-2 d-md-flex">
-                    <div class="wrap-header d-flex align-items-center img"
-                        style="background-image: url(../../static/imagenes/bg.jpg);">
-                        <p id="reset">Hoy</p>
-                        <div id="header" class="p-0">
-                            <!-- <div class="pre-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-left"></i></div> -->
-                            <div class="head-info">
-                                <div class="head-month"></div>
-                                <div class="head-day"></div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class=" mt-2">
+                        <!--formulario para modificar procesos-->
+                        <div class="">
+                            <div class="row">
+                                <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <form class="list-group-item">{% csrf_token %}
+                                        <div class="row mb-3">
+                                            <label for="nombreEmp" class="col-sm-2 col-form-label">Nombre
+                                                Empresa</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="nombreEmp"
+                                                    placeholder="ThinkGo" value="Enjoy">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="cantSesiones" class="col-sm-2 col-form-label">Cantidad de
+                                                Sesiones</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" id="cantSesiones"
+                                                    placeholder="N° de Sesiones" value="4">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="fechaInicio" class="col-sm-2 col-form-label">Fecha de
+                                                Inicio</label>
+                                            <div class="col-sm-10">
+                                                <input disabled type="date" class="form-control" id="fechaInicio">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 py-1">
+                                            <label for="coach" class="col-md-12 col-form-label">Coach</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-select">
+                                                    <option style="display: none" selected>Seleccione un Coach</option>
+                                                    <option value="1" selected>Ivan Espindola</option>
+                                                    <option value="2">Stefano Ledezma</option>
+                                                    <option value="3">Victor Gonzalez</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 py-1">
+                                            <label for="coach" class="col-md-12 col-form-label">Coachee</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-select">
+                                                    <option style="display: none" selected>Seleccione un Coachee
+                                                    </option>
+                                                    <option value="1">Carlos Jatib</option>
+                                                    <option value="2" selected>Danilo Gomez</option>
+                                                    <option value="3">Felipe Segura</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <!-- <div class="next-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-right"></i></div> -->
+                            <br>
                         </div>
                     </div>
-                    <div class="calendar-wrap">
-                        <div class="w-100 button-wrap">
-                            <div class="pre-button d-flex align-items-center justify-content-center"><i
-                                    class="fa fa-chevron-left"></i></div>
-                            <div class="next-button d-flex align-items-center justify-content-center"><i
-                                    class="fa fa-chevron-right"></i></div>
-                        </div>
-                        <table id="calendar">
-                            <thead>
-                                <tr>
-                                    <th>Lun</th>
-                                    <th>Mar</th>
-                                    <th>Mie</th>
-                                    <th>Jue</th>
-                                    <th>Vie</th>
-                                    <th>Sab</th>
-                                    <th>Dom</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="modal-footer">
+                        <button class="btn mr-4 mb-2 btn-secondary" type="button"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <span class="col-md-1"></span>
+                        <a onclick="modProceso()" class="btn mr-2 mb-2 btn-primary float-end" id="modProceso">Guardar Modificación</a>
+                        <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="{% static '/js/jquery.min_calendar.js' %}"></script>
-<script src="{% static '/js/popper_calendar.js' %}"></script>
-<script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
-<script src="{% static '/js/main.js' %}"></script>
 {% endblock %}

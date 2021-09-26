@@ -31,8 +31,21 @@
         <!-- Opciones segun perfil -->
         {% if usuario.perfil == 1 %}
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
+        <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
+        <ul class="d-sm-block d-md-none" id="sidebarmenu">
+            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
+            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
+            <a href="{% url 'listProceso'%}">Listar Proceso</a>
+            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+        </ul>
         <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
+        <ul class="d-sm-block d-md-none"  id="sidebarmenu">
+            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
+            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
+            <a href="{% url 'listProceso'%}">Listar Proceso</a>
+            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+        </ul>
         <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
@@ -40,8 +53,6 @@
         {% elif usuario.perfil == 2 %}
         <a href="#">Procesos Asignados</a>
         <a href="#">Listar Procesos</a>
-        <a href="#">Perfil</a>
-        <a href="/">Cerrar Sesión</a>
         {% endif %}
     </div>
     {% endif %}

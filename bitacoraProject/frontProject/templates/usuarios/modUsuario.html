@@ -3,6 +3,7 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,7 +17,29 @@
     <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar Usuarios</a>
     <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado Usuario</a>
 </div>
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+    function modUsuario(id) {
+        Swal.fire({
+            title: 'Estas seguro de realizar la modificación?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Modificar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Modificado!',
+                    'El usuario a sido actualizado.',
+                    'Operación Realizada con exito'
+                )
+            }
+        })
+    }
 
+</script>
 <!--Despliega formulario para crear Coach y esconde a los demas-->
 <script>
     $(document).ready(function () {
@@ -78,7 +101,7 @@
                     <th scope="col">Tipo Usuario</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contacto</th>
-                    <th scope="col"></th>
+                    <th scope="col" class="border d-flex justify-content-center">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,7 +110,7 @@
                     <th scope="row">Coach</th>
                     <th scope="row">Emilia@gmail.com</th>
                     <th scope="row">945852612</th>
-                    <th scope="row">
+                    <th scope="row" class="border">
                         <i type="button" class="fas fa-user-edit d-flex justify-content-center" data-bs-toggle="modal"
                             data-bs-target="#exampleModal"></i>
                     </th>
@@ -97,7 +120,7 @@
                     <th scope="row">Coachee</th>
                     <th scope="row">Miguel@gmail.com</th>
                     <th scope="row">9785463215</th>
-                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                    <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
                 <tr class="bg-light">
@@ -105,7 +128,7 @@
                     <th scope="row">Coach</th>
                     <th scope="row">Rodolfo@gmail.com</th>
                     <th scope="row">785468554</th>
-                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                    <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
                 <tr class="bg-light">
@@ -113,7 +136,7 @@
                     <th scope="row">Coachee</th>
                     <th scope="row">Andrea@gmail.com</th>
                     <th scope="row">945852612</th>
-                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                    <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
                 <tr class="bg-light">
@@ -121,7 +144,7 @@
                     <th scope="row">Coachee</th>
                     <th scope="row">David@gmail.com</th>
                     <th scope="row">9785463215</th>
-                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                    <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
                 <tr class="bg-light">
@@ -129,15 +152,28 @@
                     <th scope="row">Coach</th>
                     <th scope="row">Jorge@gmail.com</th>
                     <th scope="row">785468554</th>
-                    <th scope="row"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
+                    <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
             </tbody>
         </table>
     </div>
-    <br>
 </div>
-<br>
+<!-- Paginación -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center p-1">
+        <li class="page-item">
+            <a class="page-link" href="#">Anterior</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+        </li>
+    </ul>
+</nav>
 
 <!-- Button trigger modal -->
 <!-- Modal -->
@@ -217,7 +253,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <span class="col-md-1"></span>
-                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" onclick="modUsuario()" class="btn btn-primary">Guardar Cambios</button>
             </div>
         </div>
     </div>

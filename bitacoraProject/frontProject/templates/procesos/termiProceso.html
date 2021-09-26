@@ -3,10 +3,34 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 {% endblock %}
 {% block content %}
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+    function finalizarProceso(id) {
+        Swal.fire({
+            title: 'Estas seguro de finalizar el proceso?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Finalizar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Finalizado!',
+                    'El estado del proceso a cambiado a Finalizado.',
+                    'Operación Realizada con exito'
+                )
+            }
+        })
+    }
+
+</script>
 <!--Menu Procesos-->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
@@ -18,79 +42,93 @@
         Proceso</a>
 </div>
 <!--Filtros de los procesos -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-xs-4 col-md-4 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Empresa">
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Buscar por Empresa">
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--Listado de procesos de los procesos -->
-<div id="listProceso">
-    <table class="table thead-dark">
-        <thead class="thead-dark">
-            <tr class="cabecera">
-                <th scope="col">Proceso empresa</th>
-                <th scope="col">Nombre coachee</th>
-                <th scope="col">Email</th>
-                <th scope="col">Contacto</th>
-                <th scope="col">Estado</th>
-                <th scope="col" class="d-flex justify-content-center">Finalizar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-light">
-                <th scope="row">Falabella</th>
-                <th scope="row">Emilia</th>
-                <th scope="row">Emilia@gmail.com</th>
-                <th scope="row">945852612</th>
-                <th scope="row">Reunion inicial</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Ripley</th>
-                <th scope="row">Miguel</th>
-                <th scope="row">Miguel@gmail.com</th>
-                <th scope="row">9785463215</th>
-                <th scope="row">Primera sesión</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">VTR</th>
-                <th scope="row">Rodolfo</th>
-                <th scope="row">Rodolfo@gmail.com</th>
-                <th scope="row">785468554</th>
-                <th scope="row">Cuarta sesión</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Paris</th>
-                <th scope="row">Andrea</th>
-                <th scope="row">Andrea@gmail.com</th>
-                <th scope="row">945852612</th>
-                <th scope="row">Reunion de seguimiento</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Jumbo</th>
-                <th scope="row">David</th>
-                <th scope="row">David@gmail.com</th>
-                <th scope="row">9785463215</th>
-                <th scope="row">Quinta sesión</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Adidas</th>
-                <th scope="row">Jorge</th>
-                <th scope="row">Jorge@gmail.com</th>
-                <th scope="row">785468554</th>
-                <th scope="row">Primera sesión</th>
-                <th scope="row"><i class="fas fa-clipboard-check d-flex justify-content-center"></i></i></th>
-            </tr>
-        </tbody>
-    </table>
+    <!--Listado de procesos de los procesos -->
+    <div id="listProceso">
+        <table class="table thead-dark">
+            <thead class="thead-dark">
+                <tr class="cabecera">
+                    <th scope="col">Proceso empresa</th>
+                    <th scope="col">Nombre coachee</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="d-flex justify-content-center">Finalizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-light">
+                    <th scope="row">Falabella</th>
+                    <th scope="row">Emilia</th>
+                    <th scope="row">Emilia@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row">Reunion inicial</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Ripley</th>
+                    <th scope="row">Miguel</th>
+                    <th scope="row">Miguel@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row">Primera sesión</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">VTR</th>
+                    <th scope="row">Rodolfo</th>
+                    <th scope="row">Rodolfo@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row">Cuarta sesión</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Paris</th>
+                    <th scope="row">Andrea</th>
+                    <th scope="row">Andrea@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row">Reunion de seguimiento</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Jumbo</th>
+                    <th scope="row">David</th>
+                    <th scope="row">David@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row">Quinta sesión</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Adidas</th>
+                    <th scope="row">Jorge</th>
+                    <th scope="row">Jorge@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row">Primera sesión</th>
+                    <th scope="row" class="border"><i type="button"
+                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- Paginación -->
 <nav aria-label="Page navigation example">
@@ -116,4 +154,282 @@
     </div>
 </div>
 -->
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class="container mt-2">
+                        <!--formulario para modificar al usuarios-->
+                        <div class="container bg-light">
+                            <form class="form-horizontal">
+                                <div class="container">
+                                    <div class="panel panel-primary mt-2 px-2 bg-light">
+                                        <!--Datos personales del coachee-->
+                                        <div class="panel-body mt-2">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-6 control-label" name="nombre">Nombre
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-4 control-label">Email Coachee</label>
+                                                    <div class="col-md-12">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-6 control-label" name="nombre">Telefono
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <!--detalles del proceso-->
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-6 control-label" name="nombre">Objetivo del
+                                                        proceso:</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-6 col-lg-4 control-label">Indicadores de
+                                                        exito:</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-6 control-label" name="nombre">Plan de
+                                                        Acción</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!--Tabla con registro de fechas de las sesiones-->
+                                                <div class="form-group col-md-6">
+                                                    <table id="listSesion" class="table thead-dark border border-dark">
+                                                        <thead class="thead-dark">
+                                                            <tr class="cabecera">
+                                                                <th scope="col">Sesión</th>
+                                                                <th scope="col">Fecha</th>
+                                                                <th scope="col">Hora</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">1</th>
+                                                                <th scope="row">05/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">2</th>
+                                                                <th scope="row">15/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">3</th>
+                                                                <th scope="row">25/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+
+                                    <div class="container">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <div class="card text-center">
+                                                    <!--registro de las sesión-->
+                                                    <div class="card-header">
+                                                        <ul class="nav nav-tabs card-header-tabs">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" href="#">Sesión 1</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 2</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 3</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 4</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <!--Registro de cada sesión-->
+                                                        <form class="form-horizontal">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label class="col-md-6 control-label"
+                                                                        name="nombre">Descripción
+                                                                        sesión:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label class="col-md-6 control-label"
+                                                                        name="nombre">Asignaciones/Acuerdos:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label class="col-md-6 control-label"
+                                                                        name="nombre">Avances:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <!--sector donde se almacenan los documentos y links-->
+                                                                <div class="form-group col-md-6">
+                                                                    <label class="col-md-6 control-label"
+                                                                        name="nombre">Links:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label
+                                                                        class="col-md-12 control-label">Documentos:</label>
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group col-md-12">
+                                                                            <table
+                                                                                class="col-md-12 table thead-dark border border-dark">
+                                                                                <thead class="thead-dark">
+                                                                                    <tr class="cabecera">
+                                                                                        <th scope="col">Documentos
+                                                                                        </th>
+                                                                                        <th scope="col"
+                                                                                            class="border d-flex justify-content-center">
+                                                                                            Descargar</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Como_no_ser_caja.doc</th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            El_net_de_hoy_no_se_compara_al_de_ayer.doc
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Aqui_quedan_palitos_de_queso.jpg
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <br>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <span class="col-md-1"></span>
+                <button type="button" onclick="finalizarProceso()" class="btn btn-primary">Finalizar Proceso</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

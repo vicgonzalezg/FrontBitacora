@@ -3,19 +3,33 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block content %}
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+  function newProceso(id) {
+      Swal.fire({
+          title: 'Se creara el proceso para la empresa (--------) esta seguro?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'No!',
+          confirmButtonText: 'Si, Crear!'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              Swal.fire(
+                  'Creado!',
+                  'El proceso a sido creado.',
+                  'Operación Realizada con exito'
+              )
+          }
+      })
+  }
+</script>
+
 <!--Menu Procesos-->
-<!--
-<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
-    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
-</nav>
-<p></p>
--->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
   <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
   <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
@@ -70,10 +84,10 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Crear Proceso</button>
+        <a onclick="newProceso()" class="btn btn-primary float-end">Crear Proceso</a>
       </form>
     </div>
-<!-- Calendario -->
+    <!-- Calendario -->
     <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
       <div class="col-md-12">
         <div class="elegant-calencar d-md-flex">
@@ -167,8 +181,8 @@
             </table>
           </div>
         </div>
-<!--Tabla para visualizar la fecha y hora de las sesiones -->
-        <table id="listSesion" class="table thead-dark">
+        <!--Tabla para visualizar la fecha y hora de las sesiones -->
+        <!--<table id="listSesion" class="table thead-dark">
           <thead class="thead-dark">
             <tr class="cabecera">
               <th scope="col">Sesión</th>
@@ -193,11 +207,11 @@
               <th scope="row">10:00</th>
             </tr>
           </tbody>
-        </table>
+        </table> -->
       </div>
     </div>
   </div>
-
+</div>
   <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
   <script src="{% static '/js/popper_calendar.js' %}"></script>
   <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>

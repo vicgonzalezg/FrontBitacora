@@ -19,83 +19,87 @@
         Usuario</a>
 </div>
 <!--filtro de usuarios-->
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-xs-4 col-md-4 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Empresa">
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Buscar por Nombre">
+                </div>
             </div>
-        </div>
-        <span class="col-xs-4 col-md-4 py-1"></span>
-        <div class="col-xs-4 col-md-4 py-1">
-            <div class="form-group">
-                <select type="checkbox" class="form-select form-control" placeholder="Buscar por Coachee">
-                    <option style="display: none" selected>Tipo de Usuario</option>
-                    <option value="1">Coach</option>
-                    <option value="2">Coachee</option>
-                    <option value="2">Administrador</option>
-                </select>
+            <span class="col-xs-4 col-md-4 py-1"></span>
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <select type="checkbox" class="form-select form-control">
+                        <option style="display: none" selected>Tipo de Usuario</option>
+                        <option value="1">Coach</option>
+                        <option value="2">Coachee</option>
+                        <option value="2">Administrador</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!--Listado de usuarios-->
-<div id="listProceso">
-    <table class="table thead-dark">
-        <thead class="thead-dark">
-            <tr class="cabecera">
-                <th scope="col">Nombre Usuario</th>
-                <th scope="col">Tipo Usuario</th>
-                <th scope="col">Email</th>
-                <th scope="col">Contacto</th>
-                <th scope="col">Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-light">
-                <th scope="row">Emilia</th>
-                <th scope="row">Coach</th>
-                <th scope="row">Emilia@gmail.com</th>
-                <th scope="row">945852612</th>
-                <th scope="row"><i class="fas fa-user-check d-flex justify-content-center"></i></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Miguel</th>
-                <th scope="row">Coachee</th>
-                <th scope="row">Miguel@gmail.com</th>
-                <th scope="row">9785463215</th>
-                <th scope="row"><i class="fas fa-user-check d-flex justify-content-center"></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Rodolfo</th>
-                <th scope="row">Coach</th>
-                <th scope="row">Rodolfo@gmail.com</th>
-                <th scope="row">785468554</th>
-                <th scope="row"><i class="fas fa-user-check d-flex justify-content-center"></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Andrea</th>
-                <th scope="row">Coachee</th>
-                <th scope="row">Andrea@gmail.com</th>
-                <th scope="row">945852612</th>
-                <th scope="row"><i class="fas fa-user-times d-flex justify-content-center"></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">David</th>
-                <th scope="row">Coachee</th>
-                <th scope="row">David@gmail.com</th>
-                <th scope="row">9785463215</th>
-                <th scope="row"><i class="fas fa-user-check d-flex justify-content-center"></th>
-            </tr>
-            <tr class="bg-light">
-                <th scope="row">Jorge</th>
-                <th scope="row">Coach</th>
-                <th scope="row">Jorge@gmail.com</th>
-                <th scope="row">785468554</th>
-                <th scope="row"><i class="fas fa-user-times d-flex justify-content-center"></th>
-            </tr>
-        </tbody>
-    </table>
+<div class="container">
+    <div id="listProceso">
+        <table class="table thead-dark">
+            <thead class="thead-dark">
+                <tr class="cabecera">
+                    <th scope="col">Nombre Usuario</th>
+                    <th scope="col">Tipo Usuario</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col" class="border d-flex justify-content-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-light">
+                    <th scope="row">Emilia</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Emilia@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></i></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Miguel</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Miguel@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Rodolfo</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Rodolfo@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Andrea</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Andrea@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">David</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">David@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Jorge</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Jorge@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- Paginación -->
 <nav aria-label="Page navigation example">

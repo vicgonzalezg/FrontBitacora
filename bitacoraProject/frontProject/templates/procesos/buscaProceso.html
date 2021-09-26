@@ -9,28 +9,32 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
+        Proceso</a>
     <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
+        Proceso</a>
 </div>
 <!--Filtros de los procesos -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-xs-4 col-md-4 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Empresa">
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Buscar por Empresa">
+                </div>
             </div>
-        </div>
-        <span class="col-xs-4 col-md-4 py-1"></span>
-        <div class="col-xs-4 col-md-4 py-1">
-            <div class="form-group">
-                <input class="contactInput form-control" placeholder="Buscar por Coachee">
+            <span class="col-xs-4 col-md-4 py-1"></span>
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Buscar por Coachee">
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--Listado de procesos para modificar-->
-<div class="container">
+
+
+    <!--Listado de procesos para modificar-->
     <div class="row">
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <a href="{% url 'modProceso'%}" class="list-group-item list-group-item-action" aria-current="true">
@@ -83,7 +87,7 @@
         </div>
         <!-- Calendario -->
         <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12">              
+            <div class="col-md-12">
                 <div class="elegant-calencar mt-2 d-md-flex">
                     <div class="wrap-header d-flex align-items-center img"
                         style="background-image: url(../../static/imagenes/bg.jpg);">
@@ -178,9 +182,9 @@
             </div>
         </div>
     </div>
-
-    <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
-    <script src="{% static '/js/popper_calendar.js' %}"></script>
-    <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
-    <script src="{% static '/js/main.js' %}"></script>
-    {% endblock %}
+</div>
+<script src="{% static '/js/jquery.min_calendar.js' %}"></script>
+<script src="{% static '/js/popper_calendar.js' %}"></script>
+<script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
+{% endblock %}

@@ -3,8 +3,33 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block content %}
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+    function modProceso(id) {
+        Swal.fire({
+            title: 'Estas seguro de realizar la modificación?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Modificar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Modificado!',
+                    'El proceso a sido actualizado.',
+                    'Operación Realizada con exito'
+                )
+            }
+        })
+    }
+
+</script>
+
 <!--Menu Procesos-->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
@@ -63,8 +88,8 @@
                         </select>
                     </div>
                 </div>
-                    <button class="btn mr-4 mb-2 btn-primary" type="button">Guardar modificaciones</button>
-                    <a href="{% url 'buscaProceso'%}" class="btn mr-2 mb-2 btn-primary float-end">Cancelar</a>
+                    <button class="btn mr-4 mb-2 btn-primary" type="button">Cancelar</button>
+                    <a onclick="modProceso()" class="btn mr-2 mb-2 btn-primary float-end">Guardar modificaciones</a>
                 <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
             </form>
         </div>

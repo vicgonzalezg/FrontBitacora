@@ -9,7 +9,7 @@
 <script>
     function crearCoachee(id) {
         Swal.fire({
-            title: 'Esta seguro de crear al usuario Coachee?',
+            title: '¿Está seguro de crear al usuario Coachee?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -18,11 +18,15 @@
             confirmButtonText: 'Si, Crear!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Creado!',
-                    'El nuevo usuario coachee a sido creado.',
-                    'Operación Realizada con exito'
-                )
+                Swal.fire({
+                    icon: 'success',
+                    timer: 2000,
+                    title: 'Creado!',
+                    text: 'Operación Realizada con éxito',
+                    showConfirmButton: false,
+                })
+                $('#exampleModal').modal('hide');
+                $(".modal-backdrop").remove();
             }
         })
     }
@@ -30,7 +34,7 @@
 <script>
     function crearCoach(id) {
         Swal.fire({
-            title: 'Esta seguro de crear al usuario Coach?',
+            title: '¿Está seguro de crear al usuario Coach?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -39,19 +43,24 @@
             confirmButtonText: 'Si, Crear!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Creado!',
-                    'El nuevo usuario coach a sido creado.',
-                    'Operación Realizada con exito'
-                )
+                Swal.fire({
+                    icon: 'success',
+                    timer: 2000,
+                    title: 'Creado!',
+                    text: 'Operación Realizada con éxito',
+                    showConfirmButton: false,
+                })
+                $('#exampleModal').modal('hide');
+                $(".modal-backdrop").remove();
             }
         })
     }
+
 </script>
 <script>
     function crearAdmin(id) {
         Swal.fire({
-            title: 'Esta seguro de crear al usuario Administrador?',
+            title: '¿Está seguro de crear al usuario Administrador?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -60,14 +69,19 @@
             confirmButtonText: 'Si, Crear!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Creado!',
-                    'El nuevo usuario Administrador a sido creado.',
-                    'Operación Realizada con exito'
-                )
+                Swal.fire({
+                    icon: 'success',
+                    timer: 2000,
+                    title: 'Creado!',
+                    text: 'Operación Realizada con éxito',
+                    showConfirmButton: false,
+                })
+                $('#exampleModal').modal('hide');
+                $(".modal-backdrop").remove();
             }
         })
     }
+
 </script>
 <!--Menu Procesos-->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
@@ -142,94 +156,108 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Coachee-->
         <div id="div1" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 control-label" name="nombre">Nombre Empresa</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 col-lg-4 control-label">Idioma Coachee</label>
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-4 control-label">Email Coachee</label>
-                        <div class="col-md-12">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
-
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <br>
-                        <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
-
-                        <div class="col-md-12 col-lg-8">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="col-md-12">
+            <form action="" method="POST">{% csrf_token %}
+                <div class="panel-body">
                     <div class="row">
-                        <label class="control-label col-md-2" name="nombre">Estado</label>
-                        <div class="col-md-2 form-check">
-                            <input checked class="form-check-input ms-1" type="radio" name="radioDefault1"
-                                id="radioDefault1">
-                            <label class="form-check-label" for="radioDefault1">-Habilitado</label>
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label" name="nombre">Nombre Empresa</label>
+                            <div class="col-md-12">
+                                <input class="form-control" type="text" required />
+                            </div>
                         </div>
-                        <div class="col-md-2 form-check float-end">
-                            <input class="form-check-input ms-1" type="radio" name="radioDefault1" id="radioDefault2">
-                            <label class="form-check-label " for="radioDefault2">-Deshabilitado</label>
+                        <br>
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label">Idioma Coachee</label>
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control" type="text" required />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Nombre Coachee</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" placeholder="Primer Nombre" type="text" required />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Apellido Coachee</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" placeholder="Primer Apellido" type="text"
+                                            required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label">Nombre Jefe</label>
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control" type="text" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label">Email Coachee</label>
+                            <div class="col-md-12">
+                                <input class="form-control" type="email" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label">Email Jefe</label>
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control" type="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label" name="nombre">Telefono Coachee</label>
+
+                            <div class="col-md-12">
+                                <input class="form-control" type="tel" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <br>
+                            <label class="col-md-12 control-label">Telefono Jefe</label>
+
+                            <div class="col-md-12 col-lg-8">
+                                <input class="form-control" type="tel" />
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="control-label col-md-2" name="nombre">Estado</label>
+                            <div class="col-md-4 form-check">
+                                <input checked class="form-check-input" type="radio" name="radioDefault1"
+                                    id="radioDefault1">
+                                <label class="form-check-label ps-1" for="radioDefault1"> Habilitado</label>
+                            </div>
+                            <div class="col-md-4 form-check float-end">
+                                <input class="form-check-input" type="radio" name="radioDefault1" id="radioDefault2">
+                                <label class="form-check-label ps-1" for="radioDefault2"> Deshabilitado</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <button onclick="crearCoachee()" class="btn btn-primary float-end col-md-2">Grabar</button>
-            <br>
-            <br>
+                <button type="submit" onclick="crearCoachee()" class="btn btn-primary float-end col-md-2">Grabar</button>
+                <br>
+                <br>
+            </form>
         </div>
     </div>
 </div>
@@ -237,62 +265,77 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Coach-->
         <div id="div2" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Nombre Coach</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label">Email Coach</label>
-                        <div class="col-md-12">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Telefono Coach</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Idioma Coach</label>
-
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="col-md-12">
+            <form id="form2" action="" method="POST">
+                <div class="panel-body">
                     <div class="row">
-                        <label class="control-label col-md-2" name="nombre">Estado</label>
-                        <div class="col-md-2 form-check">
-                            <input checked class="form-check-input ms-1" type="radio" name="radioDefault2"
-                                id="radioDefault3">
-                            <label class="form-check-label" for="radioDefault3">-Habilitado</label>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Nombre Coach</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" required placeholder="Primer Nombre" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Apellido Coach</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" required
+                                            placeholder="Primer Apellido" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2 form-check float-end">
-                            <input class="form-check-input ms-1" type="radio" name="radioDefault2" id="radioDefault4">
-                            <label class="form-check-label " for="radioDefault4">-Deshabilitado</label>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label">Email Coach</label>
+                            <div class="col-md-12">
+                                <input class="form-control" type="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label" name="nombre">Telefono Coach</label>
+                            <div class="col-md-12">
+                                <input class="form-control" type="tel" required />
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label" name="nombre">Idioma Coach</label>
+
+                            <div class="col-md-12">
+                                <input class="form-control" type="text" required value="Español"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="control-label col-md-2" name="nombre">Estado</label>
+                            <div class="col-md-4 form-check">
+                                <input checked class="form-check-input" type="radio" name="radioDefault2"
+                                    id="radioDefault3">
+                                <label class="form-check-label ps-1" for="radioDefault3"> Habilitado</label>
+                            </div>
+                            <div class="col-md-4 form-check float-end">
+                                <input class="form-check-input" type="radio" name="radioDefault2" id="radioDefault4">
+                                <label class="form-check-label ps-1 " for="radioDefault4"> Deshabilitado</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <a onclick="crearCoach()" class="btn btn-primary float-end col-md-2">Grabar</a>
-            <br>
-            <br>
+                <button type="submit" class="btn btn-primary float-end col-md-2" onclick="crearCoach()">Grabar</button>
+                <br>
+                <br>
+            </form>
         </div>
     </div>
 </div>
@@ -300,62 +343,75 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Administrador-->
         <div id="div3" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Nombre Administrador</label>
-
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-4 control-label">Email Administrador</label>
-                        <div class="col-md-12">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Telefono Administrador</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-6 control-label" name="nombre">Idioma Administrador</label>
-                        <div class="col-md-12">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="col-md-12">
+            <form id="form3" action="" method="POST">
+                <div class="panel-body">
                     <div class="row">
-                        <label class="control-label col-md-2" name="nombre">Estado</label>
-                        <div class="col-md-2 form-check">
-                            <input checked class="form-check-input ms-1" type="radio" name="radioDefault3"
-                                id="radioDefault5">
-                            <label class="form-check-label" for="radioDefault5">-Habilitado</label>
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Nombre Administrador</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Apellido Administrador</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2 form-check float-end">
-                            <input class="form-check-input ms-1" type="radio" name="radioDefault3" id="radioDefault6">
-                            <label class="form-check-label " for="radioDefault6">-Deshabilitado</label>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label">Email Administrador</label>
+                            <div class="col-md-12">
+                                <input class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label" name="nombre">Telefono Administrador</label>
+                            <div class="col-md-12">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-12 control-label" name="nombre">Idioma Administrador</label>
+                            <div class="col-md-12">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="control-label col-md-2" name="nombre">Estado</label>
+                            <div class="col-md-4 form-check">
+                                <input checked class="form-check-input" type="radio" name="radioDefault3"
+                                    id="radioDefault5">
+                                <label class="form-check-label ps-1" for="radioDefault5"> Habilitado</label>
+                            </div>
+                            <div class="col-md-4 form-check float-end">
+                                <input class="form-check-input " type="radio" name="radioDefault3" id="radioDefault6">
+                                <label class="form-check-label ps-1" for="radioDefault6"> Deshabilitado</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <button onclick="crearAdmin()" class="btn btn-primary float-end col-md-2">Grabar</button>
-            <br>
-            <br>
+                <button type="submit" onclick="crearAdmin()" class="btn btn-primary float-end col-md-2">Grabar</button>
+                <br>
+                <br>
+            </form>
         </div>
     </div>
 </div>

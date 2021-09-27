@@ -166,7 +166,7 @@
                                 <input class="form-control" type="text" required />
                             </div>
                         </div>
-                        <br>
+
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-12 control-label">Idioma Coachee</label>
@@ -174,7 +174,7 @@
                                 <input class="form-control" type="text" required />
                             </div>
                         </div>
-                        <br>
+
                         <div class="form-group col-md-6">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -194,7 +194,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
+
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-12 control-label">Nombre Jefe</label>
@@ -211,7 +211,7 @@
                                 <input class="form-control" type="email" required>
                             </div>
                         </div>
-                        <br>
+
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-12 control-label">Email Jefe</label>
@@ -239,9 +239,9 @@
                         </div>
                     </div>
                     <br>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="row">
-                            <label class="control-label col-md-2" name="nombre">Estado</label>
+                            <label class="control-label col-md-4" name="nombre">Estado</label>
                             <div class="col-md-4 form-check">
                                 <input checked class="form-check-input" type="radio" name="radioDefault1"
                                     id="radioDefault1">
@@ -254,7 +254,10 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" onclick="crearCoachee()" class="btn btn-primary float-end col-md-2">Grabar</button>
+                <br>
+                <br>
+                <button type="submit" onclick="crearCoachee()"
+                    class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>
                 <br>
             </form>
@@ -265,7 +268,7 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Coach-->
         <div id="div2" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <form id="form2" action="" method="POST">
+            <form id="form2" action="" method="POST">{% csrf_token %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-12">
@@ -274,15 +277,14 @@
                                     <br>
                                     <label class="col-md-12 control-label" name="nombre">Nombre Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" type="text" required placeholder="Primer Nombre" />
+                                        <input class="form-control" required/>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
                                     <label class="col-md-12 control-label" name="nombre">Apellido Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" type="text" required
-                                            placeholder="Primer Apellido" />
+                                        <input class="form-control" required/>
                                     </div>
                                 </div>
                             </div>
@@ -291,47 +293,66 @@
                     <br>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label">Email Coach</label>
-                            <div class="col-md-12">
-                                <input class="form-control" type="email" required>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Email Coach</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Telefono Coach</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label" name="nombre">Telefono Coach</label>
-                            <div class="col-md-12">
-                                <input class="form-control" type="tel" required />
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label" name="nombre">Idioma Coach</label>
 
-                            <div class="col-md-12">
-                                <input class="form-control" type="text" required value="Español"/>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Idioma Coach</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <br>
+                                        <label class="ms-3 control-label col-md-2" name="nombre">Estado</label>
+                                        <div class="col-md-4 form-check">
+                                            
+                                            <input checked class="ms-1 form-check-input" type="radio" name="radioDefault3"
+                                                id="radioDefault5">
+                                            <label class="form-check-label ps-1" for="radioDefault5"> Habilitado</label>
+                                        </div>
+                                        <div class="col-md-4 form-check float-end">
+                                            
+                                            <input class="form-check-input " type="radio" name="radioDefault3"
+                                                id="radioDefault6">
+                                            <label class="form-check-label ps-1" for="radioDefault6">
+                                                Deshabilitado</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="control-label col-md-2" name="nombre">Estado</label>
-                            <div class="col-md-4 form-check">
-                                <input checked class="form-check-input" type="radio" name="radioDefault2"
-                                    id="radioDefault3">
-                                <label class="form-check-label ps-1" for="radioDefault3"> Habilitado</label>
-                            </div>
-                            <div class="col-md-4 form-check float-end">
-                                <input class="form-check-input" type="radio" name="radioDefault2" id="radioDefault4">
-                                <label class="form-check-label ps-1 " for="radioDefault4"> Deshabilitado</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <br>
                 <button type="submit" class="btn btn-primary float-end col-md-2" onclick="crearCoach()">Grabar</button>
                 <br>
                 <br>
@@ -343,7 +364,7 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Administrador-->
         <div id="div3" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <form id="form3" action="" method="POST">
+            <form id="form3" action="" method="POST">{% csrf_token %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-12">
@@ -352,14 +373,14 @@
                                     <br>
                                     <label class="col-md-12 control-label" name="nombre">Nombre Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" />
+                                        <input class="form-control" required/>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
                                     <label class="col-md-12 control-label" name="nombre">Apellido Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" />
+                                        <input class="form-control" required/>
                                     </div>
                                 </div>
                             </div>
@@ -368,45 +389,69 @@
                     <br>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label">Email Administrador</label>
-                            <div class="col-md-12">
-                                <input class="form-control">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Email Administrador</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Telefono Administrador</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <br>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label" name="nombre">Telefono Administrador</label>
-                            <div class="col-md-12">
-                                <input class="form-control" />
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" name="nombre">Idioma Administrador</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" required/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <br>
+                                        <label class="ms-3 control-label col-md-2" name="nombre">Estado</label>
+                                        <div class="col-md-4 form-check">
+                                            
+                                            <input checked class="ms-1 form-check-input" type="radio" name="radioDefault3"
+                                                id="radioDefault5">
+                                            <label class="form-check-label ps-1" for="radioDefault5"> Habilitado</label>
+                                        </div>
+                                        <div class="col-md-4 form-check float-end">
+                                            
+                                            <input class="form-check-input " type="radio" name="radioDefault3"
+                                                id="radioDefault6">
+                                            <label class="form-check-label ps-1" for="radioDefault6">
+                                                Deshabilitado</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
+
                     <br>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label class="col-md-12 control-label" name="nombre">Idioma Administrador</label>
-                            <div class="col-md-12">
-                                <input class="form-control" />
-                            </div>
-                        </div>
-                    </div>
+
                     <br>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <label class="control-label col-md-2" name="nombre">Estado</label>
-                            <div class="col-md-4 form-check">
-                                <input checked class="form-check-input" type="radio" name="radioDefault3"
-                                    id="radioDefault5">
-                                <label class="form-check-label ps-1" for="radioDefault5"> Habilitado</label>
-                            </div>
-                            <div class="col-md-4 form-check float-end">
-                                <input class="form-check-input " type="radio" name="radioDefault3" id="radioDefault6">
-                                <label class="form-check-label ps-1" for="radioDefault6"> Deshabilitado</label>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <button type="submit" onclick="crearAdmin()" class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>

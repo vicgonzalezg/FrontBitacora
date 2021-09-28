@@ -18,4 +18,8 @@ urlpatterns = [
     path('modUsuario/', views.modUsuario, name='modUsuario'),
     path('listUsuarios/', views.listUsuarios, name='listUsuarios'),
     path('estadoUsuarios/', views.estadoUsuarios, name='estadoUsuarios'),
+
+    #Perteneciente al proceso de Coach
+
+    path('listProCoach/', views.listProCoach, name='listProCoach'),
 ]

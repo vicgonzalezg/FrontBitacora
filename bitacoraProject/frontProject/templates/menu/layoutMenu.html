@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/footer.css' %}">
     <!-- Se agrega bloque para el head -->
     {% block head %} {% endblock %}
     <!-- Se agrega bloque para los titulos -->
@@ -52,7 +53,7 @@
         -->
         {% elif usuario.perfil == 2 %}
         <a href="#">Procesos Asignados</a>
-        <a href="#">Listar Procesos</a>
+        <a href="{% url 'listProCoach'%}">Listar Proceso</a>
         {% endif %}
     </div>
     {% endif %}
@@ -81,8 +82,27 @@
 
     <!-- Se agrega bloque para el body -->
     {% block content%} {% endblock%}
+<!-- Footer -->
+
+<!--footer class="page-footer font-small mdb-color darken-3 pt-4">
+
+     Copyright 
+    <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
+    </div>
+    Copyright
+
+</footer>
+ Footer -->
+ <footer class="footer">
+    <div class="container">
+        <br>
+      <div class="footer-copyright text-center ">© 2021 Copyright: Castivine</div>
+    </div>
+  </footer>
 
 </body>
+
+
 
 <!-- Script JS necesarios para el Menu -->
 <script src="{% static 'js/popper.min.js' %}"></script>
@@ -92,16 +112,7 @@
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/menu.js' %}"></script>
 
-<!-- Footer -->
-<footer class="page-footer font-small mdb-color darken-3 pt-4">
 
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
-    </div>
-    <!-- Copyright -->
-
-</footer>
-<!-- Footer -->
 
 
 </html>

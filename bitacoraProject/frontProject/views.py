@@ -39,15 +39,19 @@ def menuAdmin(request):
     return render(request,'menu/menuAdmin.html',{'usuario': admin})
 
 def menuCoach(request):
-    return render(request,'menu/menuCoach.html')
+    coach={'nombre': 'Nelson Gomez','perfil':2}
+    return render(request,'menu/menuCoach.html',{'usuario': coach})
 
 
 def menuCoachee(request):
-    return render(request,'menu/menuCoachee.html')
+    coachee={'nombre': 'Victor Gonzalez','perfil':3}
+    return render(request,'menu/menuCoachee.html',{'usuario': coachee})
 
 #Proceso
 #def procesos(request):
 #    return render(request, 'login/login.html')
+
+#Perteneciente al administrador
 
 #Paginas de Procesos
 def procesosAdmin(request):
@@ -109,3 +113,10 @@ def listUsuarios(request):
 def estadoUsuarios(request):
     admin={'nombre': 'María José','perfil':1}
     return render(request,'usuarios/estadoUsuarios.html',{'usuario': admin})
+
+    #Perteneciente al Coach
+
+#listar Proceso
+def listProCoach(request):
+    coach={'nombre': 'Nelson Gomez','perfil':2}
+    return render(request,'procesoCoach/listProCoach.html',{'usuario': coach})

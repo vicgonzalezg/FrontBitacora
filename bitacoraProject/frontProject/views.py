@@ -1,25 +1,61 @@
+from frontProject.models import Usuario
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+import requests
+from . import services
 # Create your views here.
-
+from django.core import serializers
+import json
 #definimos el login
 def login(request):
     if request.method == 'POST':
-        admin={'nombre': 'María José','perfil':1}
-        coach={'nombre': 'Nelson Gomez','perfil':2}
-        coachee={'nombre': 'Victor Gonzalez','perfil':3}
+        #admin={'nombre': 'María José','perfil':1}
+        #coach={'nombre': 'Nelson Gomez','perfil':2}
+        #coachee={'nombre': 'Victor Gonzalez','perfil':3}
         username = request.POST.get('user')
         password = request.POST.get('pass')
         print(username,password)
-        if username == 'maria.jose' and password == 'inicio2021':
-            return render(request,'menu/menuAdmin.html',{'usuario': admin})
-        elif username== 'nelson.gomez' and password == 'inicio2021':
-            return render(request,'menu/menuCoach.html',{'usuario': coach})
-        elif username== 'victor.gonzalez' and password == 'inicio2021':
-            return render(request,'menu/menuCoachee.html',{'usuario': coachee})
+        #r=services.LoginServices().generate_request(username,password)
+        r = requests.post('http://127.0.0.1:8001/login', data = {'USUARIO':username,'CONTRASENA':password})
+        print(r.content)
+
+        result = json.loads(r.content) 
+        print(result)
+
+        nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
+        perfil_usuario=result['USUARIO']['PERFIL_ID']
+        datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario}
+        print(datos_usuario)
+        if r.status_code == 200:
+            plantilla=''
+            if perfil_usuario==1:
+                plantilla='menu/menuAdmin.html'
+            elif perfil_usuario==2:
+                plantilla='menu/menuCoach.html'
+            elif perfil_usuario==3:
+                plantilla='menu/menuCoachee.html'
+            return render(request,plantilla,{'usuario':datos_usuario})
+        #if username == 'maria.jose' and password == 'inicio2021':
+            #return render(request,'menu/menuAdmin.html',{'usuario': admin})
+        #elif username== 'nelson.gomez' and password == 'inicio2021':
+            #return render(request,'menu/menuCoach.html',{'usuario': coach})
+        #elif username== 'victor.gonzalez' and password == 'inicio2021':
+        #    return render(request,'menu/menuCoachee.html',{'usuario': coachee})
     return render(request, 'login/login.html')
 
+def get_cashflows(request):
+
+    response_data = {}
+    cashflow_set = Usuario.objects.all()
+    i = 0
+    for e in cashflow_set.iterator():
+        c = Usuario(value=e.value, date=str(e.date))
+        response_data[i] = c
+
+    return HttpResponse(
+        serializers.serialize("json", response_data),
+        content_type="application/json"
+    )
 #Menu
 #def menu(request):
     #if request.method == 'POST':

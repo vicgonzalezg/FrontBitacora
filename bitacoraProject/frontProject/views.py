@@ -6,6 +6,7 @@ from . import services
 # Create your views here.
 from django.core import serializers
 import json
+import requests
 #definimos el login
 def login(request):
     if request.method == 'POST':
@@ -25,7 +26,18 @@ def login(request):
         nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
         perfil_usuario=result['USUARIO']['PERFIL_ID']
         datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario}
+        token = result['TOKEN']
+        print('Hola soy un token: '+ token)
+        headers = {
+                'content-type': "application/json",
+                'authorization': "Bearer " + token
+            }
+        request.session['Headers'] = headers
+        
+        request.session['Perfil_Usuario'] = datos_usuario
         print(datos_usuario)
+        print(str(request.session['Headers']))
+        print(str(request.session['Perfil_Usuario']))
         if r.status_code == 200:
             plantilla=''
             if perfil_usuario==1:
@@ -91,66 +103,102 @@ def menuCoachee(request):
 
 #Paginas de Procesos
 def procesosAdmin(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/procesosAdmin.html',{'usuario': admin})
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/procesosAdmin.html',{'usuario': perfil})
 
 #Nuevo Proceso
 def nuevoProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/nuevoProceso.html',{'usuario': admin})
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/nuevoProceso.html',{'usuario': perfil})
 
 #modificar Proceso
 def buscaProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/buscaProceso.html',{'usuario': admin})   
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/buscaProceso.html',{'usuario': perfil})   
 
 #modificar Proceso
 def modProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/modProceso.html',{'usuario': admin})    
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/modProceso.html',{'usuario': perfil})    
 
 
 #listar Proceso
 def listProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/listProceso.html',{'usuario': admin})
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/listProceso.html',{'usuario': perfil})
 
 #terminar Proceso
 def termiProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/termiProceso.html',{'usuario': admin})  
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/termiProceso.html',{'usuario': perfil})  
 
 #información Proceso
 def infoProceso(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/infoProceso.html',{'usuario': admin})  
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'procesos/infoProceso.html',{'usuario': perfil})  
 
 #usuarios admin
 def usuariosAdmin(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/usuariosAdmin.html',{'usuario': admin}) 
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/usuariosAdmin.html',{'usuario': perfil}) 
 
 #nuevo usuario
 def nuevoUsuario(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/nuevoUsuario.html',{'usuario': admin}) 
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil}) 
 
 #lista usuario
 def modUsuario(request):
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/modUsuario.html',{'usuario': admin}) 
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    url = 'http://127.0.0.1:8001/usuarios'
+    usuario = requests.get(url).json()
+    print(usuario)
+    #admin={'nombre': 'María José','perfil':1}
+    return render(request,'usuarios/modUsuario.html',{'usuario': perfil,'list_usuarios':usuario}) 
 
 #lista usuario
 def listUsuarios(request):
+    headers = request.session['Headers']
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    print(str(perfil))
+    url = 'http://127.0.0.1:8001/usuarios'
+    usuario = requests.get(url).json()
+    print(usuario)
+    #datos_usuario = request.session['Cache']
+    #print('Token desde lista usuarios:' + str(headers))
+    #print('datos usuario desde lista usuarios:' + str(datos_usuario))
     admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/listUsuarios.html',{'usuario': admin}) 
+    return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario}) 
 
 #estado usuario
 def estadoUsuarios(request):
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
     admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/estadoUsuarios.html',{'usuario': admin})
+    return render(request,'usuarios/estadoUsuarios.html',{'usuario': perfil})
 
-    #Perteneciente al Coach
+
+#Perteneciente al Coach
 
 #listar Proceso
 def listProCoach(request):

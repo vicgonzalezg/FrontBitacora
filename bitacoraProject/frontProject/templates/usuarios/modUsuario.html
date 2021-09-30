@@ -105,16 +105,122 @@
                 </tr>
             </thead>
             <tbody>
+                {% for usuario in list_usuarios %}
                 <tr class="bg-light">
-                    <th scope="row">Emilia</th>
+                    <th scope="row">{{ usuario.NOMBRE }} {{ usuario.APELLIDO }}</th>
+                    {% if usuario.PERFIL_ID == 1 %}
+                    <th scope="row">Administrador</th>
+                    {% elif usuario.PERFIL_ID == 2 %}
                     <th scope="row">Coach</th>
-                    <th scope="row">Emilia@gmail.com</th>
-                    <th scope="row">945852612</th>
+                    {% elif usuario.PERFIL_ID == 3 %}
+                    <th scope="row">Coachee</th>
+                    {% endif %}
+                    <th scope="row">{{ usuario.CORREO }}</th>
+                    <th scope="row">{{ usuario.FONO }}</th>
                     <th scope="row" class="border">
-                        <i type="button" class="fas fa-user-edit d-flex justify-content-center" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"></i>
+                        <i type="button" href="#" class="fas fa-user-edit d-flex justify-content-center"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal-{{ usuario.ID }}"></i>
                     </th>
                 </tr>
+
+                <!-- Button trigger modal -->
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal-{{ usuario.ID }}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container mt-2 bg-light">
+                                    <div class="container mt-2">
+                                        <!--formulario para modificar al usuarios-->
+                                        <div class="row mt-2">
+                                            <div class="mt-2 form-group col-md-6">
+                                                <label class="col-md-6 control-label">Nombre Empresa</label>
+
+                                                <div class="col-md-12">
+                                                    <input type="text" name="empresa" class="form-control" value="{{usuario.EMPRESA}}" />
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 form-group col-md-6">
+                                                <label class="col-md-6 col-lg-4 control-label">Idioma</label>
+                                                <div class="col-md-12 col-lg-8">
+                                                    <input type="text" name="idioma" class="form-control"
+                                                        value="{{ usuario.IDIOMA }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Nombre
+                                                    Coachee</label>
+
+                                                <div class="col-md-12">
+                                                    <input type="text" name="nombre" class="form-control"
+                                                        value="{{ usuario.NOMBRE }} {{ usuario.APELLIDO }}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                                                <div class="col-md-12 col-lg-8">
+                                                    <input type="text" name="nombrejefe" class="form-control"
+                                                        value="{{ usuario.NOMBREJEFE }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-5 control-label">Email</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" name="correo" class="form-control"
+                                                        value="{{ usuario.CORREO }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                                                <div class="col-md-12 col-lg-8">
+                                                    <input type="text" name="emailjefe" class="form-control"
+                                                        value="{{ usuario.EMAILJEFE }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Telefono 
+                                                    </label>
+
+                                                <div class="col-md-12">
+                                                    <input type="text" name="fono" class="form-control"
+                                                        value="{{ usuario.FONO }}" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+
+                                                <div class="col-md-12 col-lg-8">
+                                                    <input type="text" name="fonojefe" class="form-control"
+                                                        value="{{ usuario.FONOJEFE }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <span class="col-md-1"></span>
+                                <button type="button" onclick="modUsuario()" class="btn btn-primary">Guardar
+                                    Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!--
                 <tr class="bg-light">
                     <th scope="row">Miguel</th>
                     <th scope="row">Coachee</th>
@@ -155,6 +261,7 @@
                     <th scope="row" class="border"> <i type="button" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
                 </tr>
+                -->
             </tbody>
         </table>
     </div>
@@ -175,87 +282,5 @@
     </ul>
 </nav>
 
-<!-- Button trigger modal -->
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container mt-2 bg-light">
-                    <div class="container mt-2">
-                        <!--formulario para modificar al usuarios-->
-                        <div class="row mt-2">
-                            <div class="mt-2 form-group col-md-6">
-                                <label class="col-md-6 control-label">Nombre Empresa</label>
 
-                                <div class="col-md-12">
-                                    <input class="form-control" />
-                                </div>
-                            </div>
-                            <div class="mt-2 form-group col-md-6">
-                                <label class="col-md-6 col-lg-4 control-label">Idioma Coachee</label>
-                                <div class="col-md-12 col-lg-8">
-                                    <input class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
-
-                                <div class="col-md-12">
-                                    <input class="form-control" />
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
-                                <div class="col-md-12 col-lg-8">
-                                    <input class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="col-md-5 control-label">Email Coachee</label>
-                                <div class="col-md-12">
-                                    <input class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
-                                <div class="col-md-12 col-lg-8">
-                                    <input class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
-
-                                <div class="col-md-12">
-                                    <input class="form-control" />
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
-
-                                <div class="col-md-12 col-lg-8">
-                                    <input class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <span class="col-md-1"></span>
-                <button type="button" onclick="modUsuario()" class="btn btn-primary">Guardar Cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

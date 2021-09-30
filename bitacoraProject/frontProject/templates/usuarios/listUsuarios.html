@@ -55,13 +55,26 @@
                 </tr>
             </thead>
             <tbody>
+                {% for usuario in list_usuarios %}
                 <tr class="bg-light">
-                    <th scope="row">Emilia</th>
+                    <th scope="row">{{ usuario.NOMBRE }} {{ usuario.APELLIDO }}</th>
+                    {% if usuario.PERFIL_ID == 1 %}
+                    <th scope="row">Administrador</th>
+                    {% elif usuario.PERFIL_ID == 2 %}
                     <th scope="row">Coach</th>
-                    <th scope="row">Emilia@gmail.com</th>
-                    <th scope="row">945852612</th>
-                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></i></th>
+                    {% elif usuario.PERFIL_ID == 3 %}
+                    <th scope="row">Coachee</th>
+                    {% endif %}
+                    <th scope="row">{{ usuario.CORREO }}</th>
+                    <th scope="row">{{ usuario.FONO }}</th>
+                    {% if usuario.ACTIVO == 0 %}
+                    <th scope="row" class="border"><i style="color: red;" class="fas fa-user d-flex justify-content-center "></i></th>
+                    {% elif usuario.ACTIVO == 1 %}
+                    <th scope="row" class="border"><i style="color: green;" class="fas fa-user d-flex justify-content-center "></i></th>
+                    {% endif %}
                 </tr>
+                {% endfor %}
+                <!--
                 <tr class="bg-light">
                     <th scope="row">Miguel</th>
                     <th scope="row">Coachee</th>
@@ -97,6 +110,7 @@
                     <th scope="row">785468554</th>
                     <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
                 </tr>
+                -->
             </tbody>
         </table>
     </div>

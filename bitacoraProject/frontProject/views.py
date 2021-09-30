@@ -120,3 +120,17 @@ def estadoUsuarios(request):
 def listProCoach(request):
     coach={'nombre': 'Nelson Gomez','perfil':2}
     return render(request,'procesoCoach/listProCoach.html',{'usuario': coach})
+    
+#Procesos asignados al Coach
+def procAsig(request):
+    coach={'nombre': 'Nelson Gomez','perfil':2}
+    return render(request,'procesoCoach/procAsig.html',{'usuario': coach}) 
+
+
+
+#Perteneciente al Coachee
+
+#Procesos asignados al Coachee
+def infoProCoachee(request):
+    coach={'nombre': 'Victor Gonzalez','perfil':3}
+    return render(request,'procesoCoachee/infoProCoachee.html',{'usuario': coach})

@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.login),
-    path('/', views.login),
+    #path('/', views.login),
     #path('menu/', views.menu),
     path('menuAdmin/', views.menuAdmin, name='menuAdmin'),
     path('procesosAdmin/', views.procesosAdmin, name='procesosAdmin'),
@@ -20,6 +20,11 @@ urlpatterns = [
     path('estadoUsuarios/', views.estadoUsuarios, name='estadoUsuarios'),
 
     #Perteneciente al proceso de Coach
-
+    path('menuCoach/', views.menuCoach, name='menuCoach'),
     path('listProCoach/', views.listProCoach, name='listProCoach'),
+    path('procAsig/', views.procAsig, name='procAsig'),
+
+    #Perteneciente al proceso de Coachee
+    path('menuCoachee/', views.menuCoachee, name='menuCoachee'),
+    path('infoProCoachee/', views.infoProCoachee, name='infoProCoachee'),
 ]

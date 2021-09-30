@@ -22,16 +22,18 @@
     <!-- ESTO HAY QUE REVISARLO, Al ingresar a otra "pagina" no muestra el menu -->
     <!-- hay que ver si lo dejamos aca o en cada html -->
     <!-- Inicio Sidebar collapse por prefil -->
-    {% if usuario.perfil == 1 or usuario.perfil == 2 %}
+    {% if usuario.perfil == 1 or usuario.perfil == 2 or usuario.perfil == 3 %}
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="{% url 'menuAdmin' %}">
-            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
-        </a>
+        
+
         <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
         <!-- Opciones segun perfil -->
         {% if usuario.perfil == 1 %}
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'menuAdmin' %}">
+            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+        </a>
         <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
         <ul class="d-sm-block d-md-none" id="sidebarmenu">
@@ -52,8 +54,13 @@
         <a href="/">Cerrar Sesión</a>
         -->
         {% elif usuario.perfil == 2 %}
-        <a href="#">Procesos Asignados</a>
-        <a href="{% url 'listProCoach'%}">Listar Proceso</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'menuCoach' %}">
+            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+        </a>
+        <a href="{% url 'procAsig' %}" id="sidebarmenu">Procesos Asignados</a>
+        <a href="{% url 'listProCoach' %}" id="sidebarmenu">Lista Procesos</a>
+
         {% endif %}
     </div>
     {% endif %}
@@ -66,7 +73,9 @@
             {% if usuario.perfil == 1 or usuario.perfil == 2 %}
             <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
             {% elif usuario.perfil == 3 %}
-            <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            <a href="{% url 'menuCoachee' %}">
+                <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+            </a>
             {% endif %}
             <!-- Bienvenida al usuario por su nombre -->
             <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
@@ -93,7 +102,7 @@
 
 </footer>
  Footer -->
- <footer class="footer">
+ <footer z-index="90" class="footer">
     <div class="container">
         <br>
       <div class="footer-copyright text-center ">© 2021 Copyright: Castivine</div>

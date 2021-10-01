@@ -1,6 +1,6 @@
 from frontProject.models import Usuario
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, response
 import requests
 from . import services
 # Create your views here.
@@ -160,9 +160,85 @@ def usuariosAdmin(request):
 
 #nuevo usuario
 def nuevoUsuario(request):
+    headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
     #admin={'nombre': 'María José','perfil':1}
+    #Crear usuario
+    if request.method == 'POST':
+        #Obtener datos del Front
+        NOMBRE = request.POST.get('nombre')
+        #SNOMBRE = request.POST.get('idProd')
+        APELLIDO = request.POST.get('apellido')
+        #SAPELLIDO = request.POST.get('idProd')
+        CORREO = request.POST.get('email')
+        FONO = request.POST.get('telefono')
+        IDIOMA = request.POST.get('idioma')
+        EMPRESA = request.POST.get('nombreEmp')
+        NOMBREJEFE = request.POST.get('nombreJefe')
+        APELLIDOJEFE = request.POST.get('apellidoJefe')
+        EMAILJEFE = request.POST.get('emailJefe')
+        FONOJEFE = request.POST.get('telefonoJefe')
+        #Por defecto Activo
+        ACTIVO = 1
+        #Por defecto Coachee
+        PERFIL_ID = 3
+        #Creo Json Coachee
+        json={
+                "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                "NOMBRE": NOMBRE,
+                #"SNOMBRE": None, #Se envia null
+                "APELLIDO": APELLIDO,
+                #"SAPELLIDO": None, #Se envia null
+                "CORREO": CORREO,
+                "FONO": FONO,
+                "IDIOMA": IDIOMA,
+                "EMPRESA": EMPRESA,
+                "NOMBREJEFE": str(NOMBREJEFE)+' '+str(APELLIDOJEFE),
+                "EMAILJEFE": EMAILJEFE,
+                "FONOJEFE": FONOJEFE,
+                "ACTIVO": ACTIVO,
+                "PERFIL_ID": PERFIL_ID
+                                            }
+        #Usuario Coach
+        newuser = request.POST.get('coach')
+        if newuser == 'coach':
+            PERFIL_ID = 2
+            json={
+                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                    "NOMBRE": NOMBRE,
+                    #"SNOMBRE": None, #Se envia null
+                    "APELLIDO": APELLIDO,
+                    #"SAPELLIDO": None, #Se envia null
+                    "CORREO": CORREO,
+                    "FONO": FONO,
+                    "IDIOMA": IDIOMA,
+                     "ACTIVO": ACTIVO,
+                    "PERFIL_ID": PERFIL_ID
+                }
+        else:
+            #Usuario Administrador
+            PERFIL_ID = 1
+            json={
+                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                    "NOMBRE": NOMBRE,
+                    #"SNOMBRE": None, #Se envia null
+                    "APELLIDO": APELLIDO,
+                    #"SAPELLIDO": None, #Se envia null
+                    "CORREO": CORREO,
+                    "FONO": FONO,
+                    "IDIOMA": IDIOMA,
+                     "ACTIVO": ACTIVO,
+                    "PERFIL_ID": PERFIL_ID
+                }
+        #Metodo para crear usuario en API        
+        url = 'http://127.0.0.1:8001/usuarios'
+        response =  requests.post(url,json=json)
+        print(json)
+        print(response)
+        #if response.status_code == 201:
+        #    mensaje para avisar al front que se creo el usuario.
+
     return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil}) 
 
 #lista usuario

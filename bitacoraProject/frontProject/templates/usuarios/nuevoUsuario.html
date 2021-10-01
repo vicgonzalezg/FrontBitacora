@@ -15,7 +15,7 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Crear!'
+            confirmButtonText: 'Si, Crear!',
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
@@ -161,9 +161,9 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-12 control-label" name="nombre">Nombre Empresa</label>
+                            <label class="col-md-12 control-label" >Nombre Empresa</label>
                             <div class="col-md-12">
-                                <input class="form-control" type="text" required />
+                                <input class="form-control" type="text"  name="nombreEmp" />
                             </div>
                         </div>
 
@@ -171,7 +171,7 @@
                             <br>
                             <label class="col-md-12 control-label">Idioma Coachee</label>
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="text" required />
+                                <input class="form-control" type="text" name="idioma" />
                             </div>
                         </div>
 
@@ -179,27 +179,38 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Nombre Coachee</label>
+                                    <label class="col-md-12 control-label" >Nombre Coachee</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Nombre" type="text" required />
+                                        <input class="form-control" placeholder="Primer Nombre" type="text" name="nombre"  />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Apellido Coachee</label>
+                                    <label class="col-md-12 control-label" >Apellido Coachee</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Apellido" type="text"
-                                            required />
+                                        <input class="form-control" placeholder="Primer Apellido" type="text" name="apellido"
+                                              />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-12 control-label">Nombre Jefe</label>
-                            <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="text" required>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" >Nombre Jefe</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" placeholder="Primer Nombre" type="text" name="nombreJefe"  />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <br>
+                                    <label class="col-md-12 control-label" >Apellido Jefe</label>
+                                    <div class="col-md-12">
+                                        <input class="form-control" placeholder="Primer Apellido" type="text" name="apellidoJefe"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,7 +219,7 @@
                             <br>
                             <label class="col-md-12 control-label">Email Coachee</label>
                             <div class="col-md-12">
-                                <input class="form-control" type="email" required>
+                                <input class="form-control" type="email" name="email" >
                             </div>
                         </div>
 
@@ -216,7 +227,7 @@
                             <br>
                             <label class="col-md-12 control-label">Email Jefe</label>
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="email" required>
+                                <input class="form-control" type="email"  name="emailJefe">
                             </div>
                         </div>
                     </div>
@@ -226,7 +237,7 @@
                             <label class="col-md-12 control-label" name="nombre">Telefono Coachee</label>
 
                             <div class="col-md-12">
-                                <input class="form-control" type="tel" />
+                                <input class="form-control" type="tel" name="telefono" />
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -234,30 +245,33 @@
                             <label class="col-md-12 control-label">Telefono Jefe</label>
 
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="tel" />
+                                <input class="form-control" type="tel" name="telefonoJefe"/>
                             </div>
                         </div>
                     </div>
                     <br>
+                    <!--
                     <div class="col-md-6">
                         <div class="row">
                             <label class="control-label col-md-4" name="nombre">Estado</label>
                             <div class="col-md-4 form-check">
-                                <input checked class="form-check-input" type="radio" name="radioDefault1"
+                                <input checked class="form-check-input" type="radio" name="habilitado"
                                     id="radioDefault1">
                                 <label class="form-check-label ps-1" for="radioDefault1"> Habilitado</label>
                             </div>
                             <div class="col-md-4 form-check float-end">
-                                <input class="form-check-input" type="radio" name="radioDefault1" id="radioDefault2">
+                                <input class="form-check-input" type="radio" name="deshabilitado" id="radioDefault2">
                                 <label class="form-check-label ps-1" for="radioDefault2"> Deshabilitado</label>
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
                 <br>
                 <br>
-                <button type="submit" onclick="crearCoachee()"
-                    class="btn btn-primary float-end col-md-2">Grabar</button>
+                
+                <!--onclick="crearCoachee()"-->
+                <button type="submit" class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>
                 <br>
             </form>
@@ -275,16 +289,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Nombre Coach</label>
+                                    <label class="col-md-12 control-label" >Nombre Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="nombre" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Apellido Coach</label>
+                                    <label class="col-md-12 control-label" >Apellido Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="apellido" />
                                     </div>
                                 </div>
                             </div>
@@ -296,16 +310,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Email Coach</label>
+                                    <label class="col-md-12 control-label" >Email Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control"  name="email"/>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Telefono Coach</label>
+                                    <label class="col-md-12 control-label" >Telefono Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="telefono" />
                                     </div>
                                 </div>
                             </div>
@@ -318,12 +332,12 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Idioma Coach</label>
+                                    <label class="col-md-12 control-label" >Idioma Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="idioma" />
                                     </div>
                                 </div>
-
+                                <!--
                                 <div class="form-group col-md-6">
                                     
                                     <br>
@@ -346,14 +360,15 @@
                                         </div>
                                     </div>
                                 </div>
-
-
+                                -->
                             </div>
                         </div>
                     </div>
                     <br>
                     <br>
-                <button type="submit" class="btn btn-primary float-end col-md-2" onclick="crearCoach()">Grabar</button>
+                    <input type="text" name="coach" class="d-none" value="coach">
+                    <!--onclick="crearCoach()"-->
+                <button type="submit" class="btn btn-primary float-end col-md-2" >Grabar</button>
                 <br>
                 <br>
             </form>
@@ -371,16 +386,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Nombre Administrador</label>
+                                    <label class="col-md-12 control-label" >Nombre Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="nombre" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Apellido Administrador</label>
+                                    <label class="col-md-12 control-label" >Apellido Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="apellido"/>
                                     </div>
                                 </div>
                             </div>
@@ -392,16 +407,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Email Administrador</label>
+                                    <label class="col-md-12 control-label" >Email Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="email" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Telefono Administrador</label>
+                                    <label class="col-md-12 control-label">Telefono Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control"  name="telefono"/>
                                     </div>
                                 </div>
                             </div>
@@ -414,12 +429,12 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" name="nombre">Idioma Administrador</label>
+                                    <label class="col-md-12 control-label" >Idioma Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" required/>
+                                        <input class="form-control" name="idioma" />
                                     </div>
                                 </div>
-
+                                <!--
                                 <div class="form-group col-md-6">
                                     
                                     <br>
@@ -442,8 +457,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-
+                                -->
                             </div>
                         </div>
                     </div>
@@ -453,7 +467,8 @@
                     <br>
 
                 </div>
-                <button type="submit" onclick="crearAdmin()" class="btn btn-primary float-end col-md-2">Grabar</button>
+                <!--onclick="crearAdmin()"-->
+                <button type="submit"  class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>
                 <br>
             </form>

@@ -1,0 +1,136 @@
+{% extends "menu/layoutMenu.html" %}
+{% load static %}
+{% block title %}Menu Administrador{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<!--Menu Procesos-->
+
+<div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
+    <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
+    <a href="{% url 'nuevoUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Usuario</a>
+    <a href="{% url 'modUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
+        Usuario</a>
+    <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar Usuarios</a>
+    <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado
+        Usuario</a>
+</div>
+<!--filtro de usuarios-->
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <input class="contactInput form-control" placeholder="Buscar por Nombre">
+                </div>
+            </div>
+            <span class="col-xs-4 col-md-4 py-1"></span>
+            <div class="col-xs-4 col-md-4 py-1">
+                <div class="form-group">
+                    <select type="checkbox" class="form-select form-control">
+                        <option style="display: none" selected>Tipo de Usuario</option>
+                        <option value="1">Coach</option>
+                        <option value="2">Coachee</option>
+                        <option value="2">Administrador</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Listado de usuarios-->
+<div class="container">
+    <div id="listProceso">
+        <table class="table thead-dark">
+            <thead class="thead-dark">
+                <tr class="cabecera">
+                    <th scope="col">Nombre Usuario</th>
+                    <th scope="col">Tipo Usuario</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col" class="border d-flex justify-content-center">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in list_usuarios %}
+                <tr class="bg-light">
+                    <th scope="row">{{ usuario.NOMBRE }} {{ usuario.APELLIDO }}</th>
+                    {% if usuario.PERFIL_ID == 1 %}
+                    <th scope="row">Administrador</th>
+                    {% elif usuario.PERFIL_ID == 2 %}
+                    <th scope="row">Coach</th>
+                    {% elif usuario.PERFIL_ID == 3 %}
+                    <th scope="row">Coachee</th>
+                    {% endif %}
+                    <th scope="row">{{ usuario.CORREO }}</th>
+                    <th scope="row">{{ usuario.FONO }}</th>
+                    {% if usuario.ACTIVO == 0 %}
+                    <th scope="row" class="border"><i style="color: red;" class="fas fa-user d-flex justify-content-center "></i></th>
+                    {% elif usuario.ACTIVO == 1 %}
+                    <th scope="row" class="border"><i style="color: green;" class="fas fa-user d-flex justify-content-center "></i></th>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                <!--
+                <tr class="bg-light">
+                    <th scope="row">Miguel</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Miguel@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Rodolfo</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Rodolfo@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Andrea</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">Andrea@gmail.com</th>
+                    <th scope="row">945852612</th>
+                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">David</th>
+                    <th scope="row">Coachee</th>
+                    <th scope="row">David@gmail.com</th>
+                    <th scope="row">9785463215</th>
+                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Jorge</th>
+                    <th scope="row">Coach</th>
+                    <th scope="row">Jorge@gmail.com</th>
+                    <th scope="row">785468554</th>
+                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
+                </tr>
+                -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Paginación -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center p-1">
+        <li class="page-item">
+            <a class="page-link" href="#">Anterior</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Siguiente</a>
+        </li>
+    </ul>
+</nav>
+
+
+
+{% endblock %}

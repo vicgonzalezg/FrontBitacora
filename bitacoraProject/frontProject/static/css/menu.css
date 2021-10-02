@@ -1,9 +1,18 @@
+#imagen-fondo{
+  background-image: url(../imagenes/fondo.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: auto;
+  background-attachment: fixed;
+
+}
+
 /* The sidebar menu */
 .sidebar {
   height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
+  width: 0; /* 0 width - Cambiar esto con JavaScript */
+  position: fixed; /* Permanezca en su sitio */
+  z-index: 100; /* Mantener en la cima */
   top: 0;
   left: 0;
   background-color: #002b49; /* Black*/
@@ -34,6 +43,7 @@
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+  color: white;
 }
 
 /* The button used to open the sidebar */
@@ -53,11 +63,47 @@
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
   transition: margin-left .5s; /* If you want a transition effect */
-  padding: 20px;
+  /*padding: 20px;*/
+}
+
+.header {
+  background-color: #002b49;
+  margin-block-end: 5px;
+}
+
+#sidebarmenu{
+  padding-top: 8%;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
+  .openbtnimg{
+    width: 20%;
+    height: auto;
+  }
 }
+
+@media screen and (min-width: 768px) {
+  .openbtnimg{
+    width: 30%;
+    height: auto;
+  }
+}
+
+@media screen and (min-width: 425px) {
+  .openbtnimg{
+    width: 150px;
+    height: 50px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .openbtnimg{
+    width: 88px;
+    height: 50px;
+  }
+}
+
+ 

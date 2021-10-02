@@ -1,97 +1,73 @@
 {% load static %}
 <!DOCTYPE html>
-<!-- saved from url=(0048)https://colorlib.com/etc/lf/Login_v18/index.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS necesarios para el login -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <title>Iniciar sesión</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">      
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">     
-
-        <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">      
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/icon-font.min.css' %}">     
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">       
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/hamburgers.min.css' %}">        
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/animsition.min.css' %}">        
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">       
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/daterangepicker.css' %}">       
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-
-<meta name="robots" content="noindex, follow">
 </head>
-    <body>
-        <div class="limiter">
-            <div class="container-login100">
-                <div class="wrap-login100">
-                    <form style="background-color: #002b49 !important;" class="login100-form validate-form">
-                        <div align = "center"><img src="{% static 'imagenes/logo-thinkgo.png' %}"></div>
-                        <span style="color: #fff !important;" class="login100-form-title p-b-43">
-                            Bienvenido a nuestra Bitácora de coaching
-                        </span>
-                        <div class="wrap-input100 validate-input" data-validate="Se requiere un correo electrónico válido.">
-                            <input class="input100" type="text" name="email">
-                                <span class="focus-input100"></span>
-                                    <span style="color: #fff !important;"  class="label-input100">Usuario</span>
-                        </div>
-                        <div class="wrap-input100 validate-input" data-validate="La contraseña es requerida.">
-                            <input class="input100" type="password" name="pass">
-                                <span class="focus-input100"></span>
-                                    <span style="color: #fff !important;"  class="label-input100">Contraseña</span>
-                        </div>
-                        <div class="flex-sb-m w-full p-t-3 p-b-32">
-                            <div class="contact100-form-checkbox">
-                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                                <label style="color: #fff !important;"  class="label-checkbox100" for="ckb1">
-                                    Recordar
-                                </label>
-                            </div>
-                            <div>
-                                <a style="color: #fff !important;" href="#" class="txt1">
-                                ¿Olvidó su contraseña?
-                                </a>
-                            </div>
-                        </div>
-                        <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" onclick="location.href='menu/'" >
-                                Ingresar
-                            </button>
-                        </div>
-                    </form>
-                    <div class="login100-more" style="background-image: url(&#39;static/imagenes/banner-coaching.jpg&#39;);">
-                    </div>
+
+<body>
+    <div class="container-fluid h-100 form-login">
+        <div class="row justify-content-center h-100">
+            <div class="img-login d-none d-lg-block col-10 col-sm-10 col-md-10 col-lg-8 col-xl-8">
+            </div>
+            <div class="p-2 col-10 col-sm-10 col-md-10 col-lg-4 col-xl-4">
+                <div class="text-center py-5">
+                    <img src="{% static 'imagenes/logo-thinkgo.png' %}" alt="logo">
                 </div>
+                <div class="text-center py-3">
+                    <h3 class="pb-md-3">Bienvenido a nuestra Bitácora de Coaching</h3>
+                </div>
+                <!-- Inicio Login -->
+                <form method="POST" action="#" class="py-3 form-login needs-validation" novalidate>{% csrf_token %}
+                    <!-- Input de usuario y validación -->
+                    <div class="mb-4 has-validation">
+                        <input type="text" class="form-control rounded" name="user" placeholder="Usuario"
+                            id="validationUsername" required>
+                        <div class="invalid-feedback">
+                            Debe ingresar un usuario.
+                        </div>
+                    </div>
+                    <!-- Input de contraseña y validación -->
+                    <div class="mb-4 has-validation">
+                        <input type="password" class="form-control rounded" name="pass" placeholder="Contraseña"
+                            id="validationPassword" required>
+                        <div class="invalid-feedback">
+                            Debe ingresar una contraseña.
+                        </div>
+                    </div>
+                    <!-- Checkkbox de recordar sesión -->
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" name="connected" class="form-check-input">
+                        <label for="connected" class="form-check-label">Recordarme</label>
+                    </div>
+                    <!-- Boton Ingresar -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                    </div>
+                    <!-- Link para recordar contraseña -->
+                    <div class="my-3">
+                        <span><a href="#">¿Olvidó su contraseña?</a></span>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+</body>
+<!-- Script JS necesarios para el login -->
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/login.js' %}"></script>
 
-    <script type="text/javascript" async="" src="{% static 'js/analytics.js.descarga' %}"></script>
-    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/animsition.min.js.descarga' %}"></script>
-    <script src="{% static 'js/select2.min.js.descarga' %}"></script>
-    <script src="{% static 'js/moment.min.js.descarga' %}"></script>
-    <script src="{% static 'js/daterangepicker.js.descarga' %}"></script>
-    <script src="{% static 'js/countdowntime.js.descarga' %}"></script>
-    <script src="{% static 'js/main.js.descarga' %}"></script>
-    <script async="" src="{% static 'js/js' %}"></script>
-    <script>
-    	  window.dataLayer = window.dataLayer || [];
-    	  function gtag(){dataLayer.push(arguments);}
-    	  gtag('js', new Date());
-    
-    	  gtag('config', 'UA-23581568-13');
-    	</script>
-    
-
-  </body>
 </html>

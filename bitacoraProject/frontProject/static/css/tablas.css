@@ -1,0 +1,42 @@
+.cabecera{
+    background-color: #002b49;
+    text-decoration-color: cornsilk;
+}
+
+.cabecera th{
+    color: #fff;
+}
+
+#listSesion{
+    margin-top: 5%;
+    width: 100%;
+    height: auto;
+    
+}
+
+#listProceso{
+    margin-top: 2%;
+    width: auto;
+    height: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-color: #002b49 20px;
+    overflow-x: scroll;
+}
+
+.filtroList{
+    margin-left: 14px;
+    margin-right: 30px;
+    width: auto;
+    display: inline-flex;
+}
+
+.inputList{
+    display: inline-flex;
+    justify-content: initial;
+}
+
+#tipFilt{
+    margin-left: 20%;
+    
+}

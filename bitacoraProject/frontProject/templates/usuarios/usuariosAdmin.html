@@ -1,0 +1,90 @@
+{% extends "menu/layoutMenu.html" %}
+{% load static %}
+{% block title %}Menu Administrador{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<!--Menu Procesos-->
+<!--
+<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
+    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
+    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
+</nav>
+<p></p>
+-->
+<div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
+    <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
+    <a href="{% url 'nuevoUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Usuario</a>
+    <a href="{% url 'modUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Modificar usuario</a>
+    <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar usuarios</a>
+    <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado usuarios</a>
+</div>
+
+<!--Ultimos 5 usuarios Coach Creados -->
+<div class="container">
+    <div class="row">
+        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
+            <h3 class="text-center fw-bold">Ultimos 5 Coach Creados</h3>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Nombre: Ivan Espindola</h6>
+                <p class="mb-1">Email: iv.espindola@ThinkGo.com</p>
+                <p class="mb-1">Telefono: 987654321</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Nombre: Ivan Espindola</h6>
+                <p class="mb-1">Email: iv.espindola@ThinkGo.com</p>
+                <p class="mb-1">Telefono: 987654321</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Nombre: Ivan Espindola</h6>
+                <p class="mb-1">Email: iv.espindola@ThinkGo.com</p>
+                <p class="mb-1">Telefono: 987654321</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Nombre: Ivan Espindola</h6>
+                <p class="mb-1">Email: iv.espindola@ThinkGo.com</p>
+                <p class="mb-1">Telefono: 987654321</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Nombre: Ivan Espindola</h6>
+                <p class="mb-1">Email: iv.espindola@ThinkGo.com</p>
+                <p class="mb-1">Telefono: 987654321</p>
+            </a>
+        </div>
+        <!--Ultimos 5 usuarios Coachee Creados -->
+        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
+            <h3 class="text-center fw-bold">Ultimos 5 Coachee Creados </h3>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Coachee: Danilo Gómez</h6>
+                <p class="mb-1">Empresa: Falabella</p>
+                <p class="mb-1">Jefe: Nelson Gómez</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Coachee: Danilo Gómez</h6>
+                <p class="mb-1">Empresa: Falabella</p>
+                <p class="mb-1">Jefe: Nelson Gómez</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Coachee: Danilo Gómez</h6>
+                <p class="mb-1">Empresa: Falabella</p>
+                <p class="mb-1">Jefe: Nelson Gómez</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Coachee: Danilo Gómez</h6>
+                <p class="mb-1">Empresa: Falabella</p>
+                <p class="mb-1">Jefe: Nelson Gómez</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h6 class="mb-1">Coachee: Danilo Gómez</h6>
+                <p class="mb-1">Empresa: Falabella</p>
+                <p class="mb-1">Jefe: Nelson Gómez</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

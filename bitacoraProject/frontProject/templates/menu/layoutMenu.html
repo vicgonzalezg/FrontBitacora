@@ -6,70 +6,113 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS necesarios para el Menu -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/calendario.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static '/css/footer.css' %}">
+    <!-- Se agrega bloque para el head -->
+    {% block head %} {% endblock %}
+    <!-- Se agrega bloque para los titulos -->
     <title>{% block title %} {% endblock %}</title>
 </head>
 
-<body>
-    <!--
-        <nav class="navbar navbar-inverse navbar-dark bg-dark bg-inverse navbar-toggeable-sm">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toogle="collapse" data-target="#navbarToggleExternalContent" 
-                aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation" >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="">
-                <img src="{% static 'imagenes/logo-thinkgo.png' %}"  class="d-inline-block align-top" alt="Logo ThinkGo">
-            </a>
-            <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#">hola</a>
-                <a class="nav-item nav-link" href="#">hola1</a>
-                <a class="nav-item nav-link" href="#">hola2</a>
-                <a class="nav-item nav-link" href="#">hola3</a>
-            </div>
-            </div>
-        </nav>
+<body id="imagen-fondo">
+    <!-- ESTO HAY QUE REVISARLO, Al ingresar a otra "pagina" no muestra el menu -->
+    <!-- hay que ver si lo dejamos aca o en cada html -->
+    <!-- Inicio Sidebar collapse por prefil -->
+    {% if usuario.perfil == 1 or usuario.perfil == 2 %}
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'menuAdmin' %}">
+            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+        </a>
+        <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
+        <!-- Opciones segun perfil -->
+        {% if usuario.perfil == 1 %}
+        <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
+        <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
+        <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
+        <ul class="d-sm-block d-md-none" id="sidebarmenu">
+            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
+            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
+            <a href="{% url 'listProceso'%}">Listar Proceso</a>
+            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+        </ul>
+        <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
+        <ul class="d-sm-block d-md-none"  id="sidebarmenu">
+            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
+            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
+            <a href="{% url 'listProceso'%}">Listar Proceso</a>
+            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+        </ul>
+        <!--
+        <a href="#">Perfil</a>
+        <a href="/">Cerrar Sesión</a>
         -->
-        <div id="mySidebar" class="sidebar">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="">
-                <img src="{% static 'imagenes/logo-thinkgo.png' %}"  class="img-fluid" alt="Logo ThinkGo">
-            </a>
-            <a href="#">Procesos</a>
-            <a href="#">Usuarios</a>
-          </div>
-          
-          <div class="dropdown" id="main">
+        {% elif usuario.perfil == 2 %}
+        <a href="#">Procesos Asignados</a>
+        <a href="{% url 'listProCoach'%}">Listar Proceso</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ARRIBA -->
+    <!-- Dropdown para Perfil y Cerrar Sesión -->
+    <div class="dropdown" id="main">
+        <div class="header">
+            <!-- Botón para el menu sidebar -->
+            {% if usuario.perfil == 1 or usuario.perfil == 2 %}
             <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
-            <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" style="float:right;">Hola María José</button>
+            {% elif usuario.perfil == 3 %}
+            <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            {% endif %}
+            <!-- Bienvenida al usuario por su nombre -->
+            <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
+                style="float:right;">Hola {{ usuario.nombre }}</button>
+
+            <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Perfil</a>
-                <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                <a class="dropdown-item" href="/">Cerrar Sesión</a>
             </div>
-          {% block content%}
+        </div>
+    </div>
 
-          {% endblock%}
-<!--
-            <footer>
-                <ul>
-                    <li><a href="aviso-legal.html">Aviso legal</a></li>
-                    <li><a href="privacidad.html">Privacidad</a></li>
-                    <li><a href="contactar.html">Contactar</a></li>
-                </ul>
-            </footer>
--->
-          </div>
-    <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-  <script src="../../static/js/menu.js"></script>
-   
+    <!-- Se agrega bloque para el body -->
+    {% block content%} {% endblock%}
+<!-- Footer -->
+
+<!--footer class="page-footer font-small mdb-color darken-3 pt-4">
+
+     Copyright 
+    <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
+    </div>
+    Copyright
+
+</footer>
+ Footer -->
+ <footer class="footer">
+    <div class="container">
+        <br>
+      <div class="footer-copyright text-center ">© 2021 Copyright: Castivine | Autorizado por Nelson Gómez</div>
+    </div>
+  </footer>
+
 </body>
+
+
+
+<!-- Script JS necesarios para el Menu -->
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+<script src="{% static 'js/menu.js' %}"></script>
+
+
+
 
 </html>

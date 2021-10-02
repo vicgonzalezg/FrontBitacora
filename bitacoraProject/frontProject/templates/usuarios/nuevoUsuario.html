@@ -4,10 +4,103 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 {% endblock %}
 {% block content %}
 <script>
-    function crearCoachee(id) {
+    function crearAdmin() {
+        event.preventDefault();
+        
+        var nombre = document.getElementById("nombreAdmin");
+        var apellido = document.getElementById("apellidoAdmin");
+        var email = document.getElementById("emailAdmin");
+        var telefono = document.getElementById("telefonoAdmin");
+        var idioma = document.getElementById("idiomaAdmin");
+        //console.log(nombre)
+        if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
+            Swal.fire('Todos los campos son Obligatorios!', '', 'info')
+        } else {
+            var form = document.forms["formAdmin"];
+
+            Swal.fire({
+                title: '¿Está seguro de crear al usuario Administrador?',
+                showDenyButton: true, 
+                icon: 'question',
+                //showCancelButton: true,
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title:'Usuario agregado',
+                        icon: 'success',
+                        timer: 3000,
+                        timerProgressBar: true
+                    })
+                    form.submit();
+                } else if (result.isDenied) {
+                    Swal.fire({
+                        title:'Usuario no se ha registrado',
+                        icon: 'info',
+                        timer: 3000,
+                        timerProgressBar: true
+                    })
+                }
+            });
+        }
+    }
+</script>
+<script>
+    function crearCoach() {
+        event.preventDefault();
+        
+        var nombre = document.getElementById("nombreCoach");
+        var apellido = document.getElementById("apellidoCoach");
+        var email = document.getElementById("emailCoach");
+        var telefono = document.getElementById("telefonoCoach");
+        var idioma = document.getElementById("idiomaCoach");
+        //console.log(nombre)
+        if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
+            Swal.fire('Todos los campos son Obligatorios!', '', 'info')
+        } else {
+            var form = document.forms["formCoach"];
+
+            Swal.fire({
+                title: '¿Está seguro de crear al usuario Coach?',
+                showDenyButton: true, 
+                icon: 'question',
+                //showCancelButton: true,
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    form.submit();
+                    Swal.fire({
+                        title:'Usuario Coach creado con éxito!',
+                        icon: 'success',
+                        timer: 3000,
+                        timerProgressBar: true
+                    })
+                } else if (result.isDenied) {
+                    Swal.fire({
+                        title:'Usuario no se ha registrado',
+                        icon: 'info',
+                        timer: 3000,
+                        timerProgressBar: true
+                    })
+                }
+            });
+        }
+    }
+</script>
+<!--Modificar-->
+<script>
+    function agregarcoacheeold(event) {
+        event.preventDefault();
+        var form = document.forms["formCoachee"]; //Guardar datos del Form
+        console.log(form)
         Swal.fire({
             title: '¿Está seguro de crear al usuario Coachee?',
             icon: 'warning',
@@ -16,72 +109,22 @@
             cancelButtonColor: '#d33',
             cancelButtonText: 'No!',
             confirmButtonText: 'Si, Crear!',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    timer: 2000,
-                    title: 'Creado!',
-                    text: 'Operación Realizada con éxito',
-                    showConfirmButton: false,
-                })
-                $('#exampleModal').modal('hide');
-                $(".modal-backdrop").remove();
-            }
-        })
+        },
+            function (confirmed) {
+                if (confirmed) {
+                    form.submit();          // submitting the form when user press yes
+                    Swal.fire({
+                        icon: 'success',
+                        timer: 2000,
+                        title: 'Creado!',
+                        text: 'Operación Realizada con éxito',
+                        showConfirmButton: false,
+                    })
+                } else {
+                    swal("Cancelled", "Your imaginary file is safe :)", "error");
+                }
+            });
     }
-</script>
-<script>
-    function crearCoach(id) {
-        Swal.fire({
-            title: '¿Está seguro de crear al usuario Coach?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Crear!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    timer: 2000,
-                    title: 'Creado!',
-                    text: 'Operación Realizada con éxito',
-                    showConfirmButton: false,
-                })
-                $('#exampleModal').modal('hide');
-                $(".modal-backdrop").remove();
-            }
-        })
-    }
-
-</script>
-<script>
-    function crearAdmin(id) {
-        Swal.fire({
-            title: '¿Está seguro de crear al usuario Administrador?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Crear!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    timer: 2000,
-                    title: 'Creado!',
-                    text: 'Operación Realizada con éxito',
-                    showConfirmButton: false,
-                })
-                $('#exampleModal').modal('hide');
-                $(".modal-backdrop").remove();
-            }
-        })
-    }
-
 </script>
 <!--Menu Procesos-->
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
@@ -156,14 +199,14 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Coachee-->
         <div id="div1" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <form action="" method="POST">{% csrf_token %}
+            <form action="" id="formCoachee" method="POST">{% csrf_token %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-12 control-label" >Nombre Empresa</label>
+                            <label class="col-md-12 control-label">Nombre Empresa</label>
                             <div class="col-md-12">
-                                <input class="form-control" type="text"  name="nombreEmp" />
+                                <input class="form-control" type="text" name="nombreEmp" />
                             </div>
                         </div>
 
@@ -179,17 +222,18 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Nombre Coachee</label>
+                                    <label class="col-md-12 control-label">Nombre Coachee</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Nombre" type="text" name="nombre"  />
+                                        <input class="form-control" placeholder="Primer Nombre" type="text"
+                                            name="nombre" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Apellido Coachee</label>
+                                    <label class="col-md-12 control-label">Apellido Coachee</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Apellido" type="text" name="apellido"
-                                              />
+                                        <input class="form-control" placeholder="Primer Apellido" type="text"
+                                            name="apellido" />
                                     </div>
                                 </div>
                             </div>
@@ -199,16 +243,18 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Nombre Jefe</label>
+                                    <label class="col-md-12 control-label">Nombre Jefe</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Nombre" type="text" name="nombreJefe"  />
+                                        <input class="form-control" placeholder="Primer Nombre" type="text"
+                                            name="nombreJefe" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Apellido Jefe</label>
+                                    <label class="col-md-12 control-label">Apellido Jefe</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" placeholder="Primer Apellido" type="text" name="apellidoJefe"/>
+                                        <input class="form-control" placeholder="Primer Apellido" type="text"
+                                            name="apellidoJefe" />
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +265,7 @@
                             <br>
                             <label class="col-md-12 control-label">Email Coachee</label>
                             <div class="col-md-12">
-                                <input class="form-control" type="email" name="email" >
+                                <input class="form-control" type="email" name="email">
                             </div>
                         </div>
 
@@ -227,7 +273,7 @@
                             <br>
                             <label class="col-md-12 control-label">Email Jefe</label>
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="email"  name="emailJefe">
+                                <input class="form-control" type="email" name="emailJefe">
                             </div>
                         </div>
                     </div>
@@ -245,7 +291,7 @@
                             <label class="col-md-12 control-label">Telefono Jefe</label>
 
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control" type="tel" name="telefonoJefe"/>
+                                <input class="form-control" type="tel" name="telefonoJefe" />
                             </div>
                         </div>
                     </div>
@@ -269,9 +315,9 @@
                 </div>
                 <br>
                 <br>
-                
+
                 <!--onclick="crearCoachee()"-->
-                <button type="submit" class="btn btn-primary float-end col-md-2">Grabar</button>
+                <button class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>
                 <br>
             </form>
@@ -282,23 +328,23 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Coach-->
         <div id="div2" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <form id="form2" action="" method="POST">{% csrf_token %}
+            <form id="formCoach" action="" method="POST">{% csrf_token %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-12">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Nombre Coach</label>
+                                    <label class="col-md-12 control-label">Nombre Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="nombre" />
+                                        <input class="form-control" name="nombre" id="nombreCoach" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Apellido Coach</label>
+                                    <label class="col-md-12 control-label">Apellido Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="apellido" />
+                                        <input class="form-control" name="apellido" id="apellidoCoach"/>
                                     </div>
                                 </div>
                             </div>
@@ -310,16 +356,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Email Coach</label>
+                                    <label class="col-md-12 control-label">Email Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control"  name="email"/>
+                                        <input class="form-control" name="email" id="emailCoach"/>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Telefono Coach</label>
+                                    <label class="col-md-12 control-label">Telefono Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="telefono" />
+                                        <input class="form-control" name="telefono" id="telefonoCoach" />
                                     </div>
                                 </div>
                             </div>
@@ -332,9 +378,9 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Idioma Coach</label>
+                                    <label class="col-md-12 control-label">Idioma Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="idioma" />
+                                        <input class="form-control" name="idioma" id="idiomaCoach"/>
                                     </div>
                                 </div>
                                 <!--
@@ -368,9 +414,9 @@
                     <br>
                     <input type="text" name="coach" class="d-none" value="coach">
                     <!--onclick="crearCoach()"-->
-                <button type="submit" class="btn btn-primary float-end col-md-2" >Grabar</button>
-                <br>
-                <br>
+                    <button type="submit" onclick="crearCoach()" class="btn btn-primary float-end col-md-2">Grabar</button>
+                    <br>
+                    <br>
             </form>
         </div>
     </div>
@@ -379,23 +425,23 @@
     <div class="container">
         <!--Formulario para crear usuarios tipo Administrador-->
         <div id="div3" style="display: none;" class="panel panel-primary px-2 bg-light">
-            <form id="form3" action="" method="POST">{% csrf_token %}
+            <form id="formAdmin" action="" method="POST">{% csrf_token %}
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-12">
                             <div class="row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-6 ">
                                     <br>
-                                    <label class="col-md-12 control-label" >Nombre Administrador</label>
+                                    <label class="col-md-12 control-label">Nombre Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="nombre" />
+                                        <input class="form-control" name="nombre" id="nombreAdmin" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Apellido Administrador</label>
+                                    <label class="col-md-12 control-label">Apellido Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="apellido"/>
+                                        <input class="form-control" name="apellido" id="apellidoAdmin" />
                                     </div>
                                 </div>
                             </div>
@@ -407,16 +453,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Email Administrador</label>
+                                    <label class="col-md-12 control-label">Email Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="email" />
+                                        <input class="form-control" name="email" id="emailAdmin" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
                                     <label class="col-md-12 control-label">Telefono Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control"  name="telefono"/>
+                                        <input class="form-control" name="telefono" id="telefonoAdmin"/>
                                     </div>
                                 </div>
                             </div>
@@ -429,9 +475,9 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <br>
-                                    <label class="col-md-12 control-label" >Idioma Administrador</label>
+                                    <label class="col-md-12 control-label">Idioma Administrador</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="idioma" />
+                                        <input class="form-control" name="idioma" id="idiomaAdmin" />
                                     </div>
                                 </div>
                                 <!--
@@ -468,7 +514,7 @@
 
                 </div>
                 <!--onclick="crearAdmin()"-->
-                <button type="submit"  class="btn btn-primary float-end col-md-2">Grabar</button>
+                <button type="button" onclick="crearAdmin()" class="btn btn-primary float-end col-md-2">Grabar</button>
                 <br>
                 <br>
             </form>

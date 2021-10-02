@@ -16,7 +16,7 @@
         var email = document.getElementById("emailAdmin");
         var telefono = document.getElementById("telefonoAdmin");
         var idioma = document.getElementById("idiomaAdmin");
-        //console.log(nombre)
+        //console.log(nombre.value)
         if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
             Swal.fire('Todos los campos son Obligatorios!', '', 'info')
         } else {
@@ -37,8 +37,9 @@
                         icon: 'success',
                         timer: 3000,
                         timerProgressBar: true
+                    }).then(function(){
+                        form.submit();
                     })
-                    form.submit();
                 } else if (result.isDenied) {
                     Swal.fire({
                         title:'Usuario no se ha registrado',
@@ -60,7 +61,7 @@
         var email = document.getElementById("emailCoach");
         var telefono = document.getElementById("telefonoCoach");
         var idioma = document.getElementById("idiomaCoach");
-        //console.log(nombre)
+        //console.log(nombre.value)
         if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
             Swal.fire('Todos los campos son Obligatorios!', '', 'info')
         } else {
@@ -76,12 +77,13 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    form.submit();
                     Swal.fire({
                         title:'Usuario Coach creado con éxito!',
                         icon: 'success',
                         timer: 3000,
                         timerProgressBar: true
+                    }).then(function(){
+                        form.submit();
                     })
                 } else if (result.isDenied) {
                     Swal.fire({
@@ -358,14 +360,14 @@
                                     <br>
                                     <label class="col-md-12 control-label">Email Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="email" id="emailCoach"/>
+                                        <input type="email" class="form-control" name="email" id="emailCoach"/>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <br>
                                     <label class="col-md-12 control-label">Telefono Coach</label>
                                     <div class="col-md-12">
-                                        <input class="form-control" name="telefono" id="telefonoCoach" />
+                                        <input type="tel" class="form-control" name="telefono" id="telefonoCoach" />
                                     </div>
                                 </div>
                             </div>

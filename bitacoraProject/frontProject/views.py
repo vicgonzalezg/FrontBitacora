@@ -248,16 +248,6 @@ def nuevoUsuario(request):
     return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil}) 
 
 #lista usuario
-def modUsuario(request):
-    perfil = request.session['Perfil_Usuario']
-    print (str(request.session['Perfil_Usuario']))
-    url = 'http://127.0.0.1:8001/usuarios'
-    usuario = requests.get(url).json()
-    print(usuario)
-    #admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/modUsuario.html',{'usuario': perfil,'list_usuarios':usuario}) 
-
-#lista usuario
 def listUsuarios(request):
     headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
@@ -284,5 +274,25 @@ def estadoUsuarios(request):
 
 #listar Proceso
 def listProCoach(request):
+    #perfil = request.session['Perfil_Usuario']
+    #print (str(request.session['Perfil_Usuario']))
     coach={'nombre': 'Nelson Gomez','perfil':2}
     return render(request,'procesoCoach/listProCoach.html',{'usuario': coach})
+
+
+#Procesos asignados al Coach
+def procAsig(request):
+    #perfil = request.session['Perfil_Usuario']
+    #print (str(request.session['Perfil_Usuario']))
+    coach={'nombre': 'Nelson Gomez','perfil':2}
+    return render(request,'procesoCoach/procAsig.html',{'usuario': coach}) 
+
+
+#Perteneciente al Coachee
+
+#Procesos asignados al Coachee
+def infoProCoachee(request):
+    #perfil = request.session['Perfil_Usuario']
+    #print (str(request.session['Perfil_Usuario']))
+    coach={'nombre': 'Victor Gonzalez','perfil':3}
+    return render(request,'procesoCoachee/infoProCoachee.html',{'usuario': coach})

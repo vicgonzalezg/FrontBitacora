@@ -5,18 +5,42 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block content %}
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
+    function modUsuario() {
+        Swal.fire({
+            title: 'Estas seguro de realizar la modificación?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Modificar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Modificado!',
+                    'El usuario a sido actualizado.',
+                    'Operación Realizada con exito'
+                )
+            }
+        })
+    }
+
+</script>
+
+<!--Despliega formulario para crear Coachee y esconde a los demas-->
+
 <!--Menu Procesos-->
 
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Usuario</a>
-    <a href="{% url 'modUsuario'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
-        Usuario</a>
     <a href="{% url 'listUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Listar Usuarios</a>
-    <a href="{% url 'estadoUsuarios'%}" class="list-group-item text-sm-center list-group-item-action">Estado
-        Usuario</a>
 </div>
 <!--filtro de usuarios-->
 <div class="container">
@@ -51,7 +75,8 @@
                     <th scope="col">Tipo Usuario</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contacto</th>
-                    <th scope="col" class="border d-flex justify-content-center">Estado</th>
+                    <th scope="col" class="border text-center">Estado</th>
+                    <th scope="col" class="border text-center">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,45 +97,11 @@
                     {% elif usuario.ACTIVO == 1 %}
                     <th scope="row" class="border"><i style="color: green;" class="fas fa-user d-flex justify-content-center "></i></th>
                     {% endif %}
+                    <th scope="row" class="border"><i type="button"
+                        class="fas fa-user-edit d-flex justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"></i></th>
                 </tr>
                 {% endfor %}
-                <!--
-                <tr class="bg-light">
-                    <th scope="row">Miguel</th>
-                    <th scope="row">Coachee</th>
-                    <th scope="row">Miguel@gmail.com</th>
-                    <th scope="row">9785463215</th>
-                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Rodolfo</th>
-                    <th scope="row">Coach</th>
-                    <th scope="row">Rodolfo@gmail.com</th>
-                    <th scope="row">785468554</th>
-                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Andrea</th>
-                    <th scope="row">Coachee</th>
-                    <th scope="row">Andrea@gmail.com</th>
-                    <th scope="row">945852612</th>
-                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">David</th>
-                    <th scope="row">Coachee</th>
-                    <th scope="row">David@gmail.com</th>
-                    <th scope="row">9785463215</th>
-                    <th scope="row" class="border"><i class="fas fa-user-check d-flex justify-content-center"></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Jorge</th>
-                    <th scope="row">Coach</th>
-                    <th scope="row">Jorge@gmail.com</th>
-                    <th scope="row">785468554</th>
-                    <th scope="row" class="border"><i class="fas fa-user-times d-flex justify-content-center"></th>
-                </tr>
-                -->
             </tbody>
         </table>
     </div>
@@ -131,6 +122,114 @@
     </ul>
 </nav>
 
+<!--filtro estado-->
+<div class="container">
+    <div class="col-xs-3 col-md-3">
+        <div class="form-group">
+            <select type="checkbox" class="form-select form-control" placeholder="Buscar por Coachee">
+                <option value="1" selected>Usuarios Habilitados</option>
+                <option value="2">Usuarios Deshabilitados</option>
+                <option value="2">Todos los usuarios</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!--Modal para editar usuarios-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class="container mt-2">
+                        <!--formulario para modificar al usuarios-->
+                        <div class="row mt-2">
+                            <div class="mt-2 form-group col-md-6">
+                                <label class="col-md-6 control-label">Nombre Empresa</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="mt-2 form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Idioma Coachee</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-5 control-label">Email Coachee</label>
+                                <div class="col-md-12">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+
+                                <div class="col-md-12 col-lg-8">
+                                    <input class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <br>
+                                <label class="control-label col-md-2 ms-3" name="nombre">Estado:</label>
+                                <div class="col-md-4 form-check">
+                                    <input checked class="form-check-input ms-1" type="radio" name="radioDefault1"
+                                        id="radioDefault1">
+                                    <label class="form-check-label" for="radioDefault1">-Habilitado</label>
+                                </div>
+                                <div class="col-md-5 form-check float-end">
+                                    <input class="form-check-input ms-1" type="radio" name="radioDefault1"
+                                        id="radioDefault2">
+                                    <label class="form-check-label " for="radioDefault2">-Deshabilitado</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <span class="col-md-1"></span>
+                <button type="button" onclick="modUsuario()" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

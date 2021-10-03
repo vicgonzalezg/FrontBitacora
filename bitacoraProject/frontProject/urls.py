@@ -15,11 +15,14 @@ urlpatterns = [
     path('infoProceso/', views.infoProceso, name='infoProceso'),
     path('usuariosAdmin/', views.usuariosAdmin, name='usuariosAdmin'),
     path('nuevoUsuario/', views.nuevoUsuario, name='nuevoUsuario'),
-    path('modUsuario/', views.modUsuario, name='modUsuario'),
     path('listUsuarios/', views.listUsuarios, name='listUsuarios'),
-    path('estadoUsuarios/', views.estadoUsuarios, name='estadoUsuarios'),
 
     #Perteneciente al proceso de Coach
-
+    path('menuCoach/', views.menuCoach, name='menuCoach'),
     path('listProCoach/', views.listProCoach, name='listProCoach'),
+    path('procAsig/', views.procAsig, name='procAsig'),
+
+    #Perteneciente al proceso de Coachee
+    path('menuCoachee/', views.menuCoachee, name='menuCoachee'),
+    path('infoProCoachee/', views.infoProCoachee, name='infoProCoachee'),
 ]

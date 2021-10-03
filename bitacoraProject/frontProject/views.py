@@ -163,9 +163,10 @@ def nuevoUsuario(request):
     headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
+    #print (admin)
     #admin={'nombre': 'María José','perfil':1}
     #Crear usuario
-    if request.method == 'POST':
+    if request.method == 'POST' and perfil['perfil'] == 1:
         #Obtener datos del Front
         NOMBRE = request.POST.get('nombre')
         #SNOMBRE = request.POST.get('idProd')
@@ -182,28 +183,14 @@ def nuevoUsuario(request):
         #Por defecto Activo
         ACTIVO = 1
         #Por defecto Coachee
-        PERFIL_ID = 3
-        #Creo Json Coachee
-        json={
-                "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
-                "NOMBRE": NOMBRE,
-                #"SNOMBRE": None, #Se envia null
-                "APELLIDO": APELLIDO,
-                #"SAPELLIDO": None, #Se envia null
-                "CORREO": CORREO,
-                "FONO": FONO,
-                "IDIOMA": IDIOMA,
-                "EMPRESA": EMPRESA,
-                "NOMBREJEFE": str(NOMBREJEFE)+' '+str(APELLIDOJEFE),
-                "EMAILJEFE": EMAILJEFE,
-                "FONOJEFE": FONOJEFE,
-                "ACTIVO": ACTIVO,
-                "PERFIL_ID": PERFIL_ID
-                                            }
+        PERFIL_ID = 2
         #Usuario Coach
-        newuser = request.POST.get('coach')
-        if newuser == 'coach':
-            PERFIL_ID = 2
+        usuarioCoachee = request.POST.get('coachee')
+        print(usuarioCoachee)
+        if usuarioCoachee == 'coachee':
+            #Asigno Perfil
+            PERFIL_ID = 3
+            #Creo Json Coachee
             json={
                     "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
                     "NOMBRE": NOMBRE,
@@ -213,11 +200,30 @@ def nuevoUsuario(request):
                     "CORREO": CORREO,
                     "FONO": FONO,
                     "IDIOMA": IDIOMA,
-                     "ACTIVO": ACTIVO,
+                    "EMPRESA": EMPRESA,
+                    "NOMBREJEFE": str(NOMBREJEFE)+' '+str(APELLIDOJEFE),
+                    "EMAILJEFE": EMAILJEFE,
+                    "FONOJEFE": FONOJEFE,
+                    "ACTIVO": ACTIVO,
+                    "PERFIL_ID": PERFIL_ID
+                    }
+        elif PERFIL_ID == 2:
+            #Usuario Coach
+            json={
+                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                    "NOMBRE": NOMBRE,
+                    #"SNOMBRE": None, #Se envia null
+                    "APELLIDO": APELLIDO,
+                    #"SAPELLIDO": None, #Se envia null
+                    "CORREO": CORREO,
+                    "FONO": FONO,
+                    "IDIOMA": IDIOMA,
+                    "ACTIVO": ACTIVO,
                     "PERFIL_ID": PERFIL_ID
                 }
         else:
             #Usuario Administrador
+            #Asigno Perfil
             PERFIL_ID = 1
             json={
                     "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),

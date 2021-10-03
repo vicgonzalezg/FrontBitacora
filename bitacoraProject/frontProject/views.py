@@ -158,6 +158,7 @@ def usuariosAdmin(request):
     #admin={'nombre': 'María José','perfil':1}
     return render(request,'usuarios/usuariosAdmin.html',{'usuario': perfil}) 
 
+
 #nuevo usuario
 def nuevoUsuario(request):
     headers = request.session['Headers']
@@ -168,30 +169,45 @@ def nuevoUsuario(request):
     #Crear usuario
     if request.method == 'POST' and perfil['perfil'] == 1:
         #Obtener datos del Front
-        NOMBRE = request.POST.get('nombre')
+        #NOMBRE = request.POST.get('nombre')
         #SNOMBRE = request.POST.get('idProd')
         APELLIDO = request.POST.get('apellido')
         #SAPELLIDO = request.POST.get('idProd')
         CORREO = request.POST.get('email')
         FONO = request.POST.get('telefono')
         IDIOMA = request.POST.get('idioma')
-        EMPRESA = request.POST.get('nombreEmp')
-        NOMBREJEFE = request.POST.get('nombreJefe')
-        APELLIDOJEFE = request.POST.get('apellidoJefe')
-        EMAILJEFE = request.POST.get('emailJefe')
-        FONOJEFE = request.POST.get('telefonoJefe')
+        #Se definen por defecto en None
+        EMPRESA = None
+        NOMBREJEFE = None
+        APELLIDOJEFE = None
+        EMAILJEFE = None
+        FONOJEFE = None
         #Por defecto Activo
         ACTIVO = 1
-        #Por defecto Coachee
-        PERFIL_ID = 2
-        #Usuario Coach
-        usuarioCoachee = request.POST.get('coachee')
-        print(usuarioCoachee)
-        if usuarioCoachee == 'coachee':
+        #Obtiene tipo de usuario
+        if 'nombreCoachee' in request.POST:
             #Asigno Perfil
             PERFIL_ID = 3
-            #Creo Json Coachee
-            json={
+            NOMBRE = request.POST.get('nombreCoachee')
+            EMPRESA = request.POST.get('nombreEmp')
+            NOMBREJEFE = request.POST.get('nombreJefe')
+            APELLIDOJEFE = request.POST.get('apellidoJefe')
+            EMAILJEFE = request.POST.get('emailJefe')
+            FONOJEFE = request.POST.get('telefonoJefe')
+        
+        elif 'nombreCoach' in request.POST:
+           #Asigno Perfil
+            PERFIL_ID = 2
+            NOMBRE = request.POST.get('nombreCoach')
+            
+        else:
+            #Usuario Administrador
+            #Asigno Perfil
+            PERFIL_ID = 1
+            NOMBRE = request.POST.get('nombreAdmin')
+            
+        #Creo Json 
+        json={
                     "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
                     "NOMBRE": NOMBRE,
                     #"SNOMBRE": None, #Se envia null
@@ -207,36 +223,6 @@ def nuevoUsuario(request):
                     "ACTIVO": ACTIVO,
                     "PERFIL_ID": PERFIL_ID
                     }
-        elif PERFIL_ID == 2:
-            #Usuario Coach
-            json={
-                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
-                    "NOMBRE": NOMBRE,
-                    #"SNOMBRE": None, #Se envia null
-                    "APELLIDO": APELLIDO,
-                    #"SAPELLIDO": None, #Se envia null
-                    "CORREO": CORREO,
-                    "FONO": FONO,
-                    "IDIOMA": IDIOMA,
-                    "ACTIVO": ACTIVO,
-                    "PERFIL_ID": PERFIL_ID
-                }
-        else:
-            #Usuario Administrador
-            #Asigno Perfil
-            PERFIL_ID = 1
-            json={
-                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
-                    "NOMBRE": NOMBRE,
-                    #"SNOMBRE": None, #Se envia null
-                    "APELLIDO": APELLIDO,
-                    #"SAPELLIDO": None, #Se envia null
-                    "CORREO": CORREO,
-                    "FONO": FONO,
-                    "IDIOMA": IDIOMA,
-                     "ACTIVO": ACTIVO,
-                    "PERFIL_ID": PERFIL_ID
-                }
         #Metodo para crear usuario en API        
         url = 'http://127.0.0.1:8001/usuarios'
         response =  requests.post(url,json=json)
@@ -246,6 +232,7 @@ def nuevoUsuario(request):
         #    mensaje para avisar al front que se creo el usuario.
 
     return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil}) 
+
 
 #lista usuario
 def listUsuarios(request):

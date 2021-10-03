@@ -12,6 +12,7 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/footer.css' %}">
+    <script src="{% static 'js/validaciones.js'%}"></script>
     <!-- Se agrega bloque para el head -->
     {% block head %} {% endblock %}
     <!-- Se agrega bloque para los titulos -->
@@ -42,10 +43,8 @@
         </ul>
         <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
         <ul class="d-sm-block d-md-none"  id="sidebarmenu">
-            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
-            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
-            <a href="{% url 'listProceso'%}">Listar Proceso</a>
-            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+            <a href="{% url 'nuevoUsuario'%}">Nuevo Usuario</a>
+            <a href="{% url 'listUsuarios'%}">Listar Usuarios</a>
         </ul>
         <!--
         <a href="#">Perfil</a>

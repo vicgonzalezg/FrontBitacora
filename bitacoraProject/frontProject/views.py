@@ -177,11 +177,11 @@ def nuevoUsuario(request):
         FONO = request.POST.get('telefono')
         IDIOMA = request.POST.get('idioma')
         #Se definen por defecto en None
-        EMPRESA = None
-        NOMBREJEFE = None
-        APELLIDOJEFE = None
-        EMAILJEFE = None
-        FONOJEFE = None
+        EMPRESA = ""
+        NOMBREJEFE = ""
+        APELLIDOJEFE = ""
+        EMAILJEFE = ""
+        FONOJEFE = ""
         #Por defecto Activo
         ACTIVO = 1
         #Obtiene tipo de usuario
@@ -238,16 +238,99 @@ def nuevoUsuario(request):
 def listUsuarios(request):
     headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
-    print (str(request.session['Perfil_Usuario']))
-    print(str(perfil))
+    #print (str(request.session['Perfil_Usuario']))
+    #print(str(perfil))
     url = 'http://127.0.0.1:8001/usuarios'
     usuario = requests.get(url).json()
-    print(usuario)
+    #print(usuario)
     #datos_usuario = request.session['Cache']
     #print('Token desde lista usuarios:' + str(headers))
     #print('datos usuario desde lista usuarios:' + str(datos_usuario))
     admin={'nombre': 'María José','perfil':1}
     return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario}) 
+
+#Modifica usuario
+def modUsuarios(request,id):
+    headers = request.session['Headers']
+    perfil = request.session['Perfil_Usuario']
+    print (str(request.session['Perfil_Usuario']))
+    print(str(perfil))
+    print('ID de usuario a modificar: ' + str(id))
+    print (request.method)
+    if request.method == 'POST' and perfil['perfil'] == 1:
+        #Obtener datos del Front
+        #NOMBRE = request.POST.get('nombre')
+        #SNOMBRE = request.POST.get('idProd')
+        APELLIDO = request.POST.get('apellido')
+        #SAPELLIDO = request.POST.get('idProd')
+        CORREO = request.POST.get('email')
+        FONO = request.POST.get('telefono')
+        IDIOMA = request.POST.get('idioma')
+        #Se definen por defecto en None
+        EMPRESA = None
+        NOMBREJEFE = None
+        EMAILJEFE = None
+        FONOJEFE = None
+        #Por defecto Activo
+        estado = request.POST.get('activo')
+        #estado2 = request.POST.get('off')
+        if 'activo' in request.POST:
+            ACTIVO = 1
+        else:
+            ACTIVO = 0
+        
+        #Obtiene tipo de usuario
+        if 'nombreCoachee' in request.POST:
+            #Asigno Perfil
+            PERFIL_ID = 3
+            NOMBRE = request.POST.get('nombreCoachee')
+            EMPRESA = request.POST.get('nombreEmp')
+            NOMBREJEFE = request.POST.get('nombrejefe')
+            EMAILJEFE = request.POST.get('emailjefe')
+            FONOJEFE = request.POST.get('telefonoJefe')
+        
+        elif 'nombreCoach' in request.POST:
+           #Asigno Perfil
+            PERFIL_ID = 2
+            NOMBRE = request.POST.get('nombreCoach')
+            
+        else:
+            #Usuario Administrador
+            #Asigno Perfil
+            PERFIL_ID = 1
+            NOMBRE = request.POST.get('nombreAdmin')
+                        
+            
+        #Creo Json 
+        estesi={
+                    "ID": id,
+                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                    "NOMBRE": NOMBRE,
+                    #"SNOMBRE": None, #Se envia null
+                    "APELLIDO": APELLIDO,
+                    #"SAPELLIDO": None, #Se envia null
+                    "CORREO": CORREO,
+                    "FONO": FONO,
+                    "IDIOMA": IDIOMA,
+                    "EMPRESA": EMPRESA,
+                    "NOMBREJEFE": str(NOMBREJEFE),
+                    "EMAILJEFE": EMAILJEFE,
+                    "FONOJEFE": FONOJEFE,
+                    "ACTIVO": ACTIVO,
+                    "PERFIL_ID": PERFIL_ID
+                    }
+
+        
+        print(str(estesi))
+        
+        #Metodo para crear usuario en API        
+        url = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
+        response =  requests.put(url,json=estesi)
+        #print(json)
+        print(response)
+    
+    return redirect('listUsuarios') 
+
 
 #estado usuario
 def estadoUsuarios(request):

@@ -10,6 +10,33 @@
 {% block content %}
 <!--Pregunta de seguridad para confirmar acción-->
 <script>
+    function finalizarProceso(id) {
+        Swal.fire({
+            title: '¿Estas seguro de finalizar el proceso?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No!',
+            confirmButtonText: 'Si, Finalizar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'success',
+                    timer: 2000,
+                    title: 'Finalizado!',
+                    text: 'Operación Realizada con éxito',
+                    showConfirmButton: false,
+                })
+                $('#exampleModal').modal('hide');
+                $(".modal-backdrop").remove();
+            }
+        })
+    }
+
+</script>
+<!--Pregunta de seguridad para confirmar acción-->
+<script>
     function modProceso(id) {
         Swal.fire({
             title: '¿Estas seguro de realizar los cambios?',
@@ -62,11 +89,7 @@
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar
-        Proceso</a>
-    <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar
-        Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
 </div>
 <!--Filtros de los procesos -->
 <div class="container">
@@ -93,60 +116,43 @@
                 <tr class="cabecera">
                     <th scope="col">Proceso Empresa</th>
                     <th scope="col">Nombre Coach</th>
-                    <th scope="col">Nombre Coachee</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Fono</th>
                     <th scope="col">Estado</th>
+                    <th scope="col" class="border-start text-center">Visualizar</th>
                     <th scope="col" class="border-start text-center">Editar</th>
+                    <th scope="col" class="border-start text-center">Finalizar</th>
                 </tr>
             </thead>
             <tbody>
+                {% for proceso in list_proceso %}
                 <tr class="bg-light">
-                    <th scope="row">Enjoy</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Reunion inicial</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
+                    <th scope="row">{{ proceso.NOMBREEMPRESA }}</th>
+                    {% for usuario in list_usuario %}
+                        {% if proceso.COACHEE_ID == usuario.ID %}
+                        <th scope="row">{{ usuario.NOMBRE }}</th>
+                        <th scope="row">{{ usuario.CORREO }}</th>
+                        <th scope="row">{{ usuario.FONO }}</th>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!--AQUI FALTA LO DE LOS ESTADOS-->
+                    {% for estado in list_estado %}
+                        {% if proceso.ESTADOPROCESO_ID == estado.ID %}
+                    <th scope="row">{{ estado.DESCRIPCION }}</th>
+                        {% endif %}
+                    {% endfor %}
+                    <th scope="row" class="border"><i type="button"
+                        class="fas fa-book-reader d-flex justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#visualizarProc"></i></th>
+                    <th scope="row" class="border"><i type="button"
+                        class="fas fa-edit d-flex justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"></i></th>
+                    <th scope="row" class="border"><i type="button"
+                        class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                        data-bs-target="#finalizarProc"></i></th>
                 </tr>
-                <tr class="bg-light">
-                    <th scope="row">Falabella</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Primera Sesión</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">MK Solutions</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Reunion de Avances</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Latam</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Octava Sesión</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Vapores</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Primera Sesión</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Bitcoin</th>
-                    <th scope="row">Emilia Mardones</th>
-                    <th scope="row">Patricio Perez</th>
-                    <th scope="row">Tercera Sesión</th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal"></i></th>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -244,6 +250,575 @@
                         <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<!-- Modal Visualizar -->
+<div class="modal fade" id="visualizarProc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class=" mt-2">
+                        <!--formulario para modificar al usuarios-->
+                        <div class=" bg-light">
+                            <form class="form-horizontal">
+                                <div class="">
+                                    <div class="panel panel-primary mt-2 px-2 bg-light">
+                                        <!--Datos personales del coachee-->
+                                        <div class="panel-body mt-2">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-6 control-label" name="nombre">Nombre
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" value="{{list_proceso.DESCRIPCION }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Nombre Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Email Coachee</label>
+                                                    <div class="col-md-12">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Email Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label" name="nombre">Telefono
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Telefono Jefe</label>
+
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <!--detalles del proceso-->
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="nombre">Objetivo del
+                                                        Proceso:</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 col-lg-4 control-label">Indicadores de
+                                                        Éxito:</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="nombre">Plan de
+                                                        Acción</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!--Tabla con registro de fechas de las sesiones-->
+                                                <div class="form-group col-md-6">
+                                                    <table id="listSesion" class="table thead-dark border border-dark">
+                                                        <thead class="thead-dark">
+                                                            <tr class="cabecera">
+                                                                <th scope="col">Sesión</th>
+                                                                <th scope="col">Fecha</th>
+                                                                <th scope="col">Hora</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">1</th>
+                                                                <th scope="row">05/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">2</th>
+                                                                <th scope="row">15/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">3</th>
+                                                                <th scope="row">25/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <div class="card text-center">
+                                                    <!--registro de las sesión-->
+                                                    <div class="card-header">
+                                                        <ul class="nav nav-tabs card-header-tabs">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" href="#">Sesión 1</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 2</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 3</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 4</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <!--Registro de cada sesión-->
+                                                        <form class="form-horizontal">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Descripción
+                                                                        Sesión:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Asignaciones/Acuerdos:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Avances:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <!--sector donde se almacenan los documentos y links-->
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Links:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <br>
+                                                                    <!--
+                                                                    
+                                                                    <label
+                                                                        class="col-md-12 control-label">Documentos:</label>
+                                                                    -->
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group table-responsive col-md-12">
+                                                                            <table
+                                                                                class="col-md-12 table thead-dark border">
+                                                                                <thead class="thead-dark">
+                                                                                    <tr class="cabecera">
+                                                                                        <th scope="col">Documentos
+                                                                                        </th>
+                                                                                        <th scope="col"
+                                                                                            class="border-start text-center">
+                                                                                            Descargar</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Coaching_v2.doc</th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Presentación_inicial.ppt
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Tips_lenguaje_corporal.jpg
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <br>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="finalizarProc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-2 bg-light">
+                    <div class=" mt-2">
+                        <!--formulario para modificar al usuarios-->
+                        <div class=" bg-light">
+                            <form class="form-horizontal">
+                                <div class="">
+                                    <div class="panel panel-primary mt-2 px-2 bg-light">
+                                        <!--Datos personales del coachee-->
+                                        <div class="panel-body mt-2">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label" name="nombre">Nombre
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Nombre Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Email Coachee</label>
+                                                    <div class="col-md-12">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label">Email Jefe</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 control-label" name="nombre">Telefono
+                                                        Coachee</label>
+
+                                                    <div class="col-md-12">
+                                                        <input class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <br>
+                                                    <label class="col-md-12 col-lg-4 control-label">Telefono Jefe</label>
+
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <input class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <!--detalles del proceso-->
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="nombre">Objetivo del
+                                                        Proceso:</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label">Indicadores de
+                                                        Éxito:</label>
+                                                    <div class="col-md-12 col-lg-8">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-primary mt-4 px-2 bg-light">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="nombre">Plan de
+                                                        Acción</label>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!--Tabla con registro de fechas de las sesiones-->
+                                                <div class="form-group table-responsive col-md-6">
+                                                    <table id="listSesion" class="table thead-dark border border-dark">
+                                                        <thead class="thead-dark">
+                                                            <tr class="cabecera">
+                                                                <th scope="col">Sesión</th>
+                                                                <th scope="col">Fecha</th>
+                                                                <th scope="col">Hora</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">1</th>
+                                                                <th scope="row">05/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">2</th>
+                                                                <th scope="row">15/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row">3</th>
+                                                                <th scope="row">25/06/2021</th>
+                                                                <th scope="row">10:00</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <div class="card text-center">
+                                                    <!--registro de las sesión-->
+                                                    <div class="card-header">
+                                                        <ul class="nav nav-tabs card-header-tabs">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" href="#">Sesión 1</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 2</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 3</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="#">Sesión 4</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <!--Registro de cada sesión-->
+                                                        <form class="form-horizontal">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Descripción
+                                                                        Sesión:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Asignaciones/Acuerdos:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Avances:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <!--sector donde se almacenan los documentos y links-->
+                                                                <div class="form-group col-md-6">
+                                                                    <br>
+                                                                    <label class="col-md-12 control-label"
+                                                                        name="nombre">Links:</label>
+
+                                                                    <div class="col-md-12">
+                                                                        <textarea class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <br>
+                                                                    <!--
+                                                                    <label
+                                                                        class="col-md-12 control-label">Documentos:</label>
+                                                                    -->
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group table-responsive col-md-12">
+                                                                            <table
+                                                                                class="col-md-12 table thead-dark border">
+                                                                                <thead class="thead-dark">
+                                                                                    <tr class="cabecera">
+                                                                                        <th scope="col">Documentos
+                                                                                        </th>
+                                                                                        <th scope="col"
+                                                                                            class="border d-flex justify-content-center">
+                                                                                            Descargar</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Coaching_v2.doc</th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Presentación_inicial.ppt
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    <tr class="bg-light">
+                                                                                        <th scope="row">
+                                                                                            Tips_lenguaje_corporal.jpg
+                                                                                        </th>
+                                                                                        <th scope="row" class="border">
+                                                                                            <i
+                                                                                                class="fas fa-download d-flex justify-content-center">
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <br>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <span class="col-md-1"></span>
+                <button type="button" onclick="finalizarProceso()" class="btn btn-primary">Finalizar Proceso</button>
             </div>
         </div>
     </div>

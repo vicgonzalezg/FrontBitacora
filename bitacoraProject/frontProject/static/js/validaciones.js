@@ -327,3 +327,70 @@ function modificarCoachee() {
         });
     }
 }
+
+
+function newProceso() {
+    Swal.fire({
+        title: 'Se creara el proceso para la empresa (--------) ¿Esta Seguro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Crear!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+              icon: 'success',  
+              timer: 2000,
+              title:'Proceso Creado!',
+              text: 'El proceso ha sido creado.',
+              showConfirmButton: false,
+            })
+        }
+    })
+}
+/* Crear proceso */
+function newProceso() {
+  event.preventDefault();
+  var nombreEmp = document.getElementById("nombreEmp");
+  var cantSesion = document.getElementById("cantSesiones");
+  var fechIni = document.getElementById("fechaInicio");
+  var coachProc = document.getElementById("coachProc");
+  var coacheeProc = document.getElementById("coacheeProc");
+  //console.log(nombre.value)
+  if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "" || coacheeProc.value == "") {
+      Swal.fire('Todos los campos son Obligatorios!', '', 'info')
+  } 
+  else
+  {
+      var formProc = document.forms["formProc"];
+      Swal.fire({
+          title: '¿Está seguro de crear el proceso?',
+          showDenyButton: true, 
+          icon: 'question',
+          //showCancelButton: true,
+          confirmButtonText: `Si`,
+          denyButtonText: `No`,
+      }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+              Swal.fire({
+                  title:'Proceso creado',
+                  icon: 'success',
+                  timer: 2000,
+                  timerProgressBar: true
+              }).then(function(){
+                  formProc.submit();
+              })
+          } else if (result.isDenied) {
+              Swal.fire({
+                  title:'El proceso no se ha creado',
+                  icon: 'info',
+                  timer: 2000,
+                  timerProgressBar: true
+              })
+          }
+      });
+  }
+}

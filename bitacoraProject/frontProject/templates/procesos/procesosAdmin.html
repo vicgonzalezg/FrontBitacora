@@ -6,22 +6,11 @@
 {% endblock %}
 {% block content %}
 <!--Menu Procesos-->
-<!--
-<nav class="nav nav-pills flex-column flex-sm-row" id="barra1">
-    <a class="flex-sm-fill text-sm-center nav-link"  href="#">Menú Principal</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Nuevo Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Modificar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Listar Proceso</a>
-    <a class="flex-sm-fill text-sm-center nav-link" href="#">Finalizar Proceso</a>
-</nav>
-<p></p>
--->
+
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
     <a href="{% url 'menuAdmin' %}" class="list-group-item text-sm-center list-group-item-action">Menú Principal</a>
     <a href="{% url 'nuevoProceso'%}" class="list-group-item text-sm-center list-group-item-action">Nuevo Proceso</a>
-    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Modificar Proceso</a>
-    <a href="{% url 'listProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Proceso</a>
-    <a href="{% url 'termiProceso'%}" class="list-group-item text-sm-center list-group-item-action">Finalizar Proceso</a>
+    <a href="{% url 'buscaProceso'%}" class="list-group-item text-sm-center list-group-item-action">Listar Procesos</a>
 </div>
 
 <!--Ultimos Procesos Creados y Calendario -->
@@ -30,53 +19,25 @@
     <div class="row">
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center fw-bold">Listado de Procesos</h3>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <!-- Paginación
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center p-1">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav> -->
+            {% for proceso in list_proceso %}
+                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                {% for estado in list_estado %}
+                        {% if proceso.ESTADOPROCESO_ID == estado.ID %}
+                        <h6 class="mb-1">Estado: {{ estado.DESCRIPCION }} </h6>
+                        {% endif %}
+                {% endfor %}
+                
+                {% for usuario in list_usuario %}
+                    {% if proceso.COACHEE_ID == usuario.ID %}
+                        <p class="mb-1">Coach: {{ usuario.NOMBRE }}</p>
+                        {% elif proceso.COACHEE_ID == usuario.ID %}
+                        <p class="mb-1">Coachee: {{ usuario.NOMBRE }}</p>
+                    
+                    {% endif %}
+                {% endfor %}
+                </a>
+            {% endfor %}
         </div>
         <!-- Calendario -->
         <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -177,11 +138,11 @@
         </div>
 
     </div>
-</div> 
+</div>
 
-    <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
-    <script src="{% static '/js/popper_calendar.js' %}"></script>
-    <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
-    <script src="{% static '/js/main.js' %}"></script>
+<script src="{% static '/js/jquery.min_calendar.js' %}"></script>
+<script src="{% static '/js/popper_calendar.js' %}"></script>
+<script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
 
-    {% endblock %}
+{% endblock %}

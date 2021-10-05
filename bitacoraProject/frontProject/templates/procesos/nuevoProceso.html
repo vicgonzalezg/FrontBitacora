@@ -57,7 +57,7 @@
             <select class="form-select" name="coacheeProces" id="coacheeProc">
               <option style="display: none" selected>Seleccione un Coachee</option>
               {% for usuarios in list_usuario %}
-                {% if usuarios.PERFIL_ID == 3 %}
+                {% if usuarios.PERFIL_ID == 3 and usuarios.ACTIVO == 1%}
                   <option name="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}}</option>
                 {% endif %}
               {% endfor %}

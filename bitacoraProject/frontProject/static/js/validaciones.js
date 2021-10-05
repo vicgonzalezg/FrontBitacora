@@ -168,7 +168,7 @@ function crearCoachee() {
 function modificarAdmin(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
-    console.log(id);
+    console.log($('#formAdmin'));
     //alert(id);
     var nombre = document.getElementById("nombreAdmin"+'-'+id);
     var apellido = document.getElementById("apellidoAdmin"+'-'+id);
@@ -190,7 +190,7 @@ function modificarAdmin(elem) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
     }
     else {
-        var formAdmin = document.forms["formAdmin"];
+        var formAdmin = document.forms["formAdmin-"+id];
         console.log(formAdmin);
         Swal.fire({
             title: '¿Está seguro de los cambios para el usuario Administrador?',
@@ -208,9 +208,9 @@ function modificarAdmin(elem) {
                     timer: 3000,
                     timerProgressBar: true
                 }).then(function () {
-                    $('#formAdmin').attr("action", "{% url 'modUsuarios' " + id + " %}");
-                    console.log($('#formAdmin').attr('action'));
-                   //formAdmin.submit();
+                    console.log($('#formAdmin'));
+                    formAdmin.submit();
+                    
                 })
             } else if (result.isDenied) {
                 Swal.fire({
@@ -219,18 +219,20 @@ function modificarAdmin(elem) {
                     timer: 3000,
                     timerProgressBar: true
                 })
+                
             }
         });
     }
 }
 
-function modificarCoach() {
+function modificarCoach(elem) {
     event.preventDefault();
-    var nombre = document.getElementById("nombreCoach");
-    var apellido = document.getElementById("apellidoCoach");
-    var email = document.getElementById("emailCoach");
-    var telefono = document.getElementById("telefonoCoach");
-    var idioma = document.getElementById("idiomaCoach");
+    var id = $(elem).data("id");
+    var nombre = document.getElementById("nombreCoach"+'-'+id);
+    var apellido = document.getElementById("apellidoCoach"+'-'+id);
+    var email = document.getElementById("emailCoach"+'-'+id);
+    var telefono = document.getElementById("telefonoCoach"+'-'+id);
+    var idioma = document.getElementById("idiomaCoach"+'-'+id);
     //console.log(nombre.value)
     if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
@@ -241,8 +243,8 @@ function modificarCoach() {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
     }
     else {
-        var form = document.forms["formCoach"];
-
+        var formCoach = document.forms["formCoach-"+id];
+        console.log(formCoach)
         Swal.fire({
             title: '¿Está seguro de los cambios para el usuario Coach?',
             showDenyButton: true,
@@ -259,7 +261,8 @@ function modificarCoach() {
                     timer: 3000,
                     timerProgressBar: true
                 }).then(function () {
-                    form.submit();
+                    console.log($('#formCoach'));
+                    formCoach.submit();
                 })
             } else if (result.isDenied) {
                 Swal.fire({
@@ -273,21 +276,22 @@ function modificarCoach() {
     }
 }
 
-function modificarCoachee() {
+function modificarCoachee(elem) {
     event.preventDefault();
-    var nombreEmp = document.getElementById("nombreEmpCoachee");
-    var idioma = document.getElementById("idiomaCoachee");
-    var nombre = document.getElementById("nombreCoachee");
-    var apellido = document.getElementById("apellidoCoachee");
-    var nombreJefe = document.getElementById("nombreJefeCoachee");
-    var apellidoJefe = document.getElementById("apellidoJefeCoachee");
-    var email = document.getElementById("emailCoachee");
-    var emailJefe = document.getElementById("emailJefeCoachee");
-    var telefono = document.getElementById("telefonoCoachee");
-    var telefonoJefe = document.getElementById("telefonoJefeCoachee");
+    var id = $(elem).data("id");
+    var nombreEmp = document.getElementById("nombreEmpCoachee"+'-'+id);
+    var idioma = document.getElementById("idiomaCoachee"+'-'+id);
+    var nombre = document.getElementById("nombreCoachee"+'-'+id);
+    var apellido = document.getElementById("apellidoCoachee"+'-'+id);
+    var nombreJefe = document.getElementById("nombreJefeCoachee"+'-'+id);
+    //var apellidoJefe = document.getElementById("apellidoJefeCoachee"+'-'+id);
+    var email = document.getElementById("emailCoachee"+'-'+id);
+    var emailJefe = document.getElementById("emailJefeCoachee"+'-'+id);
+    var telefono = document.getElementById("telefonoCoachee"+'-'+id);
+    var telefonoJefe = document.getElementById("telefonoJefeCoachee"+'-'+id);
     //console.log(nombre.value)
     if (nombreEmp.value == "" || nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "" ||
-        nombreJefe.value == "" || apellidoJefe.value == "" || emailJefe.value == "" || telefonoJefe.value == "") {
+        nombreJefe.value == "" || emailJefe.value == "" || telefonoJefe.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
     } else if (!(validateEmail(email.value)) || !(validateEmail(emailJefe.value))) {
         Swal.fire('Favor revisar correo electrónico!', '', 'warning')
@@ -296,8 +300,8 @@ function modificarCoachee() {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
     }
     else {
-        var form = document.forms["formCoachee"];
-
+        var formCoachee = document.forms["formCoachee-"+id];
+        console.log(formCoachee)
         Swal.fire({
             title: '¿Está seguro de los cambios para el usuario Coachee?',
             showDenyButton: true,
@@ -314,7 +318,8 @@ function modificarCoachee() {
                     timer: 3000,
                     timerProgressBar: true
                 }).then(function () {
-                    form.submit();
+                    console.log($('#formCoachee'));
+                    formCoachee.submit();
                 })
             } else if (result.isDenied) {
                 Swal.fire({

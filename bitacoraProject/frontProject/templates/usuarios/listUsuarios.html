@@ -109,7 +109,15 @@
                 <div class="modal fade" id="exampleModal-{{ usuario.ID }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
-                        <form id="formAdmin" action="{% url 'modUsuarios' usuario.ID %}" method="POST">{% csrf_token %}
+                        <form 
+                        {% if usuario.PERFIL_ID == 1 %}
+                        id="formAdmin-{{ usuario.ID }}"
+                        {% elif usuario.PERFIL_ID == 2 %}
+                        id="formCoach-{{ usuario.ID }}"
+                        {% elif usuario.PERFIL_ID == 3 %}
+                        id="formCoachee-{{ usuario.ID }}"
+                        {% endif %}
+                        action="{% url 'modUsuarios' usuario.ID %}" method="POST">{% csrf_token %}
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
@@ -126,7 +134,7 @@
                                                     <label class="col-md-12 control-label">Nombre Administrador</label>
                                                     <div class="col-md-12">
                                                         <input type="text" name="nombreAdmin" class="form-control"
-                                                            value="{{usuario.NOMBRE}}" id="nombreAdmin" />
+                                                            value="{{usuario.NOMBRE}}" id="nombreAdmin-{{usuario.ID}}" />
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 form-group col-md-6">
@@ -134,7 +142,7 @@
                                                         Administrador</label>
                                                     <div class="col-md-12 col-lg-8">
                                                         <input type="text" name="apellido" class="form-control"
-                                                            value="{{ usuario.APELLIDO }}" id="apellidoAdmin">
+                                                            value="{{ usuario.APELLIDO }}" id="apellidoAdmin-{{usuario.ID}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,14 +151,14 @@
                                                     <label class="col-md-12 control-label">Email Administrador</label>
                                                     <div class="col-md-12">
                                                         <input type="email" name="email" class="form-control"
-                                                            value="{{ usuario.CORREO }}" id="emailAdmin">
+                                                            value="{{ usuario.CORREO }}" id="emailAdmin-{{usuario.ID}}">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-12 control-label">Telefono</label>
                                                     <div class="col-md-12 col-lg-8">
                                                         <input type="tel" name="telefono" class="form-control"
-                                                            value="{{ usuario.FONO }}" id="telefonoAdmin">
+                                                            value="{{ usuario.FONO }}" id="telefonoAdmin-{{usuario.ID}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -161,7 +169,7 @@
                                                     </label>
                                                     <div class="col-md-12">
                                                         <input type="text" name="idioma" class="form-control"
-                                                            value="{{ usuario.IDIOMA }}" id="idiomaAdmin" />
+                                                            value="{{ usuario.IDIOMA }}" id="idiomaAdmin-{{usuario.ID}}" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -191,14 +199,14 @@
                                                     <label class="col-md-12 control-label">Nombre Coach</label>
 
                                                     <div class="col-md-12">
-                                                        <input type="text" name="nombreCoach" class="form-control"
+                                                        <input type="text" name="nombreCoach" class="form-control" id="nombreCoach-{{usuario.ID}}"
                                                             value="{{usuario.NOMBRE}}" />
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 form-group col-md-6">
                                                     <label class="col-md-12 control-label">Apellido Coach</label>
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="text" name="apellido" class="form-control"
+                                                        <input type="text" name="apellido" class="form-control" id="apellidoCoach-{{usuario.ID}}"
                                                             value="{{ usuario.APELLIDO }}">
                                                     </div>
                                                 </div>
@@ -207,14 +215,14 @@
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-12 control-label">Email Coach</label>
                                                     <div class="col-md-12">
-                                                        <input type="email" name="email" class="form-control"
+                                                        <input type="email" name="email" class="form-control"  id="emailCoach-{{usuario.ID}}"
                                                             value="{{ usuario.CORREO }}">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-12 control-label">Telefono</label>
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="tel" name="telefono" class="form-control"
+                                                        <input type="tel" name="telefono" class="form-control" id="telefonoCoach-{{usuario.ID}}"
                                                             value="{{ usuario.FONO }}">
                                                     </div>
                                                 </div>
@@ -224,7 +232,7 @@
                                                     <label class="col-md-12 control-label" name="nombre">Idioma
                                                     </label>
                                                     <div class="col-md-12">
-                                                        <input type="text" name="idioma" class="form-control"
+                                                        <input type="text" name="idioma" class="form-control" id="idiomaCoach-{{usuario.ID}}"
                                                             value="{{ usuario.IDIOMA }}" />
                                                     </div>
                                                 </div>
@@ -255,14 +263,14 @@
                                                     <label class="col-md-6 control-label">Nombre Empresa</label>
 
                                                     <div class="col-md-12">
-                                                        <input type="text" name="nombreEmp" class="form-control"
+                                                        <input type="text" name="nombreEmp" class="form-control" id="nombreEmpCoachee-{{usuario.ID}}"
                                                             value="{{usuario.EMPRESA}}" />
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 form-group col-md-6">
                                                     <label class="col-md-6 col-lg-4 control-label">Idioma</label>
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="text" name="idioma" class="form-control"
+                                                        <input type="text" name="idioma" class="form-control" id="idiomaCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.IDIOMA }}">
                                                     </div>
                                                 </div>
@@ -270,7 +278,7 @@
                                                     <label class="col-md-6 control-label" name="nombre">Nombre
                                                         Coachee</label>
                                                     <div class="col-md-12">
-                                                        <input type="text" name="nombreCoachee" class="form-control"
+                                                        <input type="text" name="nombreCoachee" class="form-control" id="nombreCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.NOMBRE }}" />
                                                     </div>
                                                 </div>
@@ -278,14 +286,14 @@
                                                     <label class="col-md-6 control-label" name="nombre">Apellido
                                                         Coachee</label>
                                                     <div class="col-md-12">
-                                                        <input type="text" name="apellido" class="form-control"
+                                                        <input type="text" name="apellido" class="form-control" id="apellidoCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.APELLIDO }}" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-5 control-label">Email Coachee</label>
                                                     <div class="col-md-12">
-                                                        <input type="email" name="email" class="form-control"
+                                                        <input type="email" name="email" class="form-control"  id="emailCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.CORREO }}">
                                                     </div>
                                                 </div>
@@ -294,7 +302,7 @@
                                                     </label>
 
                                                     <div class="col-md-12">
-                                                        <input type="tel" name="telefono" class="form-control"
+                                                        <input type="tel" name="telefono" class="form-control" id="telefonoCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.FONO }}" />
                                                     </div>
                                                 </div>
@@ -303,14 +311,14 @@
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="text" name="nombrejefe" class="form-control"
+                                                        <input type="text" name="nombrejefe" class="form-control"  id="nombreJefeCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.NOMBREJEFE }}">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="email" name="emailjefe" class="form-control"
+                                                        <input type="email" name="emailjefe" class="form-control" id="emailJefeCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.EMAILJEFE }}">
                                                     </div>
                                                 </div>
@@ -321,7 +329,7 @@
                                                     <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
 
                                                     <div class="col-md-12 col-lg-8">
-                                                        <input type="tel" name="telefonoJefe" class="form-control"
+                                                        <input type="tel" name="telefonoJefe" class="form-control" id="telefonoJefeCoachee-{{usuario.ID}}"
                                                             value="{{ usuario.FONOJEFE }}">
                                                     </div>
                                                 </div>
@@ -350,11 +358,19 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button onclick="location.reload();" type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cancelar</button>
                                     <span class="col-md-1"></span>
 
-                                    <button type="submit" class="btn btn-primary">Guardar
+                                    <button type="submit"
+                                    {% if usuario.PERFIL_ID == 1 %}
+                                    onclick="modificarAdmin(this);"
+                                    {% elif usuario.PERFIL_ID == 2 %}
+                                    onclick="modificarCoach(this);"
+                                    {% elif usuario.PERFIL_ID == 3 %}
+                                    onclick="modificarCoachee(this);"
+                                    {% endif %}
+                                    data-id="{{usuario.ID}}" class="btn btn-primary">Guardar
                                         Cambios</button>
                                 </div>
                             </div>

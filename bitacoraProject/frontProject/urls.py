@@ -17,6 +17,10 @@ urlpatterns = [
     path('nuevoUsuario/', views.nuevoUsuario, name='nuevoUsuario'),
     path('listUsuarios/', views.listUsuarios, name='listUsuarios'),
     path('modUsuarios/<int:id>/', views.modUsuarios, name='modUsuarios'),
+    path('buscaUsuarios/', views.buscaUsuarios, name='buscaUsuarios'),
+
+    #Perfil de usuario
+    path('perfil/', views.perfil, name='perfil'),
 
     #Perteneciente al proceso de Coach
     path('menuCoach/', views.menuCoach, name='menuCoach'),

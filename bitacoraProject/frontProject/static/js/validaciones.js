@@ -8,7 +8,7 @@ function validateTelefono(telefono) {
     var phoneno = /^[0-9]+$/;
     return phoneno.test(String(telefono))
 }
-
+/* ------------------------------ USUARIOS -------------------------------------*/
 //Crear usuarios
 function crearAdmin() {
     event.preventDefault();
@@ -26,6 +26,8 @@ function crearAdmin() {
     }
     else if (!(validateTelefono(telefono.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var formAdmin = document.forms["formAdmin"];
@@ -74,6 +76,8 @@ function crearCoach() {
     }
     else if (!(validateTelefono(telefono.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var form = document.forms["formCoach"];
@@ -129,6 +133,8 @@ function crearCoachee() {
     }
     else if (!(validateTelefono(telefono.value)) || !(validateTelefono(telefonoJefe.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10 || telefonoJefe.value.length < 8 || telefonoJefe.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var form = document.forms["formCoachee"];
@@ -188,6 +194,8 @@ function modificarAdmin(elem) {
     }
     else if (!(validateTelefono(telefono.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var formAdmin = document.forms["formAdmin-"+id];
@@ -241,6 +249,8 @@ function modificarCoach(elem) {
     }
     else if (!(validateTelefono(telefono.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var formCoach = document.forms["formCoach-"+id];
@@ -298,6 +308,8 @@ function modificarCoachee(elem) {
     }
     else if (!(validateTelefono(telefono.value)) || !(validateTelefono(telefonoJefe.value))) {
         Swal.fire('Favor revisar número telefónico!', '', 'warning')
+    }else if (telefono.value.length < 8 || telefono.value.length > 10 || telefonoJefe.value.length < 8 || telefonoJefe.value.length > 10){
+        Swal.fire('Número telefónico debe contener entre 8 a 10 digitos.', '', 'warning')
     }
     else {
         var formCoachee = document.forms["formCoachee-"+id];
@@ -332,7 +344,7 @@ function modificarCoachee(elem) {
         });
     }
 }
-
+/*  ------------------------    PROCESOS ------------------------------------------------*/
 
 function newProceso() {
     Swal.fire({

@@ -7,6 +7,8 @@ from . import services
 from django.core import serializers
 import json
 import requests
+from django.contrib import messages
+
 #definimos el login
 def login(request):
     if request.method == 'POST':
@@ -20,25 +22,24 @@ def login(request):
         r = requests.post('http://127.0.0.1:8001/login', data = {'USUARIO':username,'CONTRASENA':password})
         print(r.content)
 
-        result = json.loads(r.content) 
-        print(result)
-
-        nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
-        perfil_usuario=result['USUARIO']['PERFIL_ID']
-        datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario}
-        token = result['TOKEN']
-        print('Hola soy un token: '+ token)
-        headers = {
-                'content-type': "application/json",
-                'authorization': "Bearer " + token
-            }
-        request.session['Headers'] = headers
-        
-        request.session['Perfil_Usuario'] = datos_usuario
-        print(datos_usuario)
-        print(str(request.session['Headers']))
-        print(str(request.session['Perfil_Usuario']))
         if r.status_code == 200:
+            result = json.loads(r.content) 
+            print(result)
+            nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
+            perfil_usuario=result['USUARIO']['PERFIL_ID']
+            datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario}
+            token = result['TOKEN']
+            print('Hola soy un token: '+ token)
+            headers = {
+                    'content-type': "application/json",
+                    'authorization': "Bearer " + token
+                }
+            request.session['Headers'] = headers
+            
+            request.session['Perfil_Usuario'] = datos_usuario
+            print(datos_usuario)
+            print(str(request.session['Headers']))
+            print(str(request.session['Perfil_Usuario']))
             plantilla=''
             if perfil_usuario==1:
                 plantilla='menu/menuAdmin.html'
@@ -47,6 +48,9 @@ def login(request):
             elif perfil_usuario==3:
                 plantilla='menu/menuCoachee.html'
             return render(request,plantilla,{'usuario':datos_usuario})
+        else:
+            messages.warning(request, 'Usuario y/o contraseña incorrectos.')
+            return render(request, 'login/login.html')
         #if username == 'maria.jose' and password == 'inicio2021':
             #return render(request,'menu/menuAdmin.html',{'usuario': admin})
         #elif username== 'nelson.gomez' and password == 'inicio2021':
@@ -80,6 +84,13 @@ def get_cashflows(request):
         #    return render(request,'menu/menuCoach.html')
 
 #    return render(request, 'login/login.html')
+#Perfil
+def perfil(request):
+    perfil = request.session['Perfil_Usuario']
+    print(perfil)
+    #Buscar la forma de obtener el ID del usuario
+    #Lo otro seria pasar el ID del usuario en el request.session
+    return render(request,'Perfil/perfil.html',{'usuario': perfil})
 
 #Paginas de Menu por Peril
 def menuAdmin(request):
@@ -111,6 +122,21 @@ def procesosAdmin(request):
     proceso = requests.get(url).json()
     usuario = requests.get(url2).json()
     estado = requests.get(url3).json()
+    listado = {}
+    #listado = proceso.update(usuario)
+    for i in proceso:
+        for y in usuario:
+            if i['COACH_ID']==y['ID']:
+                #print(y['NOMBRE'])
+                i['NOMBRECOACH']=y['NOMBRE']
+                i['APELLIDOCOACH']=y['APELLIDO']
+            if i['COACHEE_ID']==y['ID']:
+                i['NOMBRECOACHEE']=y['NOMBRE']
+                i['APELLIDOCOACHEE']=y['APELLIDO']
+        listado = dict(listado + i.items)
+
+    print(listado)
+    #print(listado)
     #admin={'nombre': 'María José','perfil':1}
     return render(request,'procesos/procesosAdmin.html',{'usuario': perfil,'list_proceso':proceso,'list_usuario':usuario,'list_estado':estado})    
 
@@ -200,12 +226,20 @@ def infoProceso(request):
     #admin={'nombre': 'María José','perfil':1}
     return render(request,'procesos/infoProceso.html',{'usuario': perfil})  
 
+## ----------------------------------- USUARIOS ------------------------------------------
+
 #usuarios admin
 def usuariosAdmin(request):
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
     #admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/usuariosAdmin.html',{'usuario': perfil}) 
+    urlCoach = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=2'
+    urlCoachee = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=3'
+    list_coachs = requests.get(urlCoach).json()
+    print(list_coachs)
+    list_coachees = requests.get(urlCoachee).json()
+    print(list_coachees)
+    return render(request,'usuarios/usuariosAdmin.html',{'usuario': perfil,'list_coachs':list_coachs,'list_coachees':list_coachees}) 
 
 
 #nuevo usuario
@@ -380,6 +414,38 @@ def modUsuarios(request,id):
     
     return redirect('listUsuarios') 
 
+#Buscar usuarios
+def buscaUsuarios(request):
+    headers = request.session['Headers']
+    perfil = request.session['Perfil_Usuario']
+    url = 'http://127.0.0.1:8001/usuarios?ordering=ID'
+    if request.method == 'POST':
+        tipoUsuario = request.POST.get('tipoUsuario')
+        print(tipoUsuario)
+        estadoUsuario = request.POST.get('estado')
+        print(estadoUsuario)
+        #TipoUsuarios = Todos & Estado = Todos
+        if tipoUsuario=='0' and estadoUsuario=='2':
+            return redirect('listUsuarios') 
+        #TipoUsuarios = Administrador o Coach o Coachee & Estado = Todos
+        elif tipoUsuario=='1' and estadoUsuario=='2' or tipoUsuario=='2' and estadoUsuario=='2' or tipoUsuario=='3' and estadoUsuario=='2':
+            url = url + '&PERFIL_ID=' + str(tipoUsuario) 
+            print(url)
+            usuario = requests.get(url).json()
+            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+        #TipoUsuarios = Todos & Estado = Activo o Inactivo
+        elif tipoUsuario=='0' and estadoUsuario=='0' or tipoUsuario=='0' and estadoUsuario=='1':
+            url = url + '&ACTIVO=' + str(estadoUsuario) 
+            print(url)
+            usuario = requests.get(url).json()
+            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+        #Mezcla de Tipos de usuarios o estado
+        else:
+            url = url + '&PERFIL_ID=' + str(tipoUsuario) + '&ACTIVO=' + str(estadoUsuario) 
+            print(url)
+            usuario = requests.get(url).json()
+            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+    return redirect('listUsuarios') 
 
 #estado usuario
 def estadoUsuarios(request):

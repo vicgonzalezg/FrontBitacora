@@ -7,32 +7,19 @@
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 {% endblock %}
 {% block content %}
-<!--Pregunta de seguridad para confirmar acción-->
+<!--Filtro por nombre u otro -->
 <script>
-    function modUsuario() {
-        Swal.fire({
-            title: 'Estas seguro de realizar la modificación?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Modificar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Modificado!',
-                    'El usuario a sido actualizado.',
-                    'Operación Realizada con exito'
-                )
-            }
-        })
-    }
-
+$(function() {
+  $("#filter").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#example-table > tbody > tr").filter(function() {      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
 </script>
-
 <!--Despliega formulario para crear Coachee y esconde a los demas-->
 
 <!--Menu Procesos-->
@@ -45,30 +32,73 @@
 <!--filtro de usuarios-->
 <div class="container">
     <div class="col-md-12">
+        <form action="{% url 'buscaUsuarios' %}" method="post">{% csrf_token %}
         <div class="row">
-            <div class="col-xs-4 col-md-4 py-1">
+            <!--filtro nombre-->
+            <div class="col-xs-4 col-md-3 py-1">
                 <div class="form-group">
-                    <input class="contactInput form-control" placeholder="Buscar por Nombre">
+                    <input id="filter" class="contactInput form-control" placeholder="Buscar por Nombre">
                 </div>
             </div>
-            <span class="col-xs-4 col-md-4 py-1"></span>
-            <div class="col-xs-4 col-md-4 py-1">
+            <!--filtro tipo usuario-->
+            <div class="col-xs-4 col-md-3 py-1">
                 <div class="form-group">
-                    <select type="checkbox" class="form-select form-control">
-                        <option style="display: none" selected>Tipo de Usuario</option>
-                        <option value="1">Coach</option>
-                        <option value="2">Coachee</option>
-                        <option value="2">Administrador</option>
+                    <select name="tipoUsuario" class="form-select form-control">
+                        {% if tipousuario == '1' %}
+                        <option name="tipoUsuario" value="0">Todos los Tipos de Usuarios</option>
+                        <option name="tipoUsuario" value="1"selected>Administrador</option>
+                        <option name="tipoUsuario" value="2">Coach</option>
+                        <option name="tipoUsuario" value="3">Coachee</option>
+                        {% elif tipousuario == '2' %}
+                        <option name="tipoUsuario" value="0">Todos los Tipos de Usuarios</option>
+                        <option name="tipoUsuario" value="1">Administrador</option>
+                        <option name="tipoUsuario" value="2"selected>Coach</option>
+                        <option name="tipoUsuario" value="3">Coachee</option>
+                        {% elif tipousuario == '3' %}
+                        <option name="tipoUsuario" value="0">Todos los Tipos de Usuarios</option>
+                        <option name="tipoUsuario" value="1">Administrador</option>
+                        <option name="tipoUsuario" value="2">Coach</option>
+                        <option name="tipoUsuario" value="3"selected>Coachee</option>
+                        {% else %}
+                        <option name="tipoUsuario" value="0" selected>Todos los Tipos de Usuarios</option>
+                        <option name="tipoUsuario" value="1">Administrador</option>
+                        <option name="tipoUsuario" value="2">Coach</option>
+                        <option name="tipoUsuario" value="3">Coachee</option>
+                        {% endif %}
                     </select>
                 </div>
             </div>
+            <!--filtro estado-->
+            <div class="col-xs-4 col-md-3 py-1">
+                <div class="form-group">
+                    <select name="estado" class="form-select form-control">
+                        {% if estadoUsuario == '0' %}
+                        <option name="estado" value="2">Todos los Estados</option>
+                        <option name="estado" value="1">Habilidatos</option>
+                        <option name="estado" value="0" selected>Deshabilitados</option>
+                        {% elif estadoUsuario == '1' %}
+                        <option name="estado" value="2">Todos los Estados</option>
+                        <option name="estado" value="1" selected>Habilidatos</option>
+                        <option name="estado" value="0">Deshabilitados</option>
+                        {% else %}
+                        <option name="estado" value="2" selected>Todos los Estados</option>
+                        <option name="estado" value="1">Habilidatos</option>
+                        <option name="estado" value="0">Deshabilitados</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-3 py-1">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
         </div>
+    </form>
     </div>
 </div>
 <!--Listado de usuarios-->
 <div class="container">
     <div id="listProceso">
-        <table class="table thead-dark">
+        <table id="example-table" class="table thead-dark">
             <thead class="thead-dark">
                 <tr class="cabecera">
                     <th scope="col">Nombre Usuario</th>
@@ -84,11 +114,11 @@
                 <tr class="bg-light">
                     <th scope="row">{{ usuario.NOMBRE }} {{ usuario.APELLIDO }}</th>
                     {% if usuario.PERFIL_ID == 1 %}
-                    <th scope="row">Administrador</th>
+                    <th data-slide="Administrador" scope="row">Administrador</th>
                     {% elif usuario.PERFIL_ID == 2 %}
-                    <th scope="row">Coach</th>
+                    <th data-slide="Coach" scope="row">Coach</th>
                     {% elif usuario.PERFIL_ID == 3 %}
-                    <th scope="row">Coachee</th>
+                    <th data-slide="Coachee" scope="row">Coachee</th>
                     {% endif %}
                     <th scope="row">{{ usuario.CORREO }}</th>
                     <th scope="row">{{ usuario.FONO }}</th>
@@ -397,17 +427,4 @@
         </li>
     </ul>
 </nav>
-
-<!--filtro estado-->
-<div class="container">
-    <div class="col-xs-3 col-md-3">
-        <div class="form-group">
-            <select type="checkbox" class="form-select form-control" placeholder="Buscar por Coachee">
-                <option value="1" selected>Usuarios Habilitados</option>
-                <option value="2">Usuarios Deshabilitados</option>
-                <option value="2">Todos los usuarios</option>
-            </select>
-        </div>
-    </div>
-</div>
 {% endblock %}

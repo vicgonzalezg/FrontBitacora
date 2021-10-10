@@ -40,13 +40,15 @@
         <div class="row mb-3 py-1">
           <!--<label for="coach" class="col-sm-2 col-form-label">Coach</label>-->
           <div class="col-sm-10">
-            <select class="form-select" name="coachProces" id="coachProc">
+            <select class="form-select" id="coachProces" name="coachProces">
               <option style="display: none" selected>Seleccione un Coach</option>
               {% for usuariocoach in list_usuario %}
-                {% if usuariocoach.PERFIL_ID == 2 %}
-                  
-              <option name="{{usuariocoach.ID}}">{{ usuariocoach.NOMBRE }} {{ usuariocoach.APELLIDO }}</option> 
-                {% endif %}
+              {% if usuariocoach.PERFIL_ID == 2 and usuariocoach.ACTIVO == 1%}
+              <option value="{{ usuariocoach.ID }}">{{ usuariocoach.NOMBRE }} {{ usuariocoach.APELLIDO }}</option> 
+              
+              {% endif %}
+
+                
               {% endfor %}
             </select>
           </div>
@@ -54,17 +56,17 @@
         <div class="row mb-3 py-1">
           <!--<label for="coach" class="col-sm-2 col-form-label">Coachee</label>-->
           <div class="col-sm-10">
-            <select class="form-select" name="coacheeProces" id="coacheeProc">
+            <select class="form-select" id="coacheeProces" name="coacheeProces">
               <option style="display: none" selected>Seleccione un Coachee</option>
               {% for usuarios in list_usuario %}
                 {% if usuarios.PERFIL_ID == 3 and usuarios.ACTIVO == 1%}
-                  <option name="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}}</option>
+                  <option value="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}}</option>
                 {% endif %}
               {% endfor %}
             </select>
           </div>
         </div>
-        <a onclick="newProceso()" class="btn btn-primary float-end">Crear Proceso</a>
+        <button type="submit" class="btn btn-primary float-end">Crear Proceso</button>
       </form>
     </div>
     <!-- Calendario -->

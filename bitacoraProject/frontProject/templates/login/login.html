@@ -44,14 +44,6 @@
                             Debe ingresar una contraseña.
                         </div>
                     </div>
-                    {% if messages %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    {% endif %}
                     <!-- Checkkbox de recordar sesión -->
                     <div class="mb-4 form-check">
                         <input type="checkbox" name="connected" class="form-check-input">
@@ -78,5 +70,17 @@
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/login.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+{% for message in messages %}
+    <script>
+        Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{{ message.tags }}',
+                    heightAuto: false
+                })
+    </script>
+{% endfor %}
+{% endif %}
 
 </html>

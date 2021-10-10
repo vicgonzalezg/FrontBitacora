@@ -21,21 +21,9 @@
             <h3 class="text-center fw-bold">Listado de Procesos</h3>
             {% for proceso in list_proceso %}
                 <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
-                {% for estado in list_estado %}
-                        {% if proceso.ESTADOPROCESO_ID == estado.ID %}
-                        <h6 class="mb-1">Estado: {{ estado.DESCRIPCION }} </h6>
-                        {% endif %}
-                {% endfor %}
-                
-                {% for usuario in list_usuario %}
-                    {% if proceso.COACHEE_ID == usuario.ID %}
-                        <p class="mb-1">Coach: {{ usuario.NOMBRE }}</p>
-                        {% elif proceso.COACHEE_ID == usuario.ID %}
-                        <p class="mb-1">Coachee: {{ usuario.NOMBRE }}</p>
-                    
-                    {% endif %}
-                {% endfor %}
+                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                    <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                    <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
                 </a>
             {% endfor %}
         </div>

@@ -8,6 +8,8 @@ from django.core import serializers
 import json
 import requests
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.http import Http404
 
 #definimos el login
 def login(request):
@@ -49,7 +51,7 @@ def login(request):
                 plantilla='menu/menuCoachee.html'
             return render(request,plantilla,{'usuario':datos_usuario})
         else:
-            messages.warning(request, 'Usuario y/o contraseña incorrectos.')
+            messages.error(request, 'Usuario y/o contraseña incorrectos.')
             return render(request, 'login/login.html')
         #if username == 'maria.jose' and password == 'inicio2021':
             #return render(request,'menu/menuAdmin.html',{'usuario': admin})
@@ -122,23 +124,46 @@ def procesosAdmin(request):
     proceso = requests.get(url).json()
     usuario = requests.get(url2).json()
     estado = requests.get(url3).json()
-    listado = {}
+    listados = []
     #listado = proceso.update(usuario)
-    for i in proceso:
-        for y in usuario:
-            if i['COACH_ID']==y['ID']:
-                #print(y['NOMBRE'])
-                i['NOMBRECOACH']=y['NOMBRE']
-                i['APELLIDOCOACH']=y['APELLIDO']
-            if i['COACHEE_ID']==y['ID']:
-                i['NOMBRECOACHEE']=y['NOMBRE']
-                i['APELLIDOCOACHEE']=y['APELLIDO']
-        listado = dict(listado + i.items)
+    for p in proceso:
+        for e in estado:
+            if p['ESTADOPROCESO_ID']==e['ID']:
+                estadoDescripcion = e['DESCRIPCION']
+        for u in usuario:
+            if p['COACHEE_ID']==u['ID']:
+                nombreEmpresa = p['NOMBREEMPRESA']
+                nombreCoachee = u['NOMBRE']
+                apellidoCoachee = u['APELLIDO']
+                correoCoachee = u['CORREO']
+                telefonoCoachee = u['FONO']
+                cantsesiones = p['CANTSESIONES']
+                objetivo = p['OBJETIVOS']
+                indicadores = p['INDICADORES']
+                planAccion = p['PLANACCION']
+                nombreJefe = u['NOMBREJEFE']
+                emailJefe = u['EMAILJEFE']
+                fonoJefe = u['FONOJEFE']
 
-    print(listado)
-    #print(listado)
-    #admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/procesosAdmin.html',{'usuario': perfil,'list_proceso':proceso,'list_usuario':usuario,'list_estado':estado})    
+                json=[{
+                    "NOMBREEMPRESA": nombreEmpresa,
+                    "NOMBRE":nombreCoachee,
+                    "APELLIDO":apellidoCoachee,
+                    "CORREO":correoCoachee,
+                    "FONO":telefonoCoachee,
+                    "CANTSESIONES":cantsesiones,
+                    "OBJETIVOS": objetivo,
+                    "INDICADORES": indicadores,
+                    "PLANACCION": planAccion,
+                    "NOMBREJEFE": nombreJefe,
+                    "EMAILJEFE": emailJefe,
+                    "FONOJEFE": fonoJefe,  
+                    "DESCRIPCION":estadoDescripcion
+                    }]
+
+                listados = json + listados
+
+    return render(request,'procesos/procesosAdmin.html',{'usuario': perfil,'list_proceso':listados})    
 
 
 #Nuevo Proceso
@@ -155,12 +180,12 @@ def nuevoProceso(request):
         #Obtener datos del Front
         NOMBREEMPRESA = request.POST.get('nombreEmpre')
         CANTSESIONES = request.POST.get('cantiSesiones')
-        OBJETIVOS = "asa"
-        INDICADORES = "asa"
-        PLANACCION = "asa"
+        OBJETIVOS = None
+        INDICADORES = None
+        PLANACCION = None
         ADMINISTRADOR_ID = '1'
-        COACH_ID = request.POST.get('usuariocoach.ID')
-        COACHEE_ID = request.POST.get('usuarios.ID')
+        COACH_ID = request.POST.get('coachProces')
+        COACHEE_ID = request.POST.get('coacheeProces')
             
         #Creo Json 
         json={
@@ -186,15 +211,73 @@ def nuevoProceso(request):
 #listar Proceso
 def buscaProceso(request):
     perfil = request.session['Perfil_Usuario']
-    print (str(request.session['Perfil_Usuario']))
-    url = 'http://127.0.0.1:8001/procesos'
-    url2 = 'http://127.0.0.1:8001/usuarios'
-    url3 = 'http://127.0.0.1:8001/estados-procesos'
-    proceso = requests.get(url).json()
-    usuario = requests.get(url2).json()
-    estado = requests.get(url3).json()
-    #admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/buscaProceso.html',{'usuario': perfil,'list_proceso':proceso,'list_usuario':usuario,'list_estado':estado})    
+    urlProcesos = 'http://127.0.0.1:8001/procesos'
+    urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+    urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
+    proceso = requests.get(urlProcesos).json()
+    usuario = requests.get(urlUsuarios).json()
+    estado = requests.get(urlEstadosProcesos).json()
+    listados = []
+    #listado = proceso.update(usuario)
+
+    for p in proceso:
+        for e in estado:
+            if p['ESTADOPROCESO_ID']==e['ID']:
+                estadoDescripcion = e['DESCRIPCION']
+        for u in usuario:
+            if p['COACHEE_ID']==u['ID']:
+                nombreEmpresa = p['NOMBREEMPRESA']
+                nombreCoachee = u['NOMBRE']
+                apellidoCoachee = u['APELLIDO']
+                correoCoachee = u['CORREO']
+                telefonoCoachee = u['FONO']
+                cantsesiones = p['CANTSESIONES']
+                objetivo = p['OBJETIVOS']
+                indicadores = p['INDICADORES']
+                planAccion = p['PLANACCION']
+                nombreJefe = u['NOMBREJEFE']
+                emailJefe = u['EMAILJEFE']
+                fonoJefe = u['FONOJEFE']
+        for uc in usuario:
+            if p['COACH_ID'] ==uc['ID']:
+                nombreCoach= uc['NOMBRE']
+                apellidoCoach= uc['APELLIDO']
+
+                json=[{
+                    "NOMBREEMPRESA": nombreEmpresa,
+                    "NOMBRE":nombreCoachee,
+                    "APELLIDO":apellidoCoachee,
+                    "CORREO":correoCoachee,
+                    "FONO":telefonoCoachee,
+                    "CANTSESIONES":cantsesiones,
+                    "OBJETIVOS": objetivo,
+                    "INDICADORES": indicadores,
+                    "PLANACCION": planAccion,
+                    "NOMBREJEFE": nombreJefe,
+                    "EMAILJEFE": emailJefe,
+                    "FONOJEFE": fonoJefe,  
+                    "DESCRIPCION":estadoDescripcion,
+                    "NOMBRECOACH":nombreCoach,
+                    "APELLIDOCOACH":apellidoCoach
+                    }]
+
+                listados = json + listados
+
+        page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(listados, 10)
+        lista = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+        'usuario': perfil,
+        'entity':lista,
+        'paginator': paginator
+    }
+    print(p)
+    return render(request,'procesos/buscaProceso.html',data)        
 
 
 #modificar Proceso
@@ -318,19 +401,29 @@ def nuevoUsuario(request):
 
 
 #lista usuario
+# lista usuario
 def listUsuarios(request):
     headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
-    #print (str(request.session['Perfil_Usuario']))
-    #print(str(perfil))
+    # print (str(request.session['Perfil_Usuario']))
+    # print(str(perfil))
     url = 'http://127.0.0.1:8001/usuarios'
-    usuario = requests.get(url).json()
-    #print(usuario)
-    #datos_usuario = request.session['Cache']
-    #print('Token desde lista usuarios:' + str(headers))
-    #print('datos usuario desde lista usuarios:' + str(datos_usuario))
-    admin={'nombre': 'María José','perfil':1}
-    return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario}) 
+    usuarios = requests.get(url).json()
+    # Paginacion
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(usuarios, 5)
+        usuario = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+        'usuario': perfil,
+        'entity': usuario,
+        'paginator': paginator
+    }
+    return render(request, 'usuarios/listUsuarios.html', data)
 
 #Modifica usuario
 def modUsuarios(request,id):
@@ -481,3 +574,5 @@ def infoProCoachee(request):
     #print (str(request.session['Perfil_Usuario']))
     coach={'nombre': 'Victor Gonzalez','perfil':3}
     return render(request,'procesoCoachee/infoProCoachee.html',{'usuario': coach})
+
+

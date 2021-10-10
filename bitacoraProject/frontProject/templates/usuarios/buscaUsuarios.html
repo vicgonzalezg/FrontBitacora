@@ -416,17 +416,4 @@ $(function() {
 <div>
     {% include 'base/paginator.html' %}
 </div>
-{% if messages %}
-{% for message in messages %}
-    <script>
-        Swal.fire({
-                    title: '{{ message }}',
-                    icon: '{{ message.tags }}',
-                    heightAuto: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                })
-    </script>
-{% endfor %}
-{% endif %}
 {% endblock %}

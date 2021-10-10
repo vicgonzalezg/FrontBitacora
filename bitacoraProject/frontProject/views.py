@@ -29,7 +29,8 @@ def login(request):
             print(result)
             nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
             perfil_usuario=result['USUARIO']['PERFIL_ID']
-            datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario}
+            id_usuario = result['USUARIO']['ID']
+            datos_usuario={'nombre': nombre_usuario,'perfil':perfil_usuario,'id':id_usuario}
             token = result['TOKEN']
             print('Hola soy un token: '+ token)
             headers = {
@@ -373,13 +374,12 @@ def nuevoUsuario(request):
             NOMBRE = request.POST.get('nombreAdmin')
             
         #Creo Json 
-        json={
-                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+        crearUsuariosJson={
+                    "CORREO": CORREO,
                     "NOMBRE": NOMBRE,
                     #"SNOMBRE": None, #Se envia null
                     "APELLIDO": APELLIDO,
                     #"SAPELLIDO": None, #Se envia null
-                    "CORREO": CORREO,
                     "FONO": FONO,
                     "IDIOMA": IDIOMA,
                     "EMPRESA": EMPRESA,
@@ -390,12 +390,17 @@ def nuevoUsuario(request):
                     "PERFIL_ID": PERFIL_ID
                     }
         #Metodo para crear usuario en API        
-        url = 'http://127.0.0.1:8001/usuarios'
-        response =  requests.post(url,json=json)
-        print(json)
+        urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
+        response =  requests.post(urlCrearUsuarios,json=crearUsuariosJson)
+        print(crearUsuariosJson)
         print(response)
-        #if response.status_code == 201:
-        #    mensaje para avisar al front que se creo el usuario.
+        
+        if response.status_code == 201:
+            #mensaje para avisar al front que se creo el usuario.
+            messages.success(request, 'Usuario creado con éxito.')
+            return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil})
+        else:
+            messages.error(request, 'Hubo un problema al crear el usuario.')
 
     return render(request,'usuarios/nuevoUsuario.html',{'usuario': perfil}) 
 
@@ -407,8 +412,8 @@ def listUsuarios(request):
     perfil = request.session['Perfil_Usuario']
     # print (str(request.session['Perfil_Usuario']))
     # print(str(perfil))
-    url = 'http://127.0.0.1:8001/usuarios'
-    usuarios = requests.get(url).json()
+    urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
+    usuarios = requests.get(urlListarUsuarios).json()
     # Paginacion
     page = request.GET.get('page', 1)
 
@@ -478,14 +483,13 @@ def modUsuarios(request,id):
                         
             
         #Creo Json 
-        estesi={
+        modificaUsuarioJson={
                     "ID": id,
-                    "USUARIO": NOMBRE.lower()+'.'+APELLIDO.lower(),
+                    "CORREO": CORREO,
                     "NOMBRE": NOMBRE,
                     #"SNOMBRE": None, #Se envia null
                     "APELLIDO": APELLIDO,
                     #"SAPELLIDO": None, #Se envia null
-                    "CORREO": CORREO,
                     "FONO": FONO,
                     "IDIOMA": IDIOMA,
                     "EMPRESA": EMPRESA,
@@ -497,14 +501,20 @@ def modUsuarios(request,id):
                     }
 
         
-        print(str(estesi))
+        print(str(modificaUsuarioJson))
         
         #Metodo para crear usuario en API        
-        url = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
-        response =  requests.put(url,json=estesi)
-        #print(json)
+        urlModUsuarios = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
+        response =  requests.put(urlModUsuarios,json=modificaUsuarioJson)
         print(response)
-    
+
+        if response.status_code == 200:
+            messages.success(request, 'Usuario actualizado con éxito.')
+            return redirect('listUsuarios')
+        else:
+            messages.error(request, 'Hubo un problema al actualizar el usuario.')
+            return redirect('listUsuarios')
+
     return redirect('listUsuarios') 
 
 #Buscar usuarios
@@ -548,9 +558,11 @@ def estadoUsuarios(request):
     return render(request,'usuarios/estadoUsuarios.html',{'usuario': perfil})
 
 
-#Perteneciente al Coach
 
-#listar Proceso
+
+# ------------------------ Perteneciente al Coach ------------------------------
+
+# #listar Proceso
 def listProCoach(request):
     #perfil = request.session['Perfil_Usuario']
     #print (str(request.session['Perfil_Usuario']))

@@ -41,14 +41,14 @@ function crearAdmin() {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario agregado',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
+            //    Swal.fire({
+            //        title: 'Usuario agregado',
+            //        icon: 'success',
+            //        timer: 3000,
+            //        timerProgressBar: true
+            //    }).then(function () {
                     formAdmin.submit();
-                })
+            //    })
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'Usuario no se ha registrado',
@@ -92,14 +92,14 @@ function crearCoach() {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario Coach creado con éxito!',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
+            //    Swal.fire({
+            //        title: 'Usuario Coach creado con éxito!',
+            //        icon: 'success',
+            //        timer: 3000,
+            //        timerProgressBar: true
+            //    }).then(function () {
                     form.submit();
-                })
+            //    })
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'Usuario no se ha registrado',
@@ -149,14 +149,14 @@ function crearCoachee() {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario Coachee creado con éxito!',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
+            //    Swal.fire({
+            //        title: 'Usuario Coachee creado con éxito!',
+            //        icon: 'success',
+            //        timer: 3000,
+            //        timerProgressBar: true
+            //    }).then(function () {
                     form.submit();
-                })
+            //    })
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'Usuario no se ha registrado',
@@ -210,16 +210,16 @@ function modificarAdmin(elem) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario Administrador actualizado con éxito.',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
-                    console.log($('#formAdmin'));
+                //Swal.fire({
+                //    title: 'Usuario Administrador actualizado con éxito.',
+                //    icon: 'success',
+                //    timer: 3000,
+                //    timerProgressBar: true
+                //}).then(function () {
+                //    console.log($('#formAdmin'));
                     formAdmin.submit();
                     
-                })
+                //})
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'No se ha realizado ningun cambio.',
@@ -265,15 +265,15 @@ function modificarCoach(elem) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario Coach actualizado con éxito!',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
-                    console.log($('#formCoach'));
+                //Swal.fire({
+                //    title: 'Usuario Coach actualizado con éxito!',
+                //    icon: 'success',
+                //    timer: 3000,
+                //    timerProgressBar: true
+                //}).then(function () {
+                //    console.log($('#formCoach'));
                     formCoach.submit();
-                })
+                //})
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'No se ha realizado ningun cambio.',
@@ -324,15 +324,15 @@ function modificarCoachee(elem) {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Usuario Coachee actualizado con éxito!',
-                    icon: 'success',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(function () {
-                    console.log($('#formCoachee'));
+            //    Swal.fire({
+            //        title: 'Usuario Coachee actualizado con éxito!',
+            //        icon: 'success',
+            //        timer: 3000,
+            //        timerProgressBar: true
+            //    }).then(function () {
+                    //console.log($('#formCoachee'));
                     formCoachee.submit();
-                })
+            //    })
             } else if (result.isDenied) {
                 Swal.fire({
                     title: 'No se ha realizado ningun cambio.',

@@ -415,19 +415,10 @@ def listUsuarios(request):
     # print(str(perfil))
     urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
     usuarios = requests.get(urlListarUsuarios).json()
-    # Paginacion
-    page = request.GET.get('page', 1)
-
-    try:
-        paginator = Paginator(usuarios, 5)
-        usuario = paginator.page(page)
-    except:
-        raise Http404
-
+    
     data = {
         'usuario': perfil,
-        'entity': usuario,
-        'paginator': paginator
+        'entity': usuarios,
     }
     return render(request, 'usuarios/listUsuarios.html', data)
 
@@ -518,38 +509,38 @@ def modUsuarios(request,id):
 
     return redirect('listUsuarios') 
 
-#Buscar usuarios
-def buscaUsuarios(request):
-    headers = request.session['Headers']
-    perfil = request.session['Perfil_Usuario']
-    url = 'http://127.0.0.1:8001/usuarios?ordering=ID'
-    if request.method == 'POST':
-        tipoUsuario = request.POST.get('tipoUsuario')
-        print(tipoUsuario)
-        estadoUsuario = request.POST.get('estado')
-        print(estadoUsuario)
-        #TipoUsuarios = Todos & Estado = Todos
-        if tipoUsuario=='0' and estadoUsuario=='2':
-            return redirect('listUsuarios') 
-        #TipoUsuarios = Administrador o Coach o Coachee & Estado = Todos
-        elif tipoUsuario=='1' and estadoUsuario=='2' or tipoUsuario=='2' and estadoUsuario=='2' or tipoUsuario=='3' and estadoUsuario=='2':
-            url = url + '&PERFIL_ID=' + str(tipoUsuario) 
-            print(url)
-            usuario = requests.get(url).json()
-            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
-        #TipoUsuarios = Todos & Estado = Activo o Inactivo
-        elif tipoUsuario=='0' and estadoUsuario=='0' or tipoUsuario=='0' and estadoUsuario=='1':
-            url = url + '&ACTIVO=' + str(estadoUsuario) 
-            print(url)
-            usuario = requests.get(url).json()
-            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
-        #Mezcla de Tipos de usuarios o estado
-        else:
-            url = url + '&PERFIL_ID=' + str(tipoUsuario) + '&ACTIVO=' + str(estadoUsuario) 
-            print(url)
-            usuario = requests.get(url).json()
-            return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
-    return redirect('listUsuarios') 
+# Buscar usuarios
+# def buscaUsuarios(request):
+#     headers = request.session['Headers']
+#     perfil = request.session['Perfil_Usuario']
+#     url = 'http://127.0.0.1:8001/usuarios?ordering=ID'
+#     if request.method == 'POST':
+#         tipoUsuario = request.POST.get('tipoUsuario')
+#         print(tipoUsuario)
+#         estadoUsuario = request.POST.get('estado')
+#         print(estadoUsuario)
+#         TipoUsuarios = Todos & Estado = Todos
+#         if tipoUsuario=='0' and estadoUsuario=='2':
+#             return redirect('listUsuarios') 
+#         TipoUsuarios = Administrador o Coach o Coachee & Estado = Todos
+#         elif tipoUsuario=='1' and estadoUsuario=='2' or tipoUsuario=='2' and estadoUsuario=='2' or tipoUsuario=='3' and estadoUsuario=='2':
+#             url = url + '&PERFIL_ID=' + str(tipoUsuario) 
+#             print(url)
+#             usuario = requests.get(url).json()
+#             return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+#         TipoUsuarios = Todos & Estado = Activo o Inactivo
+#         elif tipoUsuario=='0' and estadoUsuario=='0' or tipoUsuario=='0' and estadoUsuario=='1':
+#             url = url + '&ACTIVO=' + str(estadoUsuario) 
+#             print(url)
+#             usuario = requests.get(url).json()
+#             return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+#         Mezcla de Tipos de usuarios o estado
+#         else:
+#             url = url + '&PERFIL_ID=' + str(tipoUsuario) + '&ACTIVO=' + str(estadoUsuario) 
+#             print(url)
+#             usuario = requests.get(url).json()
+#             return render(request,'usuarios/listUsuarios.html',{'usuario': perfil,'list_usuarios':usuario,'tipousuario':tipoUsuario,'estadoUsuario':estadoUsuario})
+#     return redirect('listUsuarios') 
 
 #estado usuario
 def estadoUsuarios(request):

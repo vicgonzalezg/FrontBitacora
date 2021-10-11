@@ -415,8 +415,8 @@
 {% endblock %}
 <!-- Custom script -->
 {% block js %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>
-<script type="text/javascript" src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}"/>
+<script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
 $(document).ready(function (){
     var table = $('#example').DataTable({

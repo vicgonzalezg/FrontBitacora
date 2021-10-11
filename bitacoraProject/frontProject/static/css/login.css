@@ -1,7 +1,11 @@
 /* Utilizar el 100% de la pantalla*/
 html,body {
     height: 100%;
-    
+  }
+  @media screen and (max-width: 425px) {
+    html,body {
+        height: max-content;
+      }
   }
 /* Color del texto en el login */
 h3,label {

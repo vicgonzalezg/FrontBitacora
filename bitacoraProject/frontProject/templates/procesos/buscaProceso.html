@@ -111,7 +111,7 @@
     <!--Listado de los procesos-->
 
     <div id="listProceso">
-        <table class="table thead-dark">
+        <table id="example" class="table thead-dark">
             <thead class="thead-dark">
                 <tr class="cabecera">
                     <th scope="col">Proceso Empresa</th>
@@ -362,8 +362,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <!--Tabla con registro de fechas de las sesiones-->
-                                                               <!--  <div class="form-group col-md-6">
-                                                                    <table id="listSesion"
+                                                                <div class="form-group col-md-6">
+                                                                    <table id="example"
                                                                         class="table thead-dark border border-dark">
                                                                         <thead class="thead-dark">
                                                                             <tr class="cabecera">
@@ -390,7 +390,7 @@
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
-                                                                </div> -->
+                                                                </div>
                                                             </div>
                                                             <br>
                                                         </div>
@@ -896,3 +896,13 @@
     {% include 'base/paginator.html' %}
 </div>
 {% endblock %}
+<!-- Custom script -->
+{% block js %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>
+<script type="text/javascript" src="http://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready( function () {
+    $('#example').DataTable();
+} );
+</script>
+{% endblock js %}

@@ -474,7 +474,7 @@ tbody tr {
 
 tbody td {
   width: 14%;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   cursor: pointer;
   -webkit-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
@@ -488,13 +488,13 @@ tbody td {
     right: 0;
     bottom: 0;
     content: '';
-    width: 44px;
-    height: 44px;
+    /*width: 44px;*/
+    /* height: 44px; */
     margin: 0 auto;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    border-radius: 50%;
+    /* border-radius: 50%; */
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s;

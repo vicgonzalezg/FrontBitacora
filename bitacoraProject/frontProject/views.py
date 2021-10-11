@@ -10,6 +10,7 @@ import requests
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import Http404
+from django.template import loader
 
 #definimos el login
 def login(request):

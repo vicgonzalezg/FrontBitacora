@@ -73,7 +73,7 @@
 
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{% url 'perfil'%}">Perfil</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Perfil</a>
                 <a class="dropdown-item" href="/">Cerrar Sesión</a>
             </div>
         </div>
@@ -114,6 +114,16 @@
 {% block js %}
 
 {% endblock js %}
+
+
+<!--Modal perfil-->
+<div style="display: hidden;" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            {% include 'Perfil/perfil.html' %}
+        </div>
+    </div>
+</div>
 
 
 

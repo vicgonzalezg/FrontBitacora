@@ -10,56 +10,13 @@
     <div class="row">
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center fw-bold">Últimos Procesos Creados</h3>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: Enjoy</h5>
-                </div>
-                <h6 class="mb-1">Estado: Segunda Sesión</h6>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            
-            <!-- Paginación -->
-            <!--
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center p-1">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
-            -->
+            {% for proceso in entity %}
+                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                    <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                    <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
+                </a>
+            {% endfor %}
         </div>
         <!-- Calendario -->
         <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">

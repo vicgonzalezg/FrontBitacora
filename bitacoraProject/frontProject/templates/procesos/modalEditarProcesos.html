@@ -1,0 +1,70 @@
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Datos del Proceso</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"
+        aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="container mt-2 bg-light">
+        <form>
+            <div class=" mt-2">
+                <!--formulario para modificar procesos-->
+                <div class="bg-light">
+                    <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        
+                        <div class="row mb-3">
+                            <label for="nombreEmp"
+                                class="col-sm-2 col-form-label">Nombre
+                                Empresa</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" value="{{proceso.NOMBREEMPRESA}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="cantSesiones"
+                                class="col-sm-2 col-form-label">Cantidad de
+                                Sesiones</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" value="{{proceso.CANTSESIONES}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="fechaInicio"
+                                class="col-sm-2 col-form-label">Fecha de
+                                Inicio</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" disabled value="{{proceso.FECHACREACION}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3 py-1">
+                            <label for="coach"
+                                class="col-md-12 col-form-label">Coachee Actual:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" disabled value="{{ proceso.NOMBRE }} {{ proceso.APELLIDO }}">
+                            </div>
+                        </div>
+                        <div class="row mb-3 py-1">
+                            <label for="coach"
+                                class="col-md-12 col-form-label">Coach Actual:</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" disabled value="{{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn mr-4 mb-2 btn-secondary" type="button"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <span class="col-md-1"></span>
+                <a onclick="modProceso()" class="btn mr-2 mb-2 btn-primary float-end"
+                    id="modProceso">Guardar Modificación</a>
+                <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
+            </div>
+        </form>
+    </div>
+</div>
+
+             

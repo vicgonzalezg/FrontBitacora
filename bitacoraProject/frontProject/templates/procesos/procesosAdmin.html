@@ -19,7 +19,7 @@
     <div class="row">
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center fw-bold">Listado de Procesos</h3>
-            {% for proceso in list_proceso %}
+            {% for proceso in entity %}
                 <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                     <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
                     <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>

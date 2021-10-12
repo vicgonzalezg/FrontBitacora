@@ -345,36 +345,14 @@ function modificarCoachee(elem) {
     }
 }
 /*  ------------------------    PROCESOS ------------------------------------------------*/
-
-function newProceso() {
-    Swal.fire({
-        title: 'Se creara el proceso para la empresa (--------) ¿Esta Seguro?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'No!',
-        confirmButtonText: 'Si, Crear!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-              icon: 'success',  
-              timer: 2000,
-              title:'Proceso Creado!',
-              text: 'El proceso ha sido creado.',
-              showConfirmButton: false,
-            })
-        }
-    })
-}
 /* Crear proceso */
 function newProceso() {
   event.preventDefault();
-  var nombreEmp = document.getElementById("nombreEmp");
-  var cantSesion = document.getElementById("cantSesiones");
+  var nombreEmp = document.getElementById("nombreEmpre");
+  var cantSesion = document.getElementById("cantiSesiones");
   var fechIni = document.getElementById("fechaInicio");
-  var coachProc = document.getElementById("coachProc");
-  var coacheeProc = document.getElementById("coacheeProc");
+  var coachProc = document.getElementById("coachProces");
+  var coacheeProc = document.getElementById("coacheeProces");
   //console.log(nombre.value)
   if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "" || coacheeProc.value == "") {
       Swal.fire('Todos los campos son Obligatorios!', '', 'info')

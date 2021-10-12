@@ -192,11 +192,13 @@ def procesosAdmin(request):
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
     url = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=3'
-    url2 = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=3'
+    url2 = 'http://127.0.0.1:8001/usuarios'
     url3 = 'http://127.0.0.1:8001/estados-procesos'
     proceso = requests.get(url).json()
     usuario = requests.get(url2).json()
     estado = requests.get(url3).json()
+    print(proceso)
+    #print(usuario)
     listados = []
     #listado = proceso.update(usuario)
     for p in proceso:
@@ -292,7 +294,7 @@ def nuevoProceso(request):
 #listar Proceso
 def buscaProceso(request):
     perfil = request.session['Perfil_Usuario']
-    urlProcesos = 'http://127.0.0.1:8001/procesos'
+    urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=1'
     urlUsuarios = 'http://127.0.0.1:8001/usuarios'
     urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
     proceso = requests.get(urlProcesos).json()
@@ -320,6 +322,7 @@ def buscaProceso(request):
                 nombreJefe = u['NOMBREJEFE']
                 emailJefe = u['EMAILJEFE']
                 fonoJefe = u['FONOJEFE']
+                idProceso = p['ID']
         for uc in usuario:
             if p['COACH_ID'] ==uc['ID']:
                 nombreCoach= uc['NOMBRE']
@@ -341,7 +344,8 @@ def buscaProceso(request):
                     "FONOJEFE": fonoJefe,  
                     "DESCRIPCION":estadoDescripcion,
                     "NOMBRECOACH":nombreCoach,
-                    "APELLIDOCOACH":apellidoCoach
+                    "APELLIDOCOACH":apellidoCoach,
+                    "ID": idProceso
                     }]
 
                 listados = json + listados

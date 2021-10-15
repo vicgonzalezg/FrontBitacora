@@ -43,7 +43,8 @@ def login(request):
                             'apellidoUsuario':apellido,
                             'correo':correo}
             token = result['TOKEN']
-            print('Hola soy un token: '+ token)
+            print(token)
+            print('Hola soy un token que retorna don ivan: '+ token)
             headers = {
                     'content-type': "application/json",
                     'authorization': "Bearer " + token
@@ -392,14 +393,16 @@ def infoProceso(request):
 
 #usuarios admin
 def usuariosAdmin(request):
+    headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
     #admin={'nombre': 'María José','perfil':1}
     urlCoach = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=2'
     urlCoachee = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=3'
-    list_coachs = requests.get(urlCoach).json()
+    print(headers)
+    list_coachs = requests.get(urlCoach, headers=headers).json()
     print(list_coachs)
-    list_coachees = requests.get(urlCoachee).json()
+    list_coachees = requests.get(urlCoachee, headers=headers).json()
     print(list_coachees)
     return render(request,'usuarios/usuariosAdmin.html',{'usuario': perfil,'list_coachs':list_coachs,'list_coachees':list_coachees}) 
 
@@ -469,7 +472,7 @@ def nuevoUsuario(request):
                     }
         #Metodo para crear usuario en API        
         urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
-        response =  requests.post(urlCrearUsuarios,json=crearUsuariosJson)
+        response =  requests.post(urlCrearUsuarios, headers=headers,json=crearUsuariosJson)
         print(crearUsuariosJson)
         print(response)
         
@@ -491,7 +494,7 @@ def listUsuarios(request):
     # print (str(request.session['Perfil_Usuario']))
     # print(str(perfil))
     urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
-    usuarios = requests.get(urlListarUsuarios).json()
+    usuarios = requests.get(urlListarUsuarios, headers=headers).json()
     
     data = {
         'usuario': perfil,
@@ -574,7 +577,7 @@ def modUsuarios(request,id):
         
         #Metodo para crear usuario en API        
         urlModUsuarios = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
-        response =  requests.put(urlModUsuarios,json=modificaUsuarioJson)
+        response =  requests.put(urlModUsuarios, headers=headers,json=modificaUsuarioJson)
         print(response)
 
         if response.status_code == 200:

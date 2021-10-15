@@ -370,14 +370,14 @@ function newProceso() {
       }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-              Swal.fire({
+              /* Swal.fire({
                   title:'Proceso creado',
                   icon: 'success',
                   timer: 2000,
                   timerProgressBar: true
-              }).then(function(){
+              }).then(function(){ */
                   formProc.submit();
-              })
+              /* }) */
           } else if (result.isDenied) {
               Swal.fire({
                   title:'El proceso no se ha creado',
@@ -388,4 +388,50 @@ function newProceso() {
           }
       });
   }
+}
+
+function modProceso(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var nombreEmp = document.getElementById("nombreEmpre"+'-'+id);
+    var cantSesion = document.getElementById("cantiSesiones"+'-'+id);
+    var fechIni = document.getElementById("fechaInicio"+'-'+id);
+    var coachProc = document.getElementById("coachProces"+'-'+id);
+    var coacheeProc = document.getElementById("coacheeProces"+'-'+id);
+    if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "" || coacheeProc.value == "") {
+        Swal.fire('Todos los campos son Obligatorios!', '', 'info')
+    } 
+    else
+    {
+    var formModProceso = document.forms["formModProceso-"+id];
+    Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            /* Swal.fire({
+                icon: 'success',
+                timer: 2000,
+                title: 'Modificado!',
+                text: 'El proceso ha sido actualizado.',
+                showConfirmButton: false,
+            })
+            $('#exampleModal').modal('hide');
+            $(".modal-backdrop").remove(); */
+            formModProceso.submit();
+        }else if (result.isDenied) {
+            Swal.fire({
+                title: 'No se ha realizado ningun cambio.',
+                icon: 'info',
+                timer: 3000,
+                timerProgressBar: true
+            })
+        }
+    })
+}
 }

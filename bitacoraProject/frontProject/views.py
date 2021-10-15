@@ -190,20 +190,24 @@ def menuCoachee(request):
 
 #Paginas de Procesos
 def procesosAdmin(request):
+    headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
     print (str(request.session['Perfil_Usuario']))
     url = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=3'
     url2 = 'http://127.0.0.1:8001/usuarios'
     url3 = 'http://127.0.0.1:8001/estados-procesos'
-    proceso = requests.get(url).json()
-    usuario = requests.get(url2).json()
-    estado = requests.get(url3).json()
+    proceso = requests.get(url,headers=headers).json()
+    usuario = requests.get(url2,headers=headers).json()
+    estado = requests.get(url3,headers=headers).json()
     print(proceso)
     #print(usuario)
     listados = []
+    print(proceso)
     #listado = proceso.update(usuario)
     for p in proceso:
         for e in estado:
+            print(str(p['ESTADOPROCESO_ID']))
+            print(str(e['ID']))
             if p['ESTADOPROCESO_ID']==e['ID']:
                 estadoDescripcion = e['DESCRIPCION']
         for u in usuario:
@@ -259,7 +263,7 @@ def nuevoProceso(request):
     #admin={'nombre': 'María José','perfil':1}
     #Crear usuario
     url2 = 'http://127.0.0.1:8001/usuarios'
-    usuarios = requests.get(url2).json()
+    usuarios = requests.get(url2,headers=headers).json()
     if request.method == 'POST' and perfil['perfil'] == 1:
         #Obtener datos del Front
         NOMBREEMPRESA = request.POST.get('nombreEmpre')
@@ -284,23 +288,29 @@ def nuevoProceso(request):
             }
         #Metodo para crear usuario en API        
         url = 'http://127.0.0.1:8001/procesos'
-        response =  requests.post(url,json=json)
+        response =  requests.post(url,headers=headers,json=json)
         print(json)
         print(response)
-        #if response.status_code == 201:
-        #    mensaje para avisar al front que se creo el usuario.
+        if response.status_code == 201:
+            #mensaje para avisar al front que se creo el usuario.
+            messages.success(request, 'Proceso creado con éxito.')
+            return redirect('nuevoProceso')
+        else:
+            messages.error(request, 'Hubo un problema al crear el proceso.')
+            return redirect('nuevoProceso')
 
     return render(request,'procesos/nuevoProceso.html',{'usuario': perfil, 'list_usuario':usuarios}) 
 
 #listar Proceso
 def buscaProceso(request):
+    headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
     urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=1'
     urlUsuarios = 'http://127.0.0.1:8001/usuarios'
     urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
-    proceso = requests.get(urlProcesos).json()
-    usuario = requests.get(urlUsuarios).json()
-    estado = requests.get(urlEstadosProcesos).json()
+    proceso = requests.get(urlProcesos,headers=headers).json()
+    usuario = requests.get(urlUsuarios,headers=headers).json()
+    estado = requests.get(urlEstadosProcesos,headers=headers).json()
     listados = []
     #listado = proceso.update(usuario)
 
@@ -356,16 +366,55 @@ def buscaProceso(request):
         'entity':listados,
        
     }
-    print(p)
+    #print(p)
     return render(request,'procesos/buscaProceso.html',data)        
 
 
 #modificar Proceso
-def modProceso(request):
+def modProceso(request,id):
+    headers = request.session['Headers']
     perfil = request.session['Perfil_Usuario']
-    print (str(request.session['Perfil_Usuario']))
+    if request.method == 'POST' and perfil['perfil'] == 1:
+        ID = id
+        NOMBREEMPRESA = request.POST.get('nombreEmpresa')
+        CANTSESIONES = request.POST.get('cantidadSesiones')
+        OBJETIVOS = ''
+        INDICADORES = ''
+        PLANACCION = ''
+        FECHACREACION = request.POST.get('fechaCreacion')
+        print(FECHACREACION)
+        FECHATERMINO = None
+        ACTIVO = 1
+        ESTADOPROCESO_ID = 1
+        ADMINISTRADOR_ID = 1
+        COACH_ID = 5
+        COACHEE_ID = 4
+
+        modificarProcesoJson={
+                "ID": ID,
+                "NOMBREEMPRESA": NOMBREEMPRESA,
+                "CANTSESIONES": CANTSESIONES,
+                "FECHACREACION":FECHACREACION,
+                "ACTIVO": ACTIVO,
+                "ESTADOPROCESO_ID": ESTADOPROCESO_ID,
+                "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
+                "COACH_ID": COACH_ID,
+                "COACHEE_ID": COACHEE_ID
+                }
+        print('Antes de mandar json '+ str(modificarProcesoJson))
+        #Metodo para crear usuario en API        ,headers=headers
+        modProceso = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
+        response =  requests.put(modProceso,json=modificarProcesoJson,headers=headers)
+        print(response)
+        if response.status_code == 200:
+            #mensaje para avisar al front que se creo el usuario.
+            messages.success(request, 'Proceso modificado con éxito.')
+            return redirect('buscaProceso')
+        else:
+            messages.error(request, 'Hubo un problema al modificar el proceso.')
+            return redirect('buscaProceso')
     #admin={'nombre': 'María José','perfil':1}
-    return render(request,'procesos/modProceso.html',{'usuario': perfil})    
+    return redirect('buscaProceso') 
 
 
 #listar Proceso

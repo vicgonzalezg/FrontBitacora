@@ -105,8 +105,8 @@ $(function() {
                     <th scope="col">Tipo Usuario</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contacto</th>
-                    <th scope="col" class="border text-center">Estado</th>
-                    <th scope="col" class="border text-center">Editar</th>
+                    <th scope="col" class="text-center">Estado</th>
+                    <th scope="col" class="text-center">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -123,13 +123,13 @@ $(function() {
                     <th scope="row">{{ usuario.CORREO }}</th>
                     <th scope="row">{{ usuario.FONO }}</th>
                     {% if usuario.ACTIVO == 0 %}
-                    <th scope="row" class="border"><i style="color: red;"
+                    <th scope="row" class=""><i style="color: red;"
                             class="fas fa-user d-flex justify-content-center "></i></th>
                     {% elif usuario.ACTIVO == 1 %}
-                    <th scope="row" class="border"><i style="color: green;"
+                    <th scope="row" class=""><i style="color: green;"
                             class="fas fa-user d-flex justify-content-center "></i></th>
                     {% endif %}
-                    <th scope="row" class="border">
+                    <th scope="row" class="">
                         <i type="button" href="#" class="fas fa-user-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal-{{ usuario.ID }}"></i>
                     </th>
@@ -413,7 +413,5 @@ $(function() {
     </div>
 </div>
 <!-- Paginación -->
-<div>
-    {% include 'base/paginator.html' %}
-</div>
+
 {% endblock %}

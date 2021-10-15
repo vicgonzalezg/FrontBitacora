@@ -182,5 +182,17 @@
     var today = year + "-" + month + "-" + day;
     document.getElementById('fechaInicio').value = today;
   </script>
-
+{% if messages %}
+{% for message in messages %}
+    <script>
+        Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{{ message.tags }}',
+                    heightAuto: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                })
+    </script>
+{% endfor %}
+{% endif %}
   {% endblock %}

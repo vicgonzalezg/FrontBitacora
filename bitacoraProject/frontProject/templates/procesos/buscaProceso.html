@@ -33,33 +33,10 @@
             }
         })
     }
-
 </script>
 <!--Pregunta de seguridad para confirmar acción-->
 <script>
-    function modProceso(id) {
-        Swal.fire({
-            title: '¿Estas seguro de realizar los cambios?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Realizar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    timer: 2000,
-                    title: 'Modificado!',
-                    text: 'El proceso ha sido actualizado.',
-                    showConfirmButton: false,
-                })
-                $('#exampleModal').modal('hide');
-                $(".modal-backdrop").remove();
-            }
-        })
-    }
+    
 </script>
 
 <!--Menu Procesos-->
@@ -81,9 +58,9 @@
             </div>
         </div>
     </div>
-    
+</div>
     <!--Listado de los procesos-->
-
+<div class="container">
     <div id="listProceso">
         <table id="example" class="table thead-dark">
             <thead class="thead-dark">
@@ -93,9 +70,9 @@
                     <th scope="col">Nombre Coach</th>
                     <th scope="col">Fono</th>
                     <th scope="col">Estado</th>
-                    <th scope="col" class="border-start text-center">Visualizar</th>
-                    <th scope="col" class="border-start text-center">Editar</th>
-                    <th scope="col" class="border-start text-center">Finalizar</th>
+                    <th scope="col" class="text-center">Visualizar</th>
+                    <th scope="col" class="text-center">Editar</th>
+                    <th scope="col" class="text-center">Finalizar</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,14 +83,14 @@
                     <th scope="row">{{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</th>
                     <th scope="row">{{ proceso.FONO }}</th>
                     <th scope="row" name="estado" >{{ proceso.DESCRIPCION }}</th>
-                    <th scope="row" class="border"><i type="button"
+                    <th scope="row" class=""><i type="button"
                             class="fas fa-book-reader d-flex justify-content-center" data-bs-toggle="modal"
-                            data-bs-target="#visualizarProc"></i></th>
-                    <th scope="row" class="border"><i type="button" class="fas fa-edit d-flex justify-content-center"
+                            data-bs-target="#visualizarProc-{{ proceso.ID }}"></i></th>
+                    <th scope="row" class=""><i type="button" class="fas fa-edit d-flex justify-content-center"
                             data-bs-toggle="modal" data-bs-target="#exampleModal-{{ proceso.ID }}"></i></th>
-                    <th scope="row" class="border"><i type="button"
+                    <th scope="row" class=""><i type="button"
                             class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
-                            data-bs-target="#finalizarProc"></i></th>
+                            data-bs-target="#finalizarProc-{{ proceso.ID }}"></i></th>
                 
                     <!-- Button trigger modal -->
                     <!-- Modal -->
@@ -128,7 +105,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="container mt-2 bg-light">
-                                        <form>
+                                        <form id="formModProceso-{{ proceso.ID }}" action="{% url 'modProceso' proceso.ID %}" method="POST">{% csrf_token %}
                                             <div class=" mt-2">
                                                 <!--formulario para modificar procesos-->
                                                 <div class="bg-light">
@@ -139,7 +116,8 @@
                                                                 class="col-sm-2 col-form-label">Nombre
                                                                 Empresa</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" value="{{proceso.NOMBREEMPRESA}}">
+                                                                <input class="form-control" name="nombreEmpresa"
+                                                                id="nombreEmpre-{{ proceso.ID }}" value="{{proceso.NOMBREEMPRESA}}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -147,7 +125,8 @@
                                                                 class="col-sm-2 col-form-label">Cantidad de
                                                                 Sesiones</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" value="{{proceso.CANTSESIONES}}">
+                                                                <input class="form-control" name="cantidadSesiones" id="cantiSesiones-{{ proceso.ID }}"
+                                                                 value="{{proceso.CANTSESIONES}}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -155,21 +134,21 @@
                                                                 class="col-sm-2 col-form-label">Fecha de
                                                                 Inicio</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" disabled value="{{proceso.FECHACREACION}}">
+                                                                <input class="form-control" name="fechaCreacion" id="fechaInicio-{{ proceso.ID }}" value="{{proceso.FECHACREACION}}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3 py-1">
                                                             <label for="coach"
                                                                 class="col-md-12 col-form-label">Coachee Actual:</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" disabled value="{{ proceso.NOMBRE }} {{ proceso.APELLIDO }}">
+                                                                <input class="form-control" disabled id="coacheeProces-{{ proceso.ID }}" value="{{ proceso.NOMBRE }} {{ proceso.APELLIDO }}">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3 py-1">
                                                             <label for="coach"
                                                                 class="col-md-12 col-form-label">Coach Actual:</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" disabled value="{{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}">
+                                                                <input class="form-control" disabled id="coachProces-{{ proceso.ID }}" value="{{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -177,12 +156,14 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn mr-4 mb-2 btn-secondary" type="button"
+                                                <button onclick="location.reload();" type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Cancelar</button>
                                                 <span class="col-md-1"></span>
-                                                <a onclick="modProceso()" class="btn mr-2 mb-2 btn-primary float-end"
-                                                    id="modProceso">Guardar Modificación</a>
-                                                <!--<button class="btn mr-2 mb-2 btn-primary pull-right" type="button" href="{% url 'buscaProceso'%}">Cancelar</button>-->
+
+                                                <button type="submit"
+                                                onclick="modProceso(this);"
+                                                data-id="{{proceso.ID}}" class="btn btn-primary">Guardar
+                                                    Cambios</button>
                                             </div>
                                         </form>
                                     </div>
@@ -193,7 +174,7 @@
 
                     <!-- Button trigger modal -->
                     <!-- Modal Visualizar -->
-                    <div style="display: hidden;" class="modal fade" id="visualizarProc" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <div style="display: hidden;" class="modal fade" id="visualizarProc-{{ proceso.ID }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">     
@@ -221,7 +202,7 @@
 
                                                                         <div class="col-md-12">
                                                                             <input class="form-control"
-                                                                                value="{{proceso.NOMBRE}}{{proceso.APELLIDO}}">
+                                                                                value="{{proceso.NOMBRE}} {{proceso.APELLIDO}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-6">
@@ -515,7 +496,7 @@
 
                     <!-- Button trigger modal -->
                     <!-- Modal -->
-                    <div style="display: hidden;" class="modal fade" id="finalizarProc" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <div style="display: hidden;" class="modal fade" id="finalizarProc-{{ proceso.ID }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -543,7 +524,7 @@
                                 
                                                                         <div class="col-md-12">
                                                                             <input class="form-control"
-                                                                                value="{{proceso.NOMBRE}}{{proceso.APELLIDO}}">
+                                                                                value="{{proceso.NOMBRE}} {{proceso.APELLIDO}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group col-md-6">
@@ -843,9 +824,19 @@
     </div>
 </div>
 <!-- Paginación -->
-<div>
-    {% include 'base/paginator.html' %}
-</div>
+{% if messages %}
+{% for message in messages %}
+    <script>
+        Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{{ message.tags }}',
+                    heightAuto: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                })
+    </script>
+{% endfor %}
+{% endif %}
 {% endblock %}
 {% block js %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}"/>

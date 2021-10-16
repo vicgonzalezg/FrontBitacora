@@ -26,12 +26,13 @@
     {% if usuario.perfil == 1 or usuario.perfil == 2 %}
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        {% if usuario.perfil == 1 %}
         <a href="{% url 'menuAdmin' %}">
             <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
         </a>
         <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
         <!-- Opciones segun perfil -->
-        {% if usuario.perfil == 1 %}
+       
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
         <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
@@ -50,6 +51,9 @@
         <a href="/">Cerrar Sesión</a>
         -->
         {% elif usuario.perfil == 2 %}
+        <a href="{% url 'menuCoach' %}">
+            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+        </a>
         <a href="#">Procesos Asignados</a>
         <a href="{% url 'listProCoach'%}">Listar Proceso</a>
         {% endif %}
@@ -64,7 +68,9 @@
             {% if usuario.perfil == 1 or usuario.perfil == 2 %}
             <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
             {% elif usuario.perfil == 3 %}
-            <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            <a href="{% url 'menuCoachee' %}">
+                <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            </a>
             {% endif %}
             <!-- Bienvenida al usuario por su nombre -->
             <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"

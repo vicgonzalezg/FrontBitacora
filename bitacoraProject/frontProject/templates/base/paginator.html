@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-center">
     <ul class="pagination">
         {% if entity.has_previous %}
-            <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}">Anterior</a></li>
         {% endif %}
         {% for page in paginator.page_range %}
             {% if forloop.last and page != entity.number and paginator.num_pages > 7 %} 

@@ -34,11 +34,6 @@
         })
     }
 </script>
-<!--Pregunta de seguridad para confirmar acción-->
-<script>
-    
-</script>
-
 <!--Menu Procesos-->
 
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
@@ -865,7 +860,7 @@ $(document).ready(function (){
     });
 
     $('#nombre').on('keyup change', function () {
-        table.columns().every($(this).val()).draw();
+        table.column(0).search($(this).val()).draw();
     });
 });
 </script>

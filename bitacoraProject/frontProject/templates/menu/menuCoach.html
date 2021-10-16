@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menu Coach{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
@@ -10,45 +10,20 @@
     <div class="row">
         <div class="list-group d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center">Procesos del día</h3>
+            {% for proceso in entity %}
             <a href="#" class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
+                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
                 </div>
-                <h5 class="mb-1">Estado: Segunda Sesión</h5>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
+                <h6 class="mb-1">Estado: {{ proceso.DESCRIPCION }}</h6>
+                <p class="mb-1">Coach: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                <p class="mb-1">Coachee: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
             </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
-                </div>
-                <h5 class="mb-1">Estado: Segunda Sesión</h5>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
-                </div>
-                <h5 class="mb-1">Estado: Segunda Sesión</h5>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
+            {% endfor %}
             <!-- Paginación -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center p-1">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+            <div>
+                {% include 'base/paginator.html' %}
+            </div>
         </div>
         <!-- Calendario -->
         <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -146,7 +121,7 @@
         </div>
         
     </div>
-    
+</div>
     <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
     <script src="{% static '/js/popper_calendar.js' %}"></script>
     <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>

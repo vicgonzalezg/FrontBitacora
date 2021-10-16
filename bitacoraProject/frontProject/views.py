@@ -15,9 +15,6 @@ from django.template import loader
 #definimos el login
 def login(request):
     if request.method == 'POST':
-        #admin={'nombre': 'María José','perfil':1}
-        #coach={'nombre': 'Nelson Gomez','perfil':2}
-        #coachee={'nombre': 'Victor Gonzalez','perfil':3}
         username = request.POST.get('user')
         password = request.POST.get('pass')
         print(username,password)
@@ -66,19 +63,17 @@ def login(request):
         else:
             messages.error(request, 'Usuario y/o contraseña incorrectos.')
             return render(request, 'login/login.html')
-        #if username == 'maria.jose' and password == 'inicio2021':
-            #return render(request,'menu/menuAdmin.html',{'usuario': admin})
-        #elif username== 'nelson.gomez' and password == 'inicio2021':
-            #return render(request,'menu/menuCoach.html',{'usuario': coach})
-        #elif username== 'victor.gonzalez' and password == 'inicio2021':
-        #    return render(request,'menu/menuCoachee.html',{'usuario': coachee})
     return render(request, 'login/login.html')
 
 #Cierre de sesión
 def logout(request):
-    headers = {}
-    request.session['Headers'] = headers
-    return redirect('/')
+    try:
+        headers = {}
+        request.session['Headers'] = headers
+        return redirect('/')
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
 
 def get_cashflows(request):
 
@@ -96,30 +91,103 @@ def get_cashflows(request):
 
 #Perfil
 def perfil(request):
-    perfil = request.session['Perfil_Usuario']
-    url = 'http://127.0.0.1:8001/usuarios'
-    usuario = requests.get(url).json()
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        url = 'http://127.0.0.1:8001/usuarios'
+        usuario = requests.get(url).json()
 
-    data = {
-        'usuario': perfil,
-        'entity':usuario,
-    }
-    #Buscar la forma de obtener el ID del usuario
-    #Lo otro seria pasar el ID del usuario en el request.session
-    return render(request,'Perfil/perfil.html',data)
+        data = {
+            'usuario': perfil,
+            'entity':usuario,
+        }
+        return render(request,'Perfil/perfil.html',data)
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')        
 
 #Paginas de Menu por Peril
 def menuAdmin(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        urlProcesos = 'http://127.0.0.1:8001/procesos'
+        if perfil['perfil'] == 1:
+            urlProcesos = 'http://127.0.0.1:8001/procesos'
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            listados = []
+            #listado = proceso.update(usuario)
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        cantsesiones = p['CANTSESIONES']
+                        fechaIni = p["FECHACREACION"]
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "FECHACREACION": fechaIni,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion
+                            }]
+
+                        listados = json + listados
+
+                data = {
+                'usuario': perfil,
+                'entity':listados,
+                }
+
+            return render(request,'menu/menuAdmin.html',data) 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
+
+def menuCoach(request):
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=4'
         urlUsuarios = 'http://127.0.0.1:8001/usuarios'
         urlEstado = 'http://127.0.0.1:8001/estados-procesos'
         proceso = requests.get(urlProcesos,headers=headers).json()
         usuario = requests.get(urlUsuarios,headers=headers).json()
         estado = requests.get(urlEstado,headers=headers).json()
         listados = []
+
         #listado = proceso.update(usuario)
         for p in proceso:
             for e in estado:
@@ -132,14 +200,19 @@ def menuAdmin(request):
                     apellidoCoachee = u['APELLIDO']
                     correoCoachee = u['CORREO']
                     telefonoCoachee = u['FONO']
+                    fechaCreacion = p['FECHACREACION']
                     cantsesiones = p['CANTSESIONES']
-                    fechaIni = p["FECHACREACION"]
                     objetivo = p['OBJETIVOS']
                     indicadores = p['INDICADORES']
                     planAccion = p['PLANACCION']
                     nombreJefe = u['NOMBREJEFE']
                     emailJefe = u['EMAILJEFE']
                     fonoJefe = u['FONOJEFE']
+                    idProceso = p['ID']
+            for uc in usuario:
+                if p['COACH_ID'] ==uc['ID']:
+                    nombreCoach= uc['NOMBRE']
+                    apellidoCoach= uc['APELLIDO']
 
                     json=[{
                         "NOMBREEMPRESA": nombreEmpresa,
@@ -147,36 +220,37 @@ def menuAdmin(request):
                         "APELLIDO":apellidoCoachee,
                         "CORREO":correoCoachee,
                         "FONO":telefonoCoachee,
+                        "FECHACREACION":fechaCreacion,
                         "CANTSESIONES":cantsesiones,
                         "OBJETIVOS": objetivo,
-                        "FECHACREACION": fechaIni,
                         "INDICADORES": indicadores,
                         "PLANACCION": planAccion,
                         "NOMBREJEFE": nombreJefe,
                         "EMAILJEFE": emailJefe,
                         "FONOJEFE": fonoJefe,  
-                        "DESCRIPCION":estadoDescripcion
+                        "DESCRIPCION":estadoDescripcion,
+                        "NOMBRECOACH":nombreCoach,
+                        "APELLIDOCOACH":apellidoCoach,
+                        "ID": idProceso
                         }]
 
                     listados = json + listados
 
-            data = {
-            'usuario': perfil,
-            'entity':listados,
-            }
+        page = request.GET.get('page',1)
 
-        return render(request,'menu/menuAdmin.html',data) 
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+        try:
+            paginator = Paginator(listados,4)
+            listado = paginator.page(page)
 
-def menuCoach(request):
-    try:
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        except:
+            raise Http404
+
         data = {
-        'usuario': perfil,
+            'usuario': perfil,
+            'entity':listado,
+            'paginator':paginator
         }
+
         return render(request,'menu/menuCoach.html', data)
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -215,8 +289,8 @@ def procesosAdmin(request):
 
         for p in proceso:
             for e in estado:
-                print(str(p['ESTADOPROCESO_ID']))
-                print(str(e['ID']))
+                #print(str(p['ESTADOPROCESO_ID']))
+                #print(str(e['ID']))
                 if p['ESTADOPROCESO_ID']==e['ID']:
                     estadoDescripcion = e['DESCRIPCION']
             for u in usuario:
@@ -569,7 +643,6 @@ def nuevoUsuario(request):
         return redirect('/') 
 
 #lista usuario
-# lista usuario
 def listUsuarios(request):
     try:
         headers = request.session['Headers']
@@ -671,36 +744,18 @@ def modUsuarios(request,id):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')  
 
-
-#estado usuario
-def estadoUsuarios(request):
-    try:
-        perfil = request.session['Perfil_Usuario']
-
-        data = {
-                'usuario': perfil
-            }
-
-        return render(request,'usuarios/estadoUsuarios.html', data)
-
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/') 
-
-
-
-
 # ------------------------ Perteneciente al Coach ------------------------------
 
 # #listar Proceso
 def listProCoach(request):
     try:
+        headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
 
         data = {
                 'usuario': perfil
             }
-
+            
         return render(request,'procesoCoach/listProCoach.html',data)
 
     except Exception as e:

@@ -38,7 +38,6 @@
         <ul class="d-sm-block d-md-none" id="sidebarmenu">
             <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
             <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
-            <a href="{% url 'listProceso'%}">Listar Proceso</a>
             <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
         </ul>
         <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
@@ -74,7 +73,7 @@
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Perfil</a>
-                <a class="dropdown-item" href="/">Cerrar Sesión</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
             </div>
         </div>
     </div>

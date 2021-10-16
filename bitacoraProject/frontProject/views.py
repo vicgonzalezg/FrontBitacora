@@ -112,7 +112,7 @@ def menuAdmin(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
-            urlProcesos = 'http://127.0.0.1:8001/procesos'
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             proceso = requests.get(urlProcesos,headers=headers).json()
@@ -180,7 +180,7 @@ def menuCoach(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=4'
+        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
         urlUsuarios = 'http://127.0.0.1:8001/usuarios'
         urlEstado = 'http://127.0.0.1:8001/estados-procesos'
         proceso = requests.get(urlProcesos,headers=headers).json()
@@ -278,7 +278,7 @@ def procesosAdmin(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
 
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=3'
+        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
         urlUsuarios = 'http://127.0.0.1:8001/usuarios'
         urlEstados = 'http://127.0.0.1:8001/estados-procesos'
 
@@ -395,7 +395,7 @@ def buscaProceso(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=1'
+        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID'
         urlUsuarios = 'http://127.0.0.1:8001/usuarios'
         urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
         proceso = requests.get(urlProcesos,headers=headers).json()
@@ -755,7 +755,7 @@ def listProCoach(request):
         data = {
                 'usuario': perfil
             }
-            
+
         return render(request,'procesoCoach/listProCoach.html',data)
 
     except Exception as e:

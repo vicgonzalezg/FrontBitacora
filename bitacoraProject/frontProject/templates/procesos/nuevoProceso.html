@@ -41,7 +41,7 @@
           <!--<label for="coach" class="col-sm-2 col-form-label">Coach</label>-->
           <div class="col-sm-10">
             <select class="form-select" id="coachProces" name="coachProces">
-              <option style="display: none" selected>Seleccione un Coach</option>
+              <option disabled="disabled" selected>Seleccione un Coach</option>
               {% for usuariocoach in list_usuario %}
               {% if usuariocoach.PERFIL_ID == 2 and usuariocoach.ACTIVO == 1%}
               <option value="{{ usuariocoach.ID }}">{{ usuariocoach.NOMBRE }} {{ usuariocoach.APELLIDO }}</option> 
@@ -57,7 +57,7 @@
           <!--<label for="coach" class="col-sm-2 col-form-label">Coachee</label>-->
           <div class="col-sm-10">
             <select class="form-select" id="coacheeProces" name="coacheeProces">
-              <option style="display: none" selected>Seleccione un Coachee</option>
+              <option disabled="disabled" selected>Seleccione un Coachee</option>
               {% for usuarios in list_usuario %}
                 {% if usuarios.PERFIL_ID == 3 and usuarios.ACTIVO == 1%}
                   <option value="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}}</option>

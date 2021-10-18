@@ -54,12 +54,12 @@ def login(request):
             print(str(request.session['Perfil_Usuario']))
             plantilla=''
             if perfil_usuario==1:
-                plantilla='menu/menuAdmin.html'
+                plantilla='menuAdmin'
             elif perfil_usuario==2:
-                plantilla='menu/menuCoach.html'
+                plantilla='menuCoach'
             elif perfil_usuario==3:
-                plantilla='menu/menuCoachee.html'
-            return render(request,plantilla,{'usuario':datos_usuario})
+                plantilla='menuCoachee'
+            return redirect(plantilla)
         else:
             messages.error(request, 'Usuario y/o contraseña incorrectos.')
             return render(request, 'login/login.html')
@@ -68,7 +68,8 @@ def login(request):
 #Cierre de sesión
 def logout(request):
     try:
-        headers = {}
+        print('hola vengo de logout')
+        headers = {'':''}
         request.session['Headers'] = headers
         return redirect('/')
     except Exception as e:
@@ -180,78 +181,86 @@ def menuCoach(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
-        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-        urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-        proceso = requests.get(urlProcesos,headers=headers).json()
-        usuario = requests.get(urlUsuarios,headers=headers).json()
-        estado = requests.get(urlEstado,headers=headers).json()
-        listados = []
+        if perfil['perfil'] == 2:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            listados = []
 
-        #listado = proceso.update(usuario)
-        for p in proceso:
-            for e in estado:
-                if p['ESTADOPROCESO_ID']==e['ID']:
-                    estadoDescripcion = e['DESCRIPCION']
-            for u in usuario:
-                if p['COACHEE_ID']==u['ID']:
-                    nombreEmpresa = p['NOMBREEMPRESA']
-                    nombreCoachee = u['NOMBRE']
-                    apellidoCoachee = u['APELLIDO']
-                    correoCoachee = u['CORREO']
-                    telefonoCoachee = u['FONO']
-                    fechaCreacion = p['FECHACREACION']
-                    cantsesiones = p['CANTSESIONES']
-                    objetivo = p['OBJETIVOS']
-                    indicadores = p['INDICADORES']
-                    planAccion = p['PLANACCION']
-                    nombreJefe = u['NOMBREJEFE']
-                    emailJefe = u['EMAILJEFE']
-                    fonoJefe = u['FONOJEFE']
-                    idProceso = p['ID']
-            for uc in usuario:
-                if p['COACH_ID'] ==uc['ID']:
-                    nombreCoach= uc['NOMBRE']
-                    apellidoCoach= uc['APELLIDO']
+            #listado = proceso.update(usuario)
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
 
-                    json=[{
-                        "NOMBREEMPRESA": nombreEmpresa,
-                        "NOMBRE":nombreCoachee,
-                        "APELLIDO":apellidoCoachee,
-                        "CORREO":correoCoachee,
-                        "FONO":telefonoCoachee,
-                        "FECHACREACION":fechaCreacion,
-                        "CANTSESIONES":cantsesiones,
-                        "OBJETIVOS": objetivo,
-                        "INDICADORES": indicadores,
-                        "PLANACCION": planAccion,
-                        "NOMBREJEFE": nombreJefe,
-                        "EMAILJEFE": emailJefe,
-                        "FONOJEFE": fonoJefe,  
-                        "DESCRIPCION":estadoDescripcion,
-                        "NOMBRECOACH":nombreCoach,
-                        "APELLIDOCOACH":apellidoCoach,
-                        "ID": idProceso
-                        }]
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
 
-                    listados = json + listados
+                        listados = json + listados
 
-        page = request.GET.get('page',1)
+            page = request.GET.get('page',1)
 
-        try:
-            paginator = Paginator(listados,4)
-            listado = paginator.page(page)
+            try:
+                paginator = Paginator(listados,4)
+                listado = paginator.page(page)
 
-        except:
-            raise Http404
+            except:
+                raise Http404
 
-        data = {
-            'usuario': perfil,
-            'entity':listado,
-            'paginator':paginator
-        }
+            data = {
+                'usuario': perfil,
+                'entity':listado,
+                'paginator':paginator
+            }
 
-        return render(request,'menu/menuCoach.html', data)
+            return render(request,'menu/menuCoach.html', data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
@@ -260,10 +269,20 @@ def menuCoachee(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        data = {
-        'usuario': perfil,
-        }
-        return render(request,'menu/menuCoachee.html', data)
+        
+        if perfil['perfil'] == 3:
+
+            data = {
+            'usuario': perfil,
+            }
+            return render(request,'menu/menuCoachee.html', data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            return redirect(plantilla)
+
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
@@ -277,63 +296,69 @@ def procesosAdmin(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstados = 'http://127.0.0.1:8001/estados-procesos'
 
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
-        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-        urlEstados = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstados,headers=headers).json()
+            listados = []
 
-        proceso = requests.get(urlProcesos,headers=headers).json()
-        usuario = requests.get(urlUsuarios,headers=headers).json()
-        estado = requests.get(urlEstados,headers=headers).json()
-        listados = []
+            for p in proceso:
+                for e in estado:
+                    #print(str(p['ESTADOPROCESO_ID']))
+                    #print(str(e['ID']))
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        cantsesiones = p['CANTSESIONES']
+                        fechaIni = p["FECHACREACION"]
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
 
-        for p in proceso:
-            for e in estado:
-                #print(str(p['ESTADOPROCESO_ID']))
-                #print(str(e['ID']))
-                if p['ESTADOPROCESO_ID']==e['ID']:
-                    estadoDescripcion = e['DESCRIPCION']
-            for u in usuario:
-                if p['COACHEE_ID']==u['ID']:
-                    nombreEmpresa = p['NOMBREEMPRESA']
-                    nombreCoachee = u['NOMBRE']
-                    apellidoCoachee = u['APELLIDO']
-                    correoCoachee = u['CORREO']
-                    telefonoCoachee = u['FONO']
-                    cantsesiones = p['CANTSESIONES']
-                    fechaIni = p["FECHACREACION"]
-                    objetivo = p['OBJETIVOS']
-                    indicadores = p['INDICADORES']
-                    planAccion = p['PLANACCION']
-                    nombreJefe = u['NOMBREJEFE']
-                    emailJefe = u['EMAILJEFE']
-                    fonoJefe = u['FONOJEFE']
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "FECHACREACION": fechaIni,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion
+                            }]
 
-                    json=[{
-                        "NOMBREEMPRESA": nombreEmpresa,
-                        "NOMBRE":nombreCoachee,
-                        "APELLIDO":apellidoCoachee,
-                        "CORREO":correoCoachee,
-                        "FONO":telefonoCoachee,
-                        "CANTSESIONES":cantsesiones,
-                        "OBJETIVOS": objetivo,
-                        "FECHACREACION": fechaIni,
-                        "INDICADORES": indicadores,
-                        "PLANACCION": planAccion,
-                        "NOMBREJEFE": nombreJefe,
-                        "EMAILJEFE": emailJefe,
-                        "FONOJEFE": fonoJefe,  
-                        "DESCRIPCION":estadoDescripcion
-                        }]
+                        listados = json + listados
 
-                    listados = json + listados
+                data = {
+                'usuario': perfil,
+                'entity':listados,
+                }
 
-            data = {
-            'usuario': perfil,
-            'entity':listados,
-            }
-
-        return render(request,'procesos/procesosAdmin.html', data)    
+            return render(request,'procesos/procesosAdmin.html', data)
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)    
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
@@ -343,49 +368,55 @@ def nuevoProceso(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            usuarios = requests.get(urlUsuarios,headers=headers).json()
+            if request.method == 'POST' and perfil['perfil'] == 1:
+                #Obtener datos del Front
+                NOMBREEMPRESA = request.POST.get('nombreEmpre')
+                CANTSESIONES = request.POST.get('cantiSesiones')
+                OBJETIVOS = None
+                INDICADORES = None
+                PLANACCION = None
+                ADMINISTRADOR_ID = '1'
+                COACH_ID = request.POST.get('coachProces')
+                COACHEE_ID = request.POST.get('coacheeProces')
+                    
+                #Creo Json 
+                json={
+                    "NOMBREEMPRESA": NOMBREEMPRESA.title(),
+                    "CANTSESIONES": CANTSESIONES,
+                    "OBJETIVOS": OBJETIVOS,
+                    "INDICADORES": INDICADORES,
+                    "PLANACCION": PLANACCION,
+                    "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
+                    "COACH_ID": COACH_ID,
+                    "COACHEE_ID": COACHEE_ID
+                    }
+                #Metodo para crear usuario en API        
+                url = 'http://127.0.0.1:8001/procesos'
+                response =  requests.post(url,headers=headers,json=json)
 
-        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-        usuarios = requests.get(urlUsuarios,headers=headers).json()
-        if request.method == 'POST' and perfil['perfil'] == 1:
-            #Obtener datos del Front
-            NOMBREEMPRESA = request.POST.get('nombreEmpre')
-            CANTSESIONES = request.POST.get('cantiSesiones')
-            OBJETIVOS = None
-            INDICADORES = None
-            PLANACCION = None
-            ADMINISTRADOR_ID = '1'
-            COACH_ID = request.POST.get('coachProces')
-            COACHEE_ID = request.POST.get('coacheeProces')
-                
-            #Creo Json 
-            json={
-                "NOMBREEMPRESA": NOMBREEMPRESA,
-                "CANTSESIONES": CANTSESIONES,
-                "OBJETIVOS": OBJETIVOS,
-                "INDICADORES": INDICADORES,
-                "PLANACCION": PLANACCION,
-                "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
-                "COACH_ID": COACH_ID,
-                "COACHEE_ID": COACHEE_ID
+                if response.status_code == 201:
+                    #mensaje para avisar al front que se creo el usuario.
+                    messages.success(request, 'Proceso creado con éxito.')
+                    return redirect('nuevoProceso')
+                else:
+                    messages.error(request, 'Hubo un problema al crear el proceso.')
+                    return redirect('nuevoProceso')
+
+            data = {
+                'usuario': perfil,
+                'list_usuario':usuarios,
                 }
-            #Metodo para crear usuario en API        
-            url = 'http://127.0.0.1:8001/procesos'
-            response =  requests.post(url,headers=headers,json=json)
 
-            if response.status_code == 201:
-                #mensaje para avisar al front que se creo el usuario.
-                messages.success(request, 'Proceso creado con éxito.')
-                return redirect('nuevoProceso')
-            else:
-                messages.error(request, 'Hubo un problema al crear el proceso.')
-                return redirect('nuevoProceso')
-
-        data = {
-            'usuario': perfil,
-            'list_usuario':usuarios,
-            }
-
-        return render(request,'procesos/nuevoProceso.html', data) 
+            return render(request,'procesos/nuevoProceso.html', data) 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
@@ -395,67 +426,74 @@ def buscaProceso(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID'
-        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-        urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
-        proceso = requests.get(urlProcesos,headers=headers).json()
-        usuario = requests.get(urlUsuarios,headers=headers).json()
-        estado = requests.get(urlEstadosProcesos,headers=headers).json()
-        listados = []
+        if perfil['perfil'] == 1:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID'
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstadosProcesos,headers=headers).json()
+            listados = []
 
-        for p in proceso:
-            for e in estado:
-                if p['ESTADOPROCESO_ID']==e['ID']:
-                    estadoDescripcion = e['DESCRIPCION']
-            for u in usuario:
-                if p['COACHEE_ID']==u['ID']:
-                    nombreEmpresa = p['NOMBREEMPRESA']
-                    nombreCoachee = u['NOMBRE']
-                    apellidoCoachee = u['APELLIDO']
-                    correoCoachee = u['CORREO']
-                    telefonoCoachee = u['FONO']
-                    fechaCreacion = p['FECHACREACION']
-                    cantsesiones = p['CANTSESIONES']
-                    objetivo = p['OBJETIVOS']
-                    indicadores = p['INDICADORES']
-                    planAccion = p['PLANACCION']
-                    nombreJefe = u['NOMBREJEFE']
-                    emailJefe = u['EMAILJEFE']
-                    fonoJefe = u['FONOJEFE']
-                    idProceso = p['ID']
-            for uc in usuario:
-                if p['COACH_ID'] ==uc['ID']:
-                    nombreCoach= uc['NOMBRE']
-                    apellidoCoach= uc['APELLIDO']
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
 
-                    json=[{
-                        "NOMBREEMPRESA": nombreEmpresa,
-                        "NOMBRE":nombreCoachee,
-                        "APELLIDO":apellidoCoachee,
-                        "CORREO":correoCoachee,
-                        "FONO":telefonoCoachee,
-                        "FECHACREACION":fechaCreacion,
-                        "CANTSESIONES":cantsesiones,
-                        "OBJETIVOS": objetivo,
-                        "INDICADORES": indicadores,
-                        "PLANACCION": planAccion,
-                        "NOMBREJEFE": nombreJefe,
-                        "EMAILJEFE": emailJefe,
-                        "FONOJEFE": fonoJefe,  
-                        "DESCRIPCION":estadoDescripcion,
-                        "NOMBRECOACH":nombreCoach,
-                        "APELLIDOCOACH":apellidoCoach,
-                        "ID": idProceso
-                        }]
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
 
-                    listados = json + listados
+                        listados = json + listados
 
-        data = {
-            'usuario': perfil,
-            'entity':listados,
-        
-        }
-        return render(request,'procesos/buscaProceso.html',data)    
+            data = {
+                'usuario': perfil,
+                'entity':listados,
+            
+            }
+            return render(request,'procesos/buscaProceso.html',data)   
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla) 
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -466,45 +504,52 @@ def modProceso(request,id):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        if request.method == 'POST' and perfil['perfil'] == 1:
-            ID = id
-            NOMBREEMPRESA = request.POST.get('nombreEmpresa')
-            CANTSESIONES = request.POST.get('cantidadSesiones')
-            OBJETIVOS = ''
-            INDICADORES = ''
-            PLANACCION = ''
-            FECHACREACION = request.POST.get('fechaCreacion')
-            FECHATERMINO = None
-            ACTIVO = 1
-            ESTADOPROCESO_ID = 1
-            ADMINISTRADOR_ID = 1
-            COACH_ID = 5
-            COACHEE_ID = 4
+        if perfil['perfil'] == 1:
+            if request.method == 'POST':
+                ID = id
+                NOMBREEMPRESA = request.POST.get('nombreEmpresa')
+                CANTSESIONES = request.POST.get('cantidadSesiones')
+                OBJETIVOS = ''
+                INDICADORES = ''
+                PLANACCION = ''
+                FECHACREACION = request.POST.get('fechaCreacion')
+                FECHATERMINO = None
+                ACTIVO = 1
+                ESTADOPROCESO_ID = 1
+                ADMINISTRADOR_ID = 1
+                COACH_ID = 5
+                COACHEE_ID = 4
 
-            modificarProcesoJson={
-                    "ID": ID,
-                    "NOMBREEMPRESA": NOMBREEMPRESA,
-                    "CANTSESIONES": CANTSESIONES,
-                    "FECHACREACION":FECHACREACION,
-                    "ACTIVO": ACTIVO,
-                    "ESTADOPROCESO_ID": ESTADOPROCESO_ID,
-                    "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
-                    "COACH_ID": COACH_ID,
-                    "COACHEE_ID": COACHEE_ID
-                    }
-            
-            modProceso = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
-            response =  requests.put(modProceso,json=modificarProcesoJson,headers=headers)
-            
-            if response.status_code == 200:
-                #mensaje para avisar al front que se modifico el proceso.
-                messages.success(request, 'Proceso modificado con éxito.')
-                return redirect('buscaProceso')
-            else:
-                messages.error(request, 'Hubo un problema al modificar el proceso.')
-                return redirect('buscaProceso')
+                modificarProcesoJson={
+                        "ID": ID,
+                        "NOMBREEMPRESA": NOMBREEMPRESA.title(),
+                        "CANTSESIONES": CANTSESIONES,
+                        "FECHACREACION":FECHACREACION,
+                        "ACTIVO": ACTIVO,
+                        "ESTADOPROCESO_ID": ESTADOPROCESO_ID,
+                        "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
+                        "COACH_ID": COACH_ID,
+                        "COACHEE_ID": COACHEE_ID
+                        }
+                
+                modProceso = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
+                response =  requests.put(modProceso,json=modificarProcesoJson,headers=headers)
+                
+                if response.status_code == 200:
+                    #mensaje para avisar al front que se modifico el proceso.
+                    messages.success(request, 'Proceso modificado con éxito.')
+                    return redirect('buscaProceso')
+                else:
+                    messages.error(request, 'Hubo un problema al modificar el proceso.')
+                    return redirect('buscaProceso')
 
-        return redirect('buscaProceso') 
+            return redirect('buscaProceso') 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -514,12 +559,20 @@ def modProceso(request,id):
 def termiProceso(request):
     try:
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            data = {
+                'usuario': perfil
+                }
 
-        data = {
-            'usuario': perfil
-            }
+            return render(request,'procesos/termiProceso.html', data) 
 
-        return render(request,'procesos/termiProceso.html', data)  
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
@@ -528,12 +581,20 @@ def termiProceso(request):
 def infoProceso(request):
     try:
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            data = {
+                'usuario': perfil
+                }
 
-        data = {
-            'usuario': perfil
-            }
+            return render(request,'procesos/infoProceso.html', data) 
 
-        return render(request,'procesos/infoProceso.html', data) 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
@@ -545,20 +606,27 @@ def usuariosAdmin(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            urlCoach = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=2'
+            urlCoachee = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=3'
 
-        urlCoach = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=2'
-        urlCoachee = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=3'
+            list_coachs = requests.get(urlCoach, headers=headers).json()
+            list_coachees = requests.get(urlCoachee, headers=headers).json()
 
-        list_coachs = requests.get(urlCoach, headers=headers).json()
-        list_coachees = requests.get(urlCoachee, headers=headers).json()
+            data ={
+                'usuario': perfil,
+                'list_coachs':list_coachs,
+                'list_coachees':list_coachees
+                }
 
-        data ={
-            'usuario': perfil,
-            'list_coachs':list_coachs,
-            'list_coachees':list_coachees
-            }
+            return render(request,'usuarios/usuariosAdmin.html', data) 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
-        return render(request,'usuarios/usuariosAdmin.html', data) 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
@@ -569,74 +637,81 @@ def nuevoUsuario(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        data = {
-                'usuario': perfil
-                }
-        #Crear usuario
-        if request.method == 'POST' and perfil['perfil'] == 1:
-            #Obtener datos del Front
-            APELLIDO = request.POST.get('apellido')
-            CORREO = request.POST.get('email')
-            FONO = request.POST.get('telefono')
-            IDIOMA = request.POST.get('idioma')
-            #Se definen por defecto en None
-            EMPRESA = ""
-            NOMBREJEFE = ""
-            APELLIDOJEFE = ""
-            EMAILJEFE = ""
-            FONOJEFE = ""
-            #Por defecto Activo
-            ACTIVO = 1
-            #Obtiene tipo de usuario
-            if 'nombreCoachee' in request.POST:
-                #Asigno Perfil
-                PERFIL_ID = 3
-                NOMBRE = request.POST.get('nombreCoachee')
-                EMPRESA = request.POST.get('nombreEmp')
-                NOMBREJEFE = request.POST.get('nombreJefe')
-                APELLIDOJEFE = request.POST.get('apellidoJefe')
-                EMAILJEFE = request.POST.get('emailJefe')
-                FONOJEFE = request.POST.get('telefonoJefe')
-            
-            elif 'nombreCoach' in request.POST:
-                #Asigno Perfil
-                PERFIL_ID = 2
-                NOMBRE = request.POST.get('nombreCoach')
+        if perfil['perfil'] == 1:
+            data = {
+                    'usuario': perfil
+                    }
+            #Crear usuario
+            if request.method == 'POST' and perfil['perfil'] == 1:
+                #Obtener datos del Front
+                APELLIDO = request.POST.get('apellido')
+                CORREO = request.POST.get('email')
+                FONO = request.POST.get('telefono')
+                IDIOMA = request.POST.get('idioma')
+                #Se definen por defecto en None
+                EMPRESA = ""
+                NOMBREJEFE = ""
+                APELLIDOJEFE = ""
+                EMAILJEFE = ""
+                FONOJEFE = ""
+                #Por defecto Activo
+                ACTIVO = 1
+                #Obtiene tipo de usuario
+                if 'nombreCoachee' in request.POST:
+                    #Asigno Perfil
+                    PERFIL_ID = 3
+                    NOMBRE = request.POST.get('nombreCoachee')
+                    EMPRESA = request.POST.get('nombreEmp')
+                    NOMBREJEFE = request.POST.get('nombreJefe')
+                    APELLIDOJEFE = request.POST.get('apellidoJefe')
+                    EMAILJEFE = request.POST.get('emailJefe')
+                    FONOJEFE = request.POST.get('telefonoJefe')
                 
-            else:
-                #Usuario Administrador
-                #Asigno Perfil
-                PERFIL_ID = 1
-                NOMBRE = request.POST.get('nombreAdmin')
-                
-            #Creo Json 
-            crearUsuariosJson={
-                        "CORREO": CORREO,
-                        "NOMBRE": NOMBRE,
-                        "APELLIDO": APELLIDO,
-                        "FONO": FONO,
-                        "IDIOMA": IDIOMA,
-                        "EMPRESA": EMPRESA,
-                        "NOMBREJEFE": str(NOMBREJEFE)+' '+str(APELLIDOJEFE),
-                        "EMAILJEFE": EMAILJEFE,
-                        "FONOJEFE": FONOJEFE,
-                        "ACTIVO": ACTIVO,
-                        "PERFIL_ID": PERFIL_ID
-                        }
+                elif 'nombreCoach' in request.POST:
+                    #Asigno Perfil
+                    PERFIL_ID = 2
+                    NOMBRE = request.POST.get('nombreCoach')
+                    
+                else:
+                    #Usuario Administrador
+                    #Asigno Perfil
+                    PERFIL_ID = 1
+                    NOMBRE = request.POST.get('nombreAdmin')
+                    
+                #Creo Json 
+                crearUsuariosJson={
+                            "CORREO": CORREO,
+                            "NOMBRE": NOMBRE,
+                            "APELLIDO": APELLIDO,
+                            "FONO": FONO,
+                            "IDIOMA": IDIOMA,
+                            "EMPRESA": EMPRESA,
+                            "NOMBREJEFE": str(NOMBREJEFE)+' '+str(APELLIDOJEFE),
+                            "EMAILJEFE": EMAILJEFE,
+                            "FONOJEFE": FONOJEFE,
+                            "ACTIVO": ACTIVO,
+                            "PERFIL_ID": PERFIL_ID
+                            }
 
-                            
-            #Metodo para crear usuario en API        
-            urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
-            response =  requests.post(urlCrearUsuarios, headers=headers,json=crearUsuariosJson)
-            
-            if response.status_code == 201:
-                #mensaje para avisar al front que se creo el usuario.
-                messages.success(request, 'Usuario creado con éxito.')
-                return render(request,'usuarios/nuevoUsuario.html', data)
-            else:
-                messages.error(request, 'Hubo un problema al crear el usuario.')
-            
-        return render(request,'usuarios/nuevoUsuario.html', data) 
+                                
+                #Metodo para crear usuario en API        
+                urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
+                response =  requests.post(urlCrearUsuarios, headers=headers,json=crearUsuariosJson)
+                
+                if response.status_code == 201:
+                    #mensaje para avisar al front que se creo el usuario.
+                    messages.success(request, 'Usuario creado con éxito.')
+                    return render(request,'usuarios/nuevoUsuario.html', data)
+                else:
+                    messages.error(request, 'Hubo un problema al crear el usuario.')
+                
+            return render(request,'usuarios/nuevoUsuario.html', data) 
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -647,17 +722,24 @@ def listUsuarios(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        # print (str(request.session['Perfil_Usuario']))
-        # print(str(perfil))
-        urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
-        usuarios = requests.get(urlListarUsuarios, headers=headers).json()
-        
-        data = {
-            'usuario': perfil,
-            'entity': usuarios,
-        }
+        if perfil['perfil'] == 1:
+            # print (str(request.session['Perfil_Usuario']))
+            # print(str(perfil))
+            urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
+            usuarios = requests.get(urlListarUsuarios, headers=headers).json()
+            
+            data = {
+                'usuario': perfil,
+                'entity': usuarios,
+            }
 
-        return render(request, 'usuarios/listUsuarios.html', data)
+            return render(request, 'usuarios/listUsuarios.html', data)
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -669,76 +751,82 @@ def modUsuarios(request,id):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-
-        if request.method == 'POST' and perfil['perfil'] == 1:
-            #Obtener datos del Front
-            APELLIDO = request.POST.get('apellido')
-            CORREO = request.POST.get('email')
-            FONO = request.POST.get('telefono')
-            IDIOMA = request.POST.get('idioma')
-            #Se definen por defecto en None
-            EMPRESA = None
-            NOMBREJEFE = None
-            EMAILJEFE = None
-            FONOJEFE = None
-            #Por defecto Activo
-            estado = request.POST.get('activo')
-            if 'activo' in request.POST:
-                ACTIVO = 1
-            else:
-                ACTIVO = 0
-            
-            #Obtiene tipo de usuario
-            if 'nombreCoachee' in request.POST:
-                #Asigno Perfil
-                PERFIL_ID = 3
-                NOMBRE = request.POST.get('nombreCoachee')
-                EMPRESA = request.POST.get('nombreEmp')
-                NOMBREJEFE = request.POST.get('nombrejefe')
-                EMAILJEFE = request.POST.get('emailjefe')
-                FONOJEFE = request.POST.get('telefonoJefe')
-            
-            elif 'nombreCoach' in request.POST:
-            #Asigno Perfil
-                PERFIL_ID = 2
-                NOMBRE = request.POST.get('nombreCoach')
+        if perfil['perfil'] == 1:
+            if request.method == 'POST':
+                #Obtener datos del Front
+                APELLIDO = request.POST.get('apellido')
+                CORREO = request.POST.get('email')
+                FONO = request.POST.get('telefono')
+                IDIOMA = request.POST.get('idioma')
+                #Se definen por defecto en None
+                EMPRESA = None
+                NOMBREJEFE = None
+                EMAILJEFE = None
+                FONOJEFE = None
+                #Por defecto Activo
+                estado = request.POST.get('activo')
+                if 'activo' in request.POST:
+                    ACTIVO = 1
+                else:
+                    ACTIVO = 0
                 
-            else:
-                #Usuario Administrador
-                #Asigno Perfil
-                PERFIL_ID = 1
-                NOMBRE = request.POST.get('nombreAdmin')
-                            
+                #Obtiene tipo de usuario
+                if 'nombreCoachee' in request.POST:
+                    #Asigno Perfil
+                    PERFIL_ID = 3
+                    NOMBRE = request.POST.get('nombreCoachee')
+                    EMPRESA = request.POST.get('nombreEmp')
+                    NOMBREJEFE = request.POST.get('nombrejefe')
+                    EMAILJEFE = request.POST.get('emailjefe')
+                    FONOJEFE = request.POST.get('telefonoJefe')
                 
-            #Creo Json 
-            modificaUsuarioJson={
-                        "ID": id,
-                        "CORREO": CORREO,
-                        "NOMBRE": NOMBRE,
-                        "APELLIDO": APELLIDO,
-                        "FONO": FONO,
-                        "IDIOMA": IDIOMA,
-                        "EMPRESA": EMPRESA,
-                        "NOMBREJEFE": str(NOMBREJEFE),
-                        "EMAILJEFE": EMAILJEFE,
-                        "FONOJEFE": FONOJEFE,
-                        "ACTIVO": ACTIVO,
-                        "PERFIL_ID": PERFIL_ID
-                        }
-            
-            #Metodo para crear usuario en API        
-            urlModUsuarios = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
-            response =  requests.put(urlModUsuarios, headers=headers,json=modificaUsuarioJson)
+                elif 'nombreCoach' in request.POST:
+                #Asigno Perfil
+                    PERFIL_ID = 2
+                    NOMBRE = request.POST.get('nombreCoach')
+                    
+                else:
+                    #Usuario Administrador
+                    #Asigno Perfil
+                    PERFIL_ID = 1
+                    NOMBRE = request.POST.get('nombreAdmin')
+                                
+                    
+                #Creo Json 
+                modificaUsuarioJson={
+                            "ID": id,
+                            "CORREO": CORREO,
+                            "NOMBRE": NOMBRE,
+                            "APELLIDO": APELLIDO,
+                            "FONO": FONO,
+                            "IDIOMA": IDIOMA,
+                            "EMPRESA": EMPRESA,
+                            "NOMBREJEFE": str(NOMBREJEFE),
+                            "EMAILJEFE": EMAILJEFE,
+                            "FONOJEFE": FONOJEFE,
+                            "ACTIVO": ACTIVO,
+                            "PERFIL_ID": PERFIL_ID
+                            }
+                
+                #Metodo para crear usuario en API        
+                urlModUsuarios = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
+                response =  requests.put(urlModUsuarios, headers=headers,json=modificaUsuarioJson)
 
-            if response.status_code == 200:
-                messages.success(request, 'Usuario actualizado con éxito.')
-                return redirect('listUsuarios')
+                if response.status_code == 200:
+                    messages.success(request, 'Usuario actualizado con éxito.')
+                    return redirect('listUsuarios')
 
-            else:
-                messages.error(request, 'Hubo un problema al actualizar el usuario.')
-                return redirect('listUsuarios')
+                else:
+                    messages.error(request, 'Hubo un problema al actualizar el usuario.')
+                    return redirect('listUsuarios')
 
-        return redirect('listUsuarios')
+            return redirect('listUsuarios')
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -751,12 +839,19 @@ def listProCoach(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 2:
+            data = {
+                    'usuario': perfil
+                }
 
-        data = {
-                'usuario': perfil
-            }
+            return render(request,'procesoCoach/listProCoach.html',data)
 
-        return render(request,'procesoCoach/listProCoach.html',data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
@@ -767,30 +862,43 @@ def listProCoach(request):
 def procAsig(request):
     try:
         perfil = request.session['Perfil_Usuario']
-        
-        data = {
-                'usuario': perfil
-            }
+        if perfil['perfil'] == 2:
+            data = {
+                    'usuario': perfil
+                }
 
-        return render(request,'procesoCoach/procAsig.html', data) 
+            return render(request,'procesoCoach/procAsig.html', data) 
+        
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
 
 
-#Perteneciente al Coachee
+# ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 
 #Procesos asignados al Coachee
 def infoProCoachee(request):
     try:
         perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 3:
+            data = {
+                    'usuario': perfil
+                }
 
-        data = {
-                'usuario': perfil
-            }
-
-        return render(request,'procesoCoachee/infoProCoachee.html',data)
+            return render(request,'procesoCoachee/infoProCoachee.html',data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            return redirect(plantilla)
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')

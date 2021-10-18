@@ -354,7 +354,7 @@ function newProceso() {
   var coachProc = document.getElementById("coachProces");
   var coacheeProc = document.getElementById("coacheeProces");
   //console.log(nombre.value)
-  if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "" || coacheeProc.value == "") {
+  if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "Seleccione un Coach" || coacheeProc.value == "Seleccione un Coachee") {
       Swal.fire('Todos los campos son Obligatorios!', '', 'info')
   } 
   else

@@ -379,7 +379,8 @@
 .wrap-header {
   position: relative;
   width: 35%;
-  z-index: 0; }
+  z-index: 0;
+  height: inherit; }
   .wrap-header:after {
     position: absolute;
     top: 0;
@@ -454,7 +455,7 @@
 .calendar-wrap {
   width: 65%;
   background: #fff;
-  padding: 10px 20px 20px 20px; }
+  /* padding: 10px 20px 20px 20px; */ }
   @media (max-width: 767.98px) {
     .calendar-wrap {
       width: 100%; } }

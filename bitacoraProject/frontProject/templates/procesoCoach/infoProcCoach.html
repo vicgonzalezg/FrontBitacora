@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 
-<H2 for="">Proceso Empresa: </H2>
+<H2 class="text-center">Proceso Empresa: </H2>
 
 
 <!--Formulario del proceso y sus sesiones -->
@@ -78,13 +78,13 @@
                         <div class="form-group col-md-6">
                             <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                             <div class="col-md-12 col-lg-8">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <div class="form-group col-md-6">
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="7" class="form-control"></textarea>
                             </div>
                         </div>
                         <!--Tabla con registro de fechas de las sesiones-->
@@ -164,35 +164,62 @@
                                                 sesión:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="col-md-6 control-label" name="nombre">Asignaciones/Acuerdos:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-12">
                                             <label class="col-md-6 control-label" name="nombre">Avances:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
-                                        <!--sector donde se almacenan los documentos y links-->
-                                        <div class="form-group col-md-3">
+                                    </div>
+                                    <div class="row">
+                                         <!--sector donde se almacenan los documentos y links-->
+                                         <div class="form-group col-md-8">
                                             <label class="col-md-6 control-label" name="nombre">Links:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                            <div class="form-group col-md-12">
+                                                <table id="listSesion" class="table thead-dark border border-dark">
+                                                    <thead class="thead-dark">
+                                                        <tr class="cabecera">
+                                                            <th scope="col">Nombre</th>
+                                                            <th scope="col">Tamaño</th>
+                                                            <th scope="col">Fecha</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="col-md-6 col-lg-4 control-label">Documentos:</label>
+                                        <div class="form-group col-md-4">
+                                            <br><br>
+                                            <label class="col-md-12 col-lg-4 control-label">Documentos:</label>
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <input type="file" multiple>
@@ -211,6 +238,7 @@
     </form>
     <br>
     <!--Boton para almacena la informacion del proceso-->
+    <a href="{% url 'listProCoach' %}" class="btn btn-secondary float-start col-md-2">Volver</a>
     <button class="btn btn-primary float-end col-md-2">Grabar</button>
     <br>
     <br>

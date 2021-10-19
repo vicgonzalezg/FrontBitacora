@@ -68,7 +68,7 @@ def login(request):
 #Cierre de sesión
 def logout(request):
     try:
-        print('hola vengo de logout')
+        #print('hola vengo de logout')
         headers = {'':''}
         request.session['Headers'] = headers
         return redirect('/')
@@ -838,14 +838,16 @@ def modUsuarios(request,id):
 def listProCoach(request):
     try:
         headers = request.session['Headers']
+        print(headers)
         perfil = request.session['Perfil_Usuario']
+        
         if perfil['perfil'] == 2:
             data = {
                     'usuario': perfil
                 }
 
             return render(request,'procesoCoach/listProCoach.html',data)
-
+        
         else:
             if perfil['perfil']  == 1:
                 plantilla='menuAdmin'
@@ -861,6 +863,7 @@ def listProCoach(request):
 #Procesos asignados al Coach
 def procAsig(request):
     try:
+        headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
             data = {
@@ -879,6 +882,29 @@ def procAsig(request):
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
+
+def infoProcCoach(request):
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 2:
+            data = {
+                    'usuario': perfil
+                }
+
+            return render(request,'procesoCoach/infoProcCoach.html',data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/') 
+
+
 
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#

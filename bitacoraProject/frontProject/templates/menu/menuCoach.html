@@ -10,16 +10,22 @@
     <div class="row">
         <div class="list-group d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center">Procesos del día</h3>
-            {% for proceso in entity %}
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
-                </div>
-                <h6 class="mb-1">Estado: {{ proceso.DESCRIPCION }}</h6>
-                <p class="mb-1">Coach: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
-                <p class="mb-1">Coachee: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
-            </a>
-            {% endfor %}
+            {% if entity.ID == None %}
+            <br>
+            <br>
+            <h5 class="text-center">No hay sesiones para el día de hoy</h5>
+            {% else %}
+              {% for proceso in entity %}
+              <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                  <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                  </div>
+                  <h6 class="mb-1">Estado: {{ proceso.DESCRIPCION }}</h6>
+                  <p class="mb-1">Coach: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                  <p class="mb-1">Coachee: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
+              </a>
+              {% endfor %}
+            {% endif %}
             <!-- Paginación -->
             <div>
                 {% include 'base/paginator.html' %}

@@ -435,3 +435,47 @@ function modProceso(elem) {
     })
 }
 }
+
+function modProcesoCoach(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var objetivosProc = document.getElementById("objetivosProc"+'-'+id);
+    var indicadoresProc = document.getElementById("indicadoresProc"+'-'+id);
+    var planAccionProc = document.getElementById("planAccionProc"+'-'+id);
+    if (objetivosProc.value == "" || indicadoresProc.value == "" || planAccionProc.value == "") {
+        Swal.fire('Todos los campos son Obligatorios!', '', 'info')
+    } 
+    else
+    {
+    var formModProceso = document.forms["formModProcesoCoach-"+id];
+    Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            /* Swal.fire({
+                icon: 'success',
+                timer: 2000,
+                title: 'Modificado!',
+                text: 'El proceso ha sido actualizado.',
+                showConfirmButton: false,
+            })
+            $('#exampleModal').modal('hide');
+            $(".modal-backdrop").remove(); */
+            formModProceso.submit();
+        }else if (result.isDenied) {
+            Swal.fire({
+                title: 'No se ha realizado ningun cambio.',
+                icon: 'info',
+                timer: 3000,
+                timerProgressBar: true
+            })
+        }
+    })
+}
+}

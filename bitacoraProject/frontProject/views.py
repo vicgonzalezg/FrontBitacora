@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.template import loader
+from datetime import datetime
 
 #definimos el login
 def login(request):
@@ -182,7 +183,9 @@ def menuCoach(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
+            day = datetime.today().strftime('%Y-%m-%d')
+            #print(day)
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION='+str(day)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             proceso = requests.get(urlProcesos,headers=headers).json()
@@ -252,6 +255,8 @@ def menuCoach(request):
                 'entity':listado,
                 'paginator':paginator
             }
+            print('vengo de menucoach')
+            print(data)
 
             return render(request,'menu/menuCoach.html', data)
         else:
@@ -838,13 +843,70 @@ def modUsuarios(request,id):
 def listProCoach(request):
     try:
         headers = request.session['Headers']
-        print(headers)
+        #print(headers)
         perfil = request.session['Perfil_Usuario']
         
         if perfil['perfil'] == 2:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID='+str(perfil['id'])
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            listados = []
+
+            #listado = proceso.update(usuario)
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
+
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
+
+                        listados = json + listados
+
             data = {
-                    'usuario': perfil
-                }
+                'usuario': perfil,
+                'entity':listados,
+            }
 
             return render(request,'procesoCoach/listProCoach.html',data)
         
@@ -866,9 +928,76 @@ def procAsig(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ESTADOPROCESO_ID=1&COACH_ID='+str(perfil['id'])
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            listados = []
+
+            #listado = proceso.update(usuario)
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
+
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
+
+                        listados = json + listados
+
+            page = request.GET.get('page',1)
+
+            try:
+                paginator = Paginator(listados,10)
+                listado = paginator.page(page)
+
+            except:
+                raise Http404
+
             data = {
-                    'usuario': perfil
-                }
+                'usuario': perfil,
+                'entity':listado,
+                'paginator':paginator
+            }
 
             return render(request,'procesoCoach/procAsig.html', data) 
         
@@ -883,16 +1012,112 @@ def procAsig(request):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
 
-def infoProcCoach(request):
+def infoProcCoach(request,id):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
-            data = {
-                    'usuario': perfil
+            if request.method == 'POST':
+                """ nombreEmpresa = request.POST.get('nombre')
+                nombreCoachee = request.POST.get('nombre')
+                apellidoCoachee = request.POST.get('nombre')
+                correoCoachee = request.POST.get('nombre')
+                telefonoCoachee = request.POST.get('nombre')
+                fechaCreacion = request.POST.get('nombre')
+                cantsesiones = request.POST.get('nombre') """
+                objetivo = request.POST.get('objetivosProc')
+                indicadores = request.POST.get('indicadoresProc')
+                planAccion = request.POST.get('planAccionProc')
+                """ nombreJefe = request.POST.get('nombre')
+                emailJefe = request.POST.get('nombre')
+                fonoJefe = request.POST.get('nombre')
+                estadoDescripcion = request.POST.get('nombre')
+                nombreCoach = request.POST.get('nombre')
+                apellidoCoach = request.POST.get('nombre') """
+                idProceso  = id
+
+                modProcCoach={
+                            "ID":idProceso,
+                            "OBJETIVOS":objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion
+                }
+                print(modProcCoach)
+                #Metodo para modificar proceso Coach en API        
+                urlModProcesos = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
+                response =  requests.put(urlModProcesos, headers=headers,json=modProcCoach)
+                print(response.status_code)
+                if response.status_code == 200:
+                    messages.success(request, 'Proceso actualizado con éxito.')
+                    return redirect('listProCoach')
+                else:
+                    messages.error(request, 'Hubo un problema al actualizar el proceso.')
+                    return redirect('listProCoach')
+
+            if request.method == 'GET': 
+                urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
+                urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+                urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+                proceso = requests.get(urlProcesos,headers=headers).json()
+                usuario = requests.get(urlUsuarios,headers=headers).json()
+                estado = requests.get(urlEstado,headers=headers).json()
+                listados = []
+
+                #listado = proceso.update(usuario)
+                for p in proceso:
+                    for e in estado:
+                        if p['ESTADOPROCESO_ID']==e['ID']:
+                            estadoDescripcion = e['DESCRIPCION']
+                    for u in usuario:
+                        if p['COACHEE_ID']==u['ID']:
+                            nombreEmpresa = p['NOMBREEMPRESA']
+                            nombreCoachee = u['NOMBRE']
+                            apellidoCoachee = u['APELLIDO']
+                            correoCoachee = u['CORREO']
+                            telefonoCoachee = u['FONO']
+                            fechaCreacion = p['FECHACREACION']
+                            cantsesiones = p['CANTSESIONES']
+                            objetivo = p['OBJETIVOS']
+                            indicadores = p['INDICADORES']
+                            planAccion = p['PLANACCION']
+                            nombreJefe = u['NOMBREJEFE']
+                            emailJefe = u['EMAILJEFE']
+                            fonoJefe = u['FONOJEFE']
+                            idProceso = p['ID']
+                    for uc in usuario:
+                        if p['COACH_ID'] ==uc['ID']:
+                            nombreCoach= uc['NOMBRE']
+                            apellidoCoach= uc['APELLIDO']
+
+                            json=[{
+                                "NOMBREEMPRESA": nombreEmpresa,
+                                "NOMBRE":nombreCoachee,
+                                "APELLIDO":apellidoCoachee,
+                                "CORREO":correoCoachee,
+                                "FONO":telefonoCoachee,
+                                "FECHACREACION":fechaCreacion,
+                                "CANTSESIONES":cantsesiones,
+                                "OBJETIVOS": objetivo,
+                                "INDICADORES": indicadores,
+                                "PLANACCION": planAccion,
+                                "NOMBREJEFE": nombreJefe,
+                                "EMAILJEFE": emailJefe,
+                                "FONOJEFE": fonoJefe,  
+                                "DESCRIPCION":estadoDescripcion,
+                                "NOMBRECOACH":nombreCoach,
+                                "APELLIDOCOACH":apellidoCoach,
+                                "ID": idProceso
+                                }]
+
+                            listados = json + listados
+
+                data = {
+                    'usuario': perfil,
+                    'entity':listados
+                    
                 }
 
-            return render(request,'procesoCoach/infoProcCoach.html',data)
+                return render(request,'procesoCoach/infoProcCoach.html',data)
         else:
             if perfil['perfil']  == 1:
                 plantilla='menuAdmin'

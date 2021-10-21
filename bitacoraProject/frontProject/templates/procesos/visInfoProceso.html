@@ -3,16 +3,20 @@
 {% block title %}Menu Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 {% block content %}
 
-<H2 for="">Proceso Empresa: </H2>
+{% for procesos in entity %}
 
-
+<H2 class="text-center" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
+    {{procesos.NOMBREEMPRESA}}</H2>
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
+        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
         <div class="container">
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->
@@ -23,14 +27,16 @@
                             <label class="col-md-6 control-label" name="nombre">Nombre Coachee</label>
 
                             <div class="col-md-12">
-                                <input class="form-control" />
+                                <input class="form-control" name="nombreCoachee" id="nombreCoachee-{{ procesos.ID }}"
+                                    value="{{procesos.NOMBRE}} {{procesos.APELLIDO}}" readonly />
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control">
+                                <input class="form-control" name="nombreJefe" id="nombreJefe-{{ procesos.ID }}"
+                                    value="{{procesos.NOMBREJEFE}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -39,24 +45,27 @@
                             <br>
                             <label class="col-md-4 control-label">Email Coachee</label>
                             <div class="col-md-12">
-                                <input class="form-control">
+                                <input class="form-control" name="correoCoachee" id="correoCoachee-{{ procesos.ID }}"
+                                    value="{{procesos.CORREO}}" readonly>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control">
+                                <input class="form-control" name="correoJefe" id="correoJefe-{{ procesos.ID }}"
+                                    value="{{procesos.EMAILJEFE}}" readonly>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-6 control-label" name="nombre">Telefono Coachee</label>
+                            <label class="col-md-6 control-label" name="telefono">Telefono Coachee</label>
 
                             <div class="col-md-12">
-                                <input class="form-control" />
+                                <input class="form-control" name="telefonoCoachee"
+                                    id="telefonoCoachee-{{ procesos.ID }}" value="{{procesos.FONO}}" readonly />
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -64,7 +73,8 @@
                             <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
 
                             <div class="col-md-12 col-lg-8">
-                                <input class="form-control">
+                                <input class="form-control" name="telefonoJefe" id="telefonoJefe-{{ procesos.ID }}"
+                                    value="{{procesos.FONOJEFE}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -78,13 +88,15 @@
                         <div class="form-group col-md-6">
                             <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                             <div class="col-md-12">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="5" class="form-control" name="objetivosProc"
+                                    id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}</textarea>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                             <div class="col-md-12 col-lg-8">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="5" class="form-control" name="indicadoresProc"
+                                    id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -97,7 +109,8 @@
                         <div class="form-group col-md-6">
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
-                                <textarea class="form-control"></textarea>
+                                <textarea rows="7" class="form-control" name="planAccionProc"
+                                    id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
                         <!--Tabla con registro de fechas de las sesiones-->
@@ -164,38 +177,69 @@
                                                 sesión:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label" name="nombre">Asignaciones/Acuerdos:</label>
+                                            <label class="col-md-6 control-label"
+                                                name="nombre">Asignaciones/Acuerdos:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-12">
                                             <label class="col-md-6 control-label" name="nombre">Avances:</label>
 
                                             <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                                <textarea rows="4" class="form-control"></textarea>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <!--sector donde se almacenan los documentos y links-->
-                                        <div class="form-group col-md-3">
-                                            <label class="col-md-6 control-label" name="nombre">Links:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea class="form-control"></textarea>
+                                        <div class="form-group col-md-8">
+                                            <label class="col-md-6 control-label" name="nombre">Documentos:</label>
+                                            <div class="form-group col-md-12">
+                                                <table id="example" class="table thead-dark border border-dark">
+                                                    <thead class="thead-dark">
+                                                        <tr class="cabecera">
+                                                            <th scope="col"></th>
+                                                            <th scope="col">Nombre</th>
+                                                            <th scope="col">Tamaño</th>
+                                                            <th scope="col">Fecha</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-word"></i></th>
+                                                            <th scope="row"><a href="#">Documentos.docx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-powerpoint"></i></th>
+                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-pdf"></i></th>
+                                                            <th scope="row"><a href="#">Manual.pdf</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="col-md-6 col-lg-4 control-label">Documentos:</label>
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <input type="file" multiple>
+                                        <div class="form-group col-md-4">
+                                            <label class="col-md-12 control-label">Linsk:</label>
+                                            <div class="col-md-12 float-end">
+                                                <div class="">
+                                                    <textarea rows="7" class="form-control"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,15 +255,30 @@
     </form>
     <br>
     <!--Boton para almacena la informacion del proceso-->
-    <button class="btn btn-primary float-end col-md-2">Grabar</button>
+    <a onclick = "window.close ()" class="btn btn-secondary float-start col-md-2">Cerrar</a>
     <br>
     <br>
     <br>
 </div>
 
+{% endfor %}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
+{% if messages %}
+{% for message in messages %}
+<script>
+    Swal.fire({
+        title: '{{ message }}',
+        icon: '{{ message.tags }}',
+        heightAuto: false,
+        timer: 3000,
+        timerProgressBar: true
+    })
+</script>
+{% endfor %}
+{% endif %}
 {% endblock %}
+

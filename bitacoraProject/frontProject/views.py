@@ -560,49 +560,81 @@ def modProceso(request,id):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
 
-#terminar Proceso
-def termiProceso(request):
-    try:
-        perfil = request.session['Perfil_Usuario']
-        if perfil['perfil'] == 1:
-            data = {
-                'usuario': perfil
-                }
-
-            return render(request,'procesos/termiProceso.html', data) 
-
-        else:
-            if perfil['perfil']  == 2:
-                plantilla='menuCoach'
-            elif perfil['perfil']  == 3:
-                plantilla='menuCoachee'
-            return redirect(plantilla)
-
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
-
 #información Proceso
-def infoProceso(request):
-    try:
+def visInfoProceso(request, id):
+        headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstadosProcesos,headers=headers).json()
+            listados = []
+
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
+
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
+
+                        listados = json + listados
+
             data = {
-                'usuario': perfil
-                }
-
-            return render(request,'procesos/infoProceso.html', data) 
-
+                'usuario': perfil,
+                'entity':listados,
+            
+            }
+            return render(request,'procesos/visInfoProceso.html',data)   
         else:
             if perfil['perfil']  == 2:
                 plantilla='menuCoach'
             elif perfil['perfil']  == 3:
                 plantilla='menuCoachee'
-            return redirect(plantilla)
+            return redirect(plantilla) 
 
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/') 
+
+
 
 ## ----------------------------------- USUARIOS ------------------------------------------
 

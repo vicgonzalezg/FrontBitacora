@@ -10,9 +10,12 @@ import requests
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import Http404
-from django.template import loader
 from datetime import datetime
-
+from django.template.loader import get_template
+from weasyprint import HTML, CSS
+from bitacoraProject import settings 
+from bitacoraProject.wsgi import *
+import base64
 #definimos el login
 def login(request):
     if request.method == 'POST':
@@ -1187,4 +1190,100 @@ def infoProCoachee(request):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
 
+#Imprimi Reporte
 
+def imprimirProceso(request,id):
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 2:
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            listados = []
+
+            #listado = proceso.update(usuario)
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
+
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
+
+                        listados = json + listados
+            
+            template = get_template("base/reporte.html")
+            
+            data = {
+                'usuario': perfil,
+                'entity':listados
+            }
+            context = {
+                 'entity':listados
+            }
+            html_template = template.render(context)
+            css_url = os.path.join(settings.BASE_DIR,'frontProject/static/css/bootstrap.css')
+            
+            pdf_file = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
+            
+            response = HttpResponse(pdf_file,content_type='application/pdf;')
+            response['Content-Disposition'] = 'inline; filename=reporte_proceso.pdf'
+            #with open("reporte_proceso.pdf", "rb") as pdf_file:
+            #    encoded_string = base64.b64encode(pdf_file)
+            #    pdf_file.close()
+            encoded = base64.b64encode(pdf_file)
+            response['Content-Transfer-Encoding'] = 'binary'
+            response['Content-Disposition'] = 'attachment'
+            return response
+            #return render(request,'procesoCoach/infoProcCoach.html',data)
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')

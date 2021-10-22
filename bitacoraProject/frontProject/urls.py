@@ -30,4 +30,6 @@ urlpatterns = [
     #Perteneciente al proceso de Coachee
     path('menuCoachee/', views.menuCoachee, name='menuCoachee'),
     path('infoProCoachee/', views.infoProCoachee, name='infoProCoachee'),
+
+    path('imprimirProceso/<int:id>/', views.imprimirProceso, name='imprimirProceso'),
 ]

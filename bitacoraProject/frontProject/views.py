@@ -1274,7 +1274,7 @@ def imprimirProceso(request,id):
             #    pdf_file.close()
             encoded = base64.b64encode(pdf_file)
             response['Content-Transfer-Encoding'] = 'binary'
-            response['Content-Disposition'] = 'attachment; filename="home_page.pdf"'
+            response['Content-Disposition'] = 'attachment; filename= ReporteEmpresa_'+ nombreEmpresa + '.pdf'
             return response
             #return render(request,'procesoCoach/infoProcCoach.html',data)
         else:

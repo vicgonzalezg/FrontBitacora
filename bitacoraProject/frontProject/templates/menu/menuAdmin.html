@@ -10,13 +10,19 @@
     <div class="row">
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center fw-bold">Últimos Procesos Creados</h3>
-            {% for proceso in entity %}
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
-                    <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
-                    <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
-                </a>
-            {% endfor %}
+            {% if entity.ID == None %}
+            <br>
+            <br>
+            <h5 class="text-center">No hay procesos</h5>
+            {% else %}
+              {% for proceso in entity %}
+                  <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                      <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                      <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                      <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
+                  </a>
+              {% endfor %}
+            {% endif %}
         </div>
         <!-- Calendario -->
         <div class="d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">

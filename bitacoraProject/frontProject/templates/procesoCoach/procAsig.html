@@ -12,6 +12,11 @@
 
         <div class="justify-content-center list-group d-flex col-12 col-sm-12 col-md-12 p-1">
             <h3 class="text-center fw-bold text-center">Procesos Asignados(No Iniciados)</h3>
+            {% if entity.ID == None %}
+            <br>
+            <br>
+            <h5 class="text-center">No hay procesos</h5>
+            {% else %}            
             {% for procesos in entity %}
             <br>            
            
@@ -29,6 +34,7 @@
                 <span class="col-md-1"></span>
             </div>
             {% endfor %}
+            {% endif %}
             <br>
             
             <!-- Paginación -->

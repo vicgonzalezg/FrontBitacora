@@ -12,29 +12,30 @@
 
         <div class="justify-content-center list-group d-flex col-12 col-sm-12 col-md-12 p-1">
             <h3 class="text-center fw-bold text-center">Procesos Asignados(No Iniciados)</h3>
-            {% if entity.ID == None %}
-            <br>
-            <br>
-            <h5 class="text-center">No hay procesos</h5>
-            {% else %}            
+                     
             {% for procesos in entity %}
-            <br>            
-           
-            <div class="row justify-content-center">
+                {% if procesos.NOMBREEMPRESA == None %}
                 <br>
-                <span class="col-md-1"></span>
-                <a href="{% url 'infoProcCoach' procesos.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action col-md-6" aria-current="true">
-                    <div class="text-center">
-                        <h5 class="mb-1 text-center">Proceso Empresa: {{procesos.NOMBREEMPRESA}}</h5>
-                    </div>
-                    <h6 class="mb-1 text-center">Estado: {{procesos.DESCRIPCION}}</h6>
-                    <p class="mb-1 text-center">Coach: {{procesos.NOMBRECOACH}} {{procesos.APELLIDOCOACH}}</p>
-                    <p class="mb-1 text-center">Coachee: {{procesos.NOMBRE}} {{procesos.APELLIDO}}</p>
-                </a>
-                <span class="col-md-1"></span>
-            </div>
+                <br>
+                <h5 class="text-center">No hay procesos</h5>
+                {% else %}   
+                <br>            
+                <div class="row justify-content-center">
+                    <br>
+                    <span class="col-md-1"></span>
+                    <a href="{% url 'infoProcCoach' procesos.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action col-md-6" aria-current="true">
+                        <div class="text-center">
+                            <h5 class="mb-1 text-center">Proceso Empresa: {{procesos.NOMBREEMPRESA}}</h5>
+                        </div>
+                        <h6 class="mb-1 text-center">Estado: {{procesos.DESCRIPCION}}</h6>
+                        <p class="mb-1 text-center">Coach: {{procesos.NOMBRECOACH}} {{procesos.APELLIDOCOACH}}</p>
+                        <p class="mb-1 text-center">Coachee: {{procesos.NOMBRE}} {{procesos.APELLIDO}}</p>
+                    </a>
+                    <span class="col-md-1"></span>
+                </div>
+                {% endif %}
             {% endfor %}
-            {% endif %}
+           
             <br>
             
             <!-- Paginación -->

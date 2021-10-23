@@ -172,9 +172,9 @@ def menuAdmin(request):
             else:
                 data = {
                     'usuario': perfil,
-                    'entity':{'ID'},
+                    'entity':{'NOMBREEMPRESA':None},
                 }
-
+            print(data['entity'])
             return render(request,'menu/menuAdmin.html',data) 
         else:
             if perfil['perfil']  == 2:
@@ -268,7 +268,7 @@ def menuCoach(request):
             else:
                 data = {
                 'usuario': perfil,
-                'entity':{'ID'},
+                'entity':{'NOMBREEMPRESA':None},
                 }
 
             return render(request,'menu/menuCoach.html', data)
@@ -372,7 +372,7 @@ def procesosAdmin(request):
             else:
                     data = {
                     'usuario': perfil,
-                    'entity':{'ID'},
+                    'entity':{'NOMBREEMPRESA':None},
                     }
 
             return render(request,'procesos/procesosAdmin.html', data)
@@ -590,65 +590,60 @@ def visInfoProceso(request, id):
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstadosProcesos,headers=headers).json()
             listados = []
-            if len(proceso) > 0:
-                for p in proceso:
-                    for e in estado:
-                        if p['ESTADOPROCESO_ID']==e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID']==u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            fechaCreacion = p['FECHACREACION']
-                            cantsesiones = p['CANTSESIONES']
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
-                    for uc in usuario:
-                        if p['COACH_ID'] ==uc['ID']:
-                            nombreCoach= uc['NOMBRE']
-                            apellidoCoach= uc['APELLIDO']
+            
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID']==e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID']==u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] ==uc['ID']:
+                        nombreCoach= uc['NOMBRE']
+                        apellidoCoach= uc['APELLIDO']
 
-                            json=[{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE":nombreCoachee,
-                                "APELLIDO":apellidoCoachee,
-                                "CORREO":correoCoachee,
-                                "FONO":telefonoCoachee,
-                                "FECHACREACION":fechaCreacion,
-                                "CANTSESIONES":cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,  
-                                "DESCRIPCION":estadoDescripcion,
-                                "NOMBRECOACH":nombreCoach,
-                                "APELLIDOCOACH":apellidoCoach,
-                                "ID": idProceso
-                                }]
+                        json=[{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE":nombreCoachee,
+                            "APELLIDO":apellidoCoachee,
+                            "CORREO":correoCoachee,
+                            "FONO":telefonoCoachee,
+                            "FECHACREACION":fechaCreacion,
+                            "CANTSESIONES":cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,  
+                            "DESCRIPCION":estadoDescripcion,
+                            "NOMBRECOACH":nombreCoach,
+                            "APELLIDOCOACH":apellidoCoach,
+                            "ID": idProceso
+                            }]
 
-                            listados = json + listados
+                        listados = json + listados
 
-                data = {
-                    'usuario': perfil,
-                    'entity':listados,
-                
-                }
-            else:
-                data = {
+            data = {
                 'usuario': perfil,
-                'entity':{'ID'},
-                }
-
+                'entity':listados,
+            
+            }
+            
             return render(request,'procesos/visInfoProceso.html',data)   
         else:
             if perfil['perfil']  == 2:
@@ -1059,7 +1054,7 @@ def procAsig(request):
             else:
                 data = {
                 'usuario': perfil,
-                'entity':{'ID'},
+                'entity':{'NOMBREEMPRESA':None},
                 }
 
             return render(request,'procesoCoach/procAsig.html', data) 

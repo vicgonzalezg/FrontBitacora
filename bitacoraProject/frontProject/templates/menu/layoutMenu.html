@@ -25,14 +25,13 @@
     <!-- Inicio Sidebar collapse por prefil -->
     {% if usuario.perfil == 1 or usuario.perfil == 2 %}
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        {% if usuario.perfil == 1 %}
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> {% if usuario.perfil == 1 %}
         <a href="{% url 'menuAdmin' %}">
             <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
         </a>
         <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
         <!-- Opciones segun perfil -->
-       
+
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
         <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
@@ -41,7 +40,7 @@
             <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
         </ul>
         <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
-        <ul class="d-sm-block d-md-none"  id="sidebarmenu">
+        <ul class="d-sm-block d-md-none" id="sidebarmenu">
             <a href="{% url 'nuevoUsuario'%}">Nuevo Usuario</a>
             <a href="{% url 'listUsuarios'%}">Listar Usuarios</a>
         </ul>
@@ -54,8 +53,7 @@
             <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
         </a>
         <a href="{% url 'procAsig' %}">Procesos Asignados</a>
-        <a href="{% url 'listProCoach'%}">Listar Proceso</a>
-        {% endif %}
+        <a href="{% url 'listProCoach'%}">Listar Proceso</a> {% endif %}
     </div>
     {% endif %}
 
@@ -65,15 +63,13 @@
         <div class="header">
             <!-- Botón para el menu sidebar -->
             {% if usuario.perfil == 1 or usuario.perfil == 2 %}
-            <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
-            {% elif usuario.perfil == 3 %}
+            <button class="openbtn" onclick="openNav()">&#9776; Menú </button> {% elif usuario.perfil == 3 %}
             <a href="{% url 'menuCoachee' %}">
                 <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
             </a>
             {% endif %}
             <!-- Bienvenida al usuario por su nombre -->
-            <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
-                style="float:right;">Hola {{ usuario.nombre }}</button>
+            <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" style="float:right;">Hola {{ usuario.nombre }}</button>
 
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -85,9 +81,9 @@
 
     <!-- Se agrega bloque para el body -->
     {% block content%} {% endblock%}
-<!-- Footer -->
+    <!-- Footer -->
 
-<!--footer class="page-footer font-small mdb-color darken-3 pt-4">
+    <!--footer class="page-footer font-small mdb-color darken-3 pt-4">
 
      Copyright 
     <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
@@ -96,12 +92,12 @@
 
 </footer>
  Footer -->
- <footer class="footer">
-    <div class="container">
-        <br>
-      <div class="footer-copyright text-center ">© 2021 Copyright: Castivine</div>
-    </div>
-  </footer>
+    <footer class="footer">
+        <div class="container">
+            <br>
+            <div class="footer-copyright text-center ">© 2021 Copyright: Castivine</div>
+        </div>
+    </footer>
 
 </body>
 
@@ -115,9 +111,7 @@
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/menu.js' %}"></script>
 <!-- Custom script -->
-{% block js %}
-
-{% endblock js %}
+{% block js %} {% endblock js %}
 
 
 <!--Modal perfil-->

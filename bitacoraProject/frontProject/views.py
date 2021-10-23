@@ -192,9 +192,10 @@ def menuCoach(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
+            id=perfil['id']
             day = datetime.today().strftime('%Y-%m-%d')
             #print(day)
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION='+str(day)
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION='+str(day)+'&COACH_ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             proceso = requests.get(urlProcesos,headers=headers).json()

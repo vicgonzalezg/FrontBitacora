@@ -2,124 +2,69 @@
 {% load static %}
 {% block title %}Menu Coachee{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/jalendar.min.css' %}" type="text/css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!--jQuery-->
+<script type="text/javascript" src="{% static 'js/jalendar.min.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
 {% block content %}
 <!-- Listado de Sesiones -->
 <div class="container">
-    <div class="row">
-        <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-            <h3 class="text-center">Sesiones del día</h3>
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
-                </div>
-                <h5 class="mb-1">Estado: Segunda Sesión</h5>
-                <p class="mb-1">Coach: Ivan Espindola</p>
-                <p class="mb-1">Coachee: Danilo Gómez</p>
-            </a>
+  <div class="row">
+    <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
+      <h3 class="text-center">Sesiones del día</h3>
+      <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
         </div>
-        <!-- Calendario -->
-        <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12">
-                <h3 class="text-center">Calendario</h3>
-                <div class="elegant-calencar d-md-flex py-1">
-                    <div class="wrap-header d-flex align-items-center img" style="background-image: url(../../static/imagenes/bg.jpg);">
-                <p id="reset">Hoy</p>
-                <div id="header" class="p-0">
-                            <!-- <div class="pre-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-left"></i></div> -->
-                <div class="head-info">
-                    <div class="head-month"></div>
-                    <div class="head-day"></div>
-                </div>
-                <!-- <div class="next-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-right"></i></div> -->
-                </div>
-              </div>
-              <div class="calendar-wrap">
-                  <div class="w-100 button-wrap">
-                      <div class="pre-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-left"></i></div>
-                      <div class="next-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-right"></i></div>
-                  </div>
-                <table id="calendar">
-                <thead>
-                    <tr>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mie</th>
-                    <th>Jue</th>
-                    <th>Vie</th>
-                    <th>Sab</th>
-                    <th>Dom</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                </tbody>
-                </table>
-              </div>
-            </div>
-            </div>
-        </div>
-        
+        <h5 class="mb-1">Estado: Segunda Sesión</h5>
+        <p class="mb-1">Coach: Ivan Espindola</p>
+        <p class="mb-1">Coachee: Danilo Gómez</p>
+      </a>
     </div>
-    
-    <script src="{% static '/js/jquery.min_calendar.js' %}"></script>
-    <script src="{% static '/js/popper_calendar.js' %}"></script>
-    <script src="{% static '/js/bootstrap.min_calendar.js' %}"></script>
-    <script src="{% static '/js/main.js' %}"></script>
-    
-    {% endblock %}
-    
+    <!-- Calendario -->
+    <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <div class="col-md-12">
+        <h3 class="text-center">Calendario</h3>
+        <div class="elegant-calencar d-md-flex py-1">
+          <div class="wrap-header d-flex align-items-center img"
+            style="background-image: url(../../static/imagenes/bg.jpg);">
+            <p id="reset">Hoy</p>
+            <div id="header" class="p-0">
+              <!-- <div class="pre-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-left"></i></div> -->
+              <div class="head-info">
+                <div class="head-month"></div>
+                <div class="head-day"></div>
+              </div>
+              <!-- <div class="next-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-right"></i></div> -->
+            </div>
+          </div>
+          <!--Calendario-->
+          <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <div class="col-md-12">
+              <h3 class="text-center fw-bold">Calendario</h3>
+                <div id="yourId" class="jalendar">
+                    <div class="added-event" data-type="task" data-date="24-10-2021"
+                         data-title="Cumpleaños Ivan Espindola">
+                    </div>
+                </div>
+            </div> 
+        </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#yourId').jalendar({
+      color: '#0080c9',
+      color2: 'rgba( 255, 255, 255, 0.9 )',
+      lang: 'ES',
+      titleColor: '#000000', // color del mes 
+      weekColor: '#000000', // color de la semana
+      dayColor: '#000000', // color de los dias 
+      todayColor: '#52BE80', // color del dia de hoy 
+  });
+</script>
+{% endblock %}

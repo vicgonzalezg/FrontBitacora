@@ -20,6 +20,8 @@
 </head>
 
 <body id="imagen-fondo">
+
+
     <!-- ESTO HAY QUE REVISARLO, Al ingresar a otra "pagina" no muestra el menu -->
     <!-- hay que ver si lo dejamos aca o en cada html -->
     <!-- Inicio Sidebar collapse por prefil -->
@@ -69,7 +71,8 @@
             </a>
             {% endif %}
             <!-- Bienvenida al usuario por su nombre -->
-            <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" style="float:right;">Hola {{ usuario.nombre }}</button>
+            <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
+                style="float:right;">Hola {{ usuario.nombre }}</button>
 
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -102,7 +105,6 @@
 </body>
 
 
-
 <!-- Script JS necesarios para el Menu -->
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
@@ -115,7 +117,8 @@
 
 
 <!--Modal perfil-->
-<div style="display: hidden;" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div style="display: hidden;" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             {% include 'Perfil/perfil.html' %}

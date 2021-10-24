@@ -21,7 +21,7 @@
             <br>
             <h5 class="text-center">No hay sesiones para el día de hoy</h5>
             {% else %}
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
                 </div>
@@ -29,6 +29,7 @@
                 <p class="mb-1">Coach: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
                 <p class="mb-1">Coachee: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
             </a>
+            <br>
             {% endif %} {% endfor %}
 
             <!-- Paginación -->
@@ -39,24 +40,21 @@
         <!-- Calendario -->
         
         <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12 align-items-center">
-                <h3 class="text-center col-12">Calendario</h3>
+            <div class="col-md-12">
+                <h3 class="text-center fw-bold">Calendario</h3>
                 <div id="yourId" class="jalendar">
                     <div class="added-event" data-type="task" data-date="24-10-2021"
                          data-title="Cumpleaños Ivan Espindola">
                     </div>
                 </div>
             </div> 
-        </div> 
-            
-            
-        
+        </div>         
     </div>
 </div>
 <script>
     $('#yourId').jalendar({
-        color: '#FFFFFF', // 
-        //color2: '#002b49', // 
+        color: '#0080c9',
+        color2: 'rgba( 255, 255, 255, 0.9 )',
         lang: 'ES',
         titleColor: '#000000', // color del mes 
         weekColor: '#000000', // color de la semana

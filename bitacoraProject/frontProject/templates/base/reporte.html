@@ -1,230 +1,140 @@
+{% load static %}
 {% for procesos in entity %}
-<H2 class="text-center" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
-    {{procesos.NOMBREEMPRESA}}</H2>
 <!--Formulario del proceso y sus sesiones -->
 <div class="bg-light">
-    <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
+    <div class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
         action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
-        <div class="">
-            <div class="panel panel-primary mt-2 px-2 bg-light">
+        <div class="container-fluid">
+            <div>
+                <image class="col-xs-4">
+                        <p class="imagenLogo">
+                            <br />
+                        </p>
+                </image>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 cabeceraSesiones text-center">
+                    <h1 class="nav-procesos">Reporte Empresa: {{procesos.NOMBREEMPRESA}}</h1>
+                </div>
+            </div>
+            <hr>
+            <div class="row" style="margin-bottom: 2rem;">
                 <!--Datos personales del coachee-->
-                <div class="panel-body mt-2">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-6 control-label" name="nombre">Nombre Coachee:  {{procesos.NOMBRE}} {{procesos.APELLIDO}}</label>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-6 col-lg-4 control-label">Nombre Jefe: {{procesos.NOMBREJEFE}}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-4 control-label">Email Coachee: {{procesos.CORREO}}</label>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-5 col-lg-4 control-label">Email Jefe:  {{procesos.EMAILJEFE}}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-6 control-label" name="telefono">Telefono Coachee: {{procesos.FONO}}</label>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <br>
-                            <label class="col-md-6 col-lg-4 control-label">Telefono Jefe: {{procesos.FONOJEFE}}</label>
+                <table class="border">
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Coachee</th>
 
-                        </div>
-                    </div>
-                    <br>
-                </div>
+                    </tr>
+                    <tr>
+                        <td>Nombre Coachee:</td>
+                        <td>{{procesos.NOMBRE}}
+                            {{procesos.APELLIDO}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Coachee:</td>
+                        <td>{{procesos.CORREO}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Coachee:</td>
+                        <td>{{procesos.FONO}}</td>
+                    </tr>
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Jefe</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre Jefe:</td>
+                        <td>{{procesos.NOMBREJEFE}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Jefe:</td>
+                        <td>{{procesos.EMAILJEFE}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Jefe:</td>
+                        <td>{{procesos.FONOJEFE}}</td>
+                    </tr>
+                </table>
             </div>
-            <!--detalles del proceso-->
-            <div class="panel panel-primary mt-4 px-2 bg-light">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
-                            <div class="col-md-12">
-                                <textarea rows="5" class="form-control" name="objetivosProc"
-                                    id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}</textarea>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group col-md-6">
-                            <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
-                            <div class="col-md-12 col-lg-8">
-                                <textarea rows="5" class="form-control" name="indicadoresProc"
-                                    id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
+            <hr>
+            <div style="margin-bottom: 2rem;">
+                <!--Datos del proceso-->
+                <div class="nav-item">
+                    <h2 class="nav-procesos cabeceraSesiones">Datos del Proceso</h2>
                 </div>
+                <table class="border">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Objetivo del proceso:</th>
+                    </tr>
+                    <tr>
+                        <td><textarea rows="5" class="form-control" name="objetivosProc"
+                                id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, sunt recusandae voluptatibus fugiat ducimus modi unde iste, vel adipisci autem laudantium. Numquam exercitationem, temporibus ea incidunt obcaecati dicta magni at.</p></textarea></td>
+                    </tr>
+                </table>
+                <br>
+                <table class="border">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Indicadores de exito:</th>
+                    </tr>
+                    <tr>
+                        <td><textarea rows="5" class="form-control" name="indicadoresProc"
+                                id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate facere aperiam asperiores. Ullam deleniti accusantium pariatur natus quaerat ipsam corporis itaque tempore reiciendis tempora. Aspernatur similique alias excepturi necessitatibus sit! <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda debitis id doloribus, enim ex blanditiis, accusamus fugit beatae excepturi sequi consectetur! Sequi qui ad illo error beatae totam voluptates minus?</p></textarea></td>
+                    </tr>
+                </table>
+                <br>
+                <table class="border">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Plan de Acción:</th>
+                    </tr>
+                    <tr>
+                        <td><textarea rows="7" class="form-control" name="planAccionProc"
+                                id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga iusto velit magni impedit repellendus vel quis voluptas praesentium sit voluptate? Labore earum nesciunt quod doloribus, soluta delectus aut deleniti laudantium!</p></textarea></td>
+                    </tr>
+                </table>
             </div>
-            <div class="panel panel-primary mt-4 px-2 bg-light">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
-                            <div class="col-md-12">
-                                <textarea rows="7" class="form-control" name="planAccionProc"
-                                    id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
-                            </div>
-                        </div>
-                        <!--Tabla con registro de fechas de las sesiones-->
-                        <div class="form-group col-md-6">
-                            <table id="listSesion" class="table thead-dark border border-dark">
-                                <thead class="thead-dark">
-                                    <tr class="cabecera">
-                                        <th scope="col">Sesión</th>
-                                        <th scope="col">Fecha</th>
-                                        <th scope="col">Hora</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-light">
-                                        <th scope="row">1</th>
-                                        <th scope="row">05/06/2021</th>
-                                        <th scope="row">10:00</th>
-                                    </tr>
-                                    <tr class="bg-light">
-                                        <th scope="row">2</th>
-                                        <th scope="row">15/06/2021</th>
-                                        <th scope="row">10:00</th>
-                                    </tr>
-                                    <tr class="bg-light">
-                                        <th scope="row">3</th>
-                                        <th scope="row">25/06/2021</th>
-                                        <th scope="row">10:00</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <br>
-                </div>
+            <hr>
+            <br>
+            {% for sesiones in entity %}
+
+            <div class="nav-item">
+                <h2 class="nav-procesos cabeceraSesiones">Sesión</h2>
             </div>
+            <table class="border">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">Descripción sesión:</th>
+                </tr>
+                <tr>
+                    <td><textarea rows="7" class="form-control" name="descripcionSesion"
+                            id="descripcionSesion-{{ sesiones.ID }}">  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos fuga numquam quidem eaque dolorem officiis veritatis dolore. Cupiditate non officia quasi iure minus veritatis velit iste. Doloribus dolorem quod quaerat.<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus iure minus impedit voluptates ut laborum error commodi nemo ad incidunt dignissimos eius magni officia voluptate nulla, ipsum ab excepturi? Laudantium.</p>  </textarea></td>
+                </tr>
+            </table>
+            <br>
+            <table class="border">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">Asignaciones/Acuerdos:</th>
+                </tr>
+                <tr>
+                    <td><textarea rows="7" class="form-control" name="asignaciones"
+                            id="asignaciones-{{ sesiones.ID }}"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, ullam inventore. Itaque aliquam, reiciendis totam explicabo culpa beatae? Cumque iste fugit dolores a voluptatem quidem blanditiis saepe, soluta accusamus fugiat.<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi aperiam praesentium nisi sunt non autem id ipsa porro. Debitis tempore mollitia nulla voluptatibus. Ea tempore, eos autem dolores vitae quo.</p>   </textarea></td>
+                </tr>
+            </table>
+            <br>
+            <table class="border">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">ㅤㅤAvances:ㅤㅤ</th>
+                </tr>
+                <tr>
+                    <td><textarea rows="7" class="form-control" name="avance"
+                            id="avance-{{ sesiones.ID }}">  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium dicta in delectus incidunt voluptatibus sapiente iure vero, vel impedit reprehenderit assumenda ullam, velit consequuntur rem ad nihil nobis libero neque!</p>  </textarea></td>
+                </tr>
+            </table>
 
-            <div class="container">
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <div class="card text-center">
-                            <!--registro de cada sesión-->
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#">Sesión 1</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 2</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 3</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 4</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="panel-body">
-                                <!--Registro de cada sesión-->
-                                <form class="form-horizontal">
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label" name="nombre">Descripción
-                                                sesión:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label"
-                                                name="nombre">Asignaciones/Acuerdos:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label class="col-md-6 control-label" name="nombre">Avances:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <!--sector donde se almacenan los documentos y links-->
-                                        <div class="form-group col-md-8">
-                                            <label class="col-md-6 control-label" name="nombre">Documentos:</label>
-                                            <div class="form-group col-md-12">
-                                                <table id="example" class="table thead-dark border border-dark">
-                                                    <thead class="thead-dark">
-                                                        <tr class="cabecera">
-                                                            <th scope="col"></th>
-                                                            <th scope="col">Nombre</th>
-                                                            <th scope="col">Tamaño</th>
-                                                            <th scope="col">Fecha</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-word"></i></th>
-                                                            <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-powerpoint"></i></th>
-                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-pdf"></i></th>
-                                                            <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <br>
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <input type="file" multiple>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="col-md-12 control-label">Linsk:</label>
-                                            <div class="col-md-12 float-end">
-                                                <div class="">
-                                                    <textarea rows="7" class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-    </form>
+        <br>
+    </div>
 </div>
-{% endfor %}
 
+
+
+
+{% endfor %}

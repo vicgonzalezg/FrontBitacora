@@ -117,6 +117,7 @@ def menuAdmin(request):
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
+            #print(day)
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'

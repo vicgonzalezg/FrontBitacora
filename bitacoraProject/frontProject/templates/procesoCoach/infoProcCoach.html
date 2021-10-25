@@ -9,7 +9,6 @@
 
 {% endblock %}
 {% block content %}
-
 {% for procesos in entity %}
 <H2 class="text-center" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
     {{procesos.NOMBREEMPRESA}}</H2>
@@ -152,18 +151,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <!--registro de cada sesión-->
-                            {% for sesion in sesiones %}
-
-                            <p>
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseExample-{{sesion.ID}}" aria-expanded="false"
-                                    aria-controls="collapseExample-{{sesion.ID}}">
-                                    Sesión {{ forloop.counter }}
-                                </button>
-                            </p>
-
-
-                            <div class="collapse" id="collapseExample-{{sesion.ID}}">
+                            {% for sesion in sesiones %}                             
+                            <p class="collapsible">Sesión {{ forloop.counter }}</p>
+                            <div class="content">
                                 <div class="panel-body">
                                     <!--Registro de Fecha/hora y estado de cada sesión-->
                                     <form class="form-horizontal">
@@ -294,6 +284,7 @@
     <br>
     <!--Boton para almacena la informacion del proceso-->
     <a href="{% url 'listProCoach' %}" class="btn btn-secondary float-start col-md-2">Volver</a>
+    <span class="col-md-1"></span>
     <button type="submit" onclick="modProcesoCoach(this);" data-id="{{procesos.ID}}"
         class="btn btn-primary float-end col-md-2">Grabar</button>
     <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
@@ -304,12 +295,9 @@
 </div>
 {% endfor %}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 {% if messages %}
 {% for message in messages %}
+
 <script>
     Swal.fire({
         title: '{{ message }}',
@@ -341,12 +329,7 @@
 
 <!-- Custom script -->
 {% block js %}
-<script>
-    var myCollapse = document.getElementById('myCollapse')
-    var bsCollapse = new bootstrap.Collapse(myCollapse, {
-        toggle: false
-    })
-</script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}" />
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
@@ -373,4 +356,20 @@
         });
     });
 </script>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
 {% endblock js %}

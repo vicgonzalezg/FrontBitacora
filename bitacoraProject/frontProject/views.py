@@ -1073,7 +1073,7 @@ def procAsig(request):
         return redirect('/') 
 
 def infoProcCoach(request,id):
-    try:
+    #try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
@@ -1121,6 +1121,9 @@ def infoProcCoach(request,id):
                 proceso = requests.get(urlProcesos,headers=headers).json()
                 usuario = requests.get(urlUsuarios,headers=headers).json()
                 estado = requests.get(urlEstado,headers=headers).json()
+                urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+                sesiones = requests.get(urlSesiones,headers=headers).json()
+                
                 listados = []
 
                 #listado = proceso.update(usuario)
@@ -1168,13 +1171,15 @@ def infoProcCoach(request,id):
                                 "APELLIDOCOACH":apellidoCoach,
                                 "ID": idProceso
                                 }]
-
+                    
                             listados = json + listados
-
+                
+                sesiones = sesiones
+                print(sesiones)
                 data = {
                     'usuario': perfil,
-                    'entity':listados
-                    
+                    'entity':listados,
+                    'sesiones':sesiones
                 }
 
                 return render(request,'procesoCoach/infoProcCoach.html',data)
@@ -1185,12 +1190,9 @@ def infoProcCoach(request,id):
                 plantilla='menuCoachee'
             return redirect(plantilla)
 
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/') 
-
-
-
+    #except Exception as e:
+    #    messages.warning(request,'Ingrese sus credenciales para acceder')
+    #    return redirect('/')
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 
@@ -1255,6 +1257,8 @@ def imprimirProceso(request,id):
                     if p['COACH_ID'] ==uc['ID']:
                         nombreCoach= uc['NOMBRE']
                         apellidoCoach= uc['APELLIDO']
+                        correoCoach= uc['CORREO']
+                        fonoCoach= uc['FONO']
 
                         json=[{
                             "NOMBREEMPRESA": nombreEmpresa,
@@ -1273,6 +1277,8 @@ def imprimirProceso(request,id):
                             "DESCRIPCION":estadoDescripcion,
                             "NOMBRECOACH":nombreCoach,
                             "APELLIDOCOACH":apellidoCoach,
+                            "CORREOCOACH":correoCoach,
+                            "FONOCOACH":fonoCoach,
                             "ID": idProceso
                             }]
 

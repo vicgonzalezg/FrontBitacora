@@ -1,5 +1,6 @@
 .cabeceraReporte{
     background-color: #98b2be;
+    width: 100%;
 }
 
 .cabeceraSesiones{
@@ -14,16 +15,18 @@
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
-pre, p {
-    font-size: 2em;
-    width: 227px;
-    color: #FE7F88;
+.texto {
+    max-width: 100%;
+    color: black;
     background-color: transparent;
 }
 
 .imagenLogo {
     background-image:  url("../imagenes/logo-thinkgo.png");
     background-image:  transparent;
-
+    background-position: left;
+    background-repeat: no-repeat;
+    width: 230px;
+    height: 75px;
     background-color: #002b49;
 }

@@ -53,41 +53,60 @@
                         <td>Telefono Jefe:</td>
                         <td>{{procesos.FONOJEFE}}</td>
                     </tr>
+                    <!-- Comentar si no es necesario los datos del Coach en el Reporte-->
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Coach</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre Coach:</td>
+                        <td>{{procesos.NOMBRECOACH}} {{procesos.APELLIDOCOACH}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Coach:</td>
+                        <td>{{procesos.CORREOCOACH}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Coach:</td>
+                        <td>{{procesos.FONOCOACH}}</td>
+                    </tr>
                 </table>
             </div>
             <hr>
             <div style="margin-bottom: 2rem;">
                 <!--Datos del proceso-->
                 <div class="nav-item">
-                    <h2 class="nav-procesos cabeceraSesiones">Datos del Proceso</h2>
+                    <h2 class="nav-procesos cabeceraSesiones">Información del Proceso</h2>
                 </div>
-                <table class="border">
+                <table class="border w-100">
                     <tr class="border">
                         <th class="cabeceraReporte text-center">Objetivo del proceso:</th>
                     </tr>
                     <tr>
-                        <td><textarea rows="5" class="form-control" name="objetivosProc"
-                                id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, sunt recusandae voluptatibus fugiat ducimus modi unde iste, vel adipisci autem laudantium. Numquam exercitationem, temporibus ea incidunt obcaecati dicta magni at.</p></textarea></td>
+                        <td>
+                            <p class="texto">{{procesos.OBJETIVOS}}</p>
+                        </td>
                     </tr>
                 </table>
                 <br>
-                <table class="border">
+                <table class="border w-100">
                     <tr class="border">
                         <th class="cabeceraReporte text-center">Indicadores de exito:</th>
                     </tr>
                     <tr>
-                        <td><textarea rows="5" class="form-control" name="indicadoresProc"
-                                id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate facere aperiam asperiores. Ullam deleniti accusantium pariatur natus quaerat ipsam corporis itaque tempore reiciendis tempora. Aspernatur similique alias excepturi necessitatibus sit! <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda debitis id doloribus, enim ex blanditiis, accusamus fugit beatae excepturi sequi consectetur! Sequi qui ad illo error beatae totam voluptates minus?</p></textarea></td>
+                        <td>
+                            <p class="texto">{{procesos.INDICADORES}}</p>
+                        </td>
                     </tr>
                 </table>
                 <br>
-                <table class="border">
+                <table class="border w-100">
                     <tr class="border">
                         <th class="cabeceraReporte text-center">Plan de Acción:</th>
                     </tr>
                     <tr>
-                        <td><textarea rows="7" class="form-control" name="planAccionProc"
-                                id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga iusto velit magni impedit repellendus vel quis voluptas praesentium sit voluptate? Labore earum nesciunt quod doloribus, soluta delectus aut deleniti laudantium!</p></textarea></td>
+                        <td>
+                            <p class="texto">{{procesos.PLANACCION}}</p>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -96,35 +115,38 @@
             {% for sesiones in entity %}
 
             <div class="nav-item">
-                <h2 class="nav-procesos cabeceraSesiones">Sesión</h2>
+                <h2 class="nav-procesos cabeceraSesiones">Información de las Sesiónes</h2>
             </div>
-            <table class="border">
+            <table class="border w-100">
                 <tr class="border">
                     <th class="cabeceraReporte text-center">Descripción sesión:</th>
                 </tr>
                 <tr>
-                    <td><textarea rows="7" class="form-control" name="descripcionSesion"
-                            id="descripcionSesion-{{ sesiones.ID }}">  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos fuga numquam quidem eaque dolorem officiis veritatis dolore. Cupiditate non officia quasi iure minus veritatis velit iste. Doloribus dolorem quod quaerat.<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus iure minus impedit voluptates ut laborum error commodi nemo ad incidunt dignissimos eius magni officia voluptate nulla, ipsum ab excepturi? Laudantium.</p>  </textarea></td>
+                    <td>
+                        <p class="texto">Sesiones</p>
+                    </td>
                 </tr>
             </table>
             <br>
-            <table class="border">
+            <table class="border w-100">
                 <tr class="border">
                     <th class="cabeceraReporte text-center">Asignaciones/Acuerdos:</th>
                 </tr>
                 <tr>
-                    <td><textarea rows="7" class="form-control" name="asignaciones"
-                            id="asignaciones-{{ sesiones.ID }}"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, ullam inventore. Itaque aliquam, reiciendis totam explicabo culpa beatae? Cumque iste fugit dolores a voluptatem quidem blanditiis saepe, soluta accusamus fugiat.<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi aperiam praesentium nisi sunt non autem id ipsa porro. Debitis tempore mollitia nulla voluptatibus. Ea tempore, eos autem dolores vitae quo.</p>   </textarea></td>
+                    <td>
+                        <p class="texto">Sesiones Asignaciones</p>
+                    </td>
                 </tr>
             </table>
             <br>
-            <table class="border">
+            <table class="border w-100">
                 <tr class="border">
                     <th class="cabeceraReporte text-center">ㅤㅤAvances:ㅤㅤ</th>
                 </tr>
                 <tr>
-                    <td><textarea rows="7" class="form-control" name="avance"
-                            id="avance-{{ sesiones.ID }}">  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium dicta in delectus incidunt voluptatibus sapiente iure vero, vel impedit reprehenderit assumenda ullam, velit consequuntur rem ad nihil nobis libero neque!</p>  </textarea></td>
+                    <td>
+                        <p class="texto">Sesiones Avance </p>
+                    </td>
                 </tr>
             </table>
 
@@ -133,8 +155,4 @@
         <br>
     </div>
 </div>
-
-
-
-
 {% endfor %}

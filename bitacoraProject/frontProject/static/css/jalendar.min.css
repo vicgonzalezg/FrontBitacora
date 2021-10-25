@@ -383,7 +383,7 @@
     padding: 0 0 14px
 }
 
-.jalendar .jalendar-container .jalendar-pages .add-event .events .events-list .event-single:last-child {
+.jalendar .jalendar-container .jalendar-pages .add-event .events .events-list .event-single {
     padding-bottom: 0;
     background-color: #002b49;/*Se agrega para darle color al fondo */
 }

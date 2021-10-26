@@ -13,6 +13,7 @@ Bienvenidos a la aplicación de FRONT END del proyecto Bitacora THINKGO
      Feliz cumpleaños don Ivan Espindola. 
 
 ******************************************************************************************
+Esto es para el reporte con weasyprint. Autorizado por Ivan Espindola en criticas con Stefano Ledezma.
 Readme solicitado por don Ivan. Autorizado por Nelson Gomez
 1.-Borrar entorno virtual
 2.-Instalar gtk3-runtime-3.24.29-2021-04-29-ts-win64.exe(Instalacion por defecto)

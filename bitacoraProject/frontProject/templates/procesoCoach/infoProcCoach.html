@@ -10,8 +10,18 @@
 {% endblock %}
 {% block content %}
 {% for procesos in entity %}
-<H2 class="text-center" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
-    {{procesos.NOMBREEMPRESA}}</H2>
+<div class="row container">
+    <H2 class="text-center col-md-8" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
+        {{procesos.NOMBREEMPRESA}}</H2>
+    <div class="form-group col-md-3 p-1">
+        <div class="col-md-12">
+            <select class="form-select" aria-label="Default select example">
+
+                <option selected>Open this select menu</option>
+            </select>
+        </div>
+    </div>
+</div>
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
     <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
@@ -151,7 +161,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <!--registro de cada sesión-->
-                            {% for sesion in sesiones %}                             
+                            {% for sesion in sesiones %}
                             <p class="collapsible">Sesión {{ forloop.counter }}</p>
                             <div class="content">
                                 <div class="panel-body">
@@ -162,7 +172,6 @@
                                                 <label class="col-md-6 control-label" name="nombre">Fecha
                                                     sesión:</label>
                                                 <div class="col-md-12">
-
                                                     <input type="date" id="hoy" class="form-control" min="2021-10-01">
                                                 </div>
                                             </div>
@@ -193,7 +202,7 @@
                                                     name="nombre">Asignaciones/Acuerdos:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4" class="form-control"></textarea>
+                                                    <textarea rows="4" class="form-control">{{sesion.ASIGNACION}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,7 +212,7 @@
                                                 <label class="col-md-6 control-label" name="nombre">Avances:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4" class="form-control"></textarea>
+                                                    <textarea rows="4" class="form-control">{{sesion.AVANCES}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -359,17 +368,17 @@
 <script>
     var coll = document.getElementsByClassName("collapsible");
     var i;
-    
+
     for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.maxHeight){
-          content.style.maxHeight = null;
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-        } 
-      });
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
     }
-    </script>
+</script>
 {% endblock js %}

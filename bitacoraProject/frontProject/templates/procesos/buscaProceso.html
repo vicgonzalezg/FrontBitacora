@@ -516,14 +516,15 @@
 $(document).ready(function (){
     var table = $('#example').DataTable({
        dom: 'lrtip',
-       "lengthMenu": [10],
-       "lengthChange": false,
+       "lengthMenu": [10,20,30,40,50],
+       "lengthChange": true,
        "autoWidth": false,
        "scrollX": true,
        "language": {
             "zeroRecords": "No se encontraron registros.",
             "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
+            "infoEmpty": " ",
+            "lengthMenu": "Mostrar _MENU_  filas",
             "infoFiltered": "(filtrado de un total de _MAX_ registros)",
             "paginate": {
                     "first":      "First",

@@ -356,7 +356,9 @@ function newProceso() {
   //console.log(nombre.value)
   if (nombreEmp.value == "" || cantSesion.value == "" || fechIni.value == "" || coachProc.value == "Seleccione un Coach" || coacheeProc.value == "Seleccione un Coachee") {
       Swal.fire('Todos los campos son Obligatorios!', '', 'info')
-  } 
+  }  else if( cantSesion.value < 1){
+    Swal.fire('La cantidad de sesiones debe ser igual o mayor a 1', '', 'info')
+  }
   else
   {
       var formProc = document.forms["formProc"];

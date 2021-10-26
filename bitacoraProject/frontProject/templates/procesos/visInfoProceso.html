@@ -89,14 +89,14 @@
                             <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                             <div class="col-md-12">
                                 <textarea rows="5" class="form-control" name="objetivosProc"
-                                    id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}</textarea>
+                                    id="objetivosProc-{{ procesos.ID }}" readonly>{{procesos.OBJETIVOS}}</textarea>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                             <div class="col-md-12 col-lg-8">
                                 <textarea rows="5" class="form-control" name="indicadoresProc"
-                                    id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}}</textarea>
+                                    id="indicadoresProc-{{ procesos.ID }}" readonly>{{procesos.INDICADORES}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
                                 <textarea rows="7" class="form-control" name="planAccionProc"
-                                    id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
+                                    id="planAccionProc-{{ procesos.ID }}" readonly>{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
                         <!--Tabla con registro de fechas de las sesiones-->
@@ -150,106 +150,132 @@
             <div class="container">
                 <div class="row mt-3">
                     <div class="col-md-12">
-                        <div class="card text-center">
+                        <div class="row">
                             <!--registro de cada sesión-->
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#">Sesión 1</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 2</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 3</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Sesión 4</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <br>
-                            <div class="panel-body">
-                                <!--Registro de cada sesión-->
-                                <form class="form-horizontal">
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label" name="nombre">Descripción
-                                                sesión:</label>
+                            {% for sesion in sesiones %}                             
+                            <p class="collapsible">Sesión {{ forloop.counter }}</p>
+                            <div class="content">
+                                <div class="panel-body">
+                                    <!--Registro de Fecha/hora y estado de cada sesión-->
+                                    <form class="form-horizontal">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Fecha
+                                                    sesión:</label>
+                                                <div class="col-md-12">
 
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
+                                                    <input type="date" id="hoy" class="form-control" min="2021-10-01" readonly>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label"
-                                                name="nombre">Asignaciones/Acuerdos:</label>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Estado
+                                                    sesión:</label>
+                                                <div class="col-md-12">
+                                                    <select class="form-select" aria-label="Default select example" disabled>
 
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label class="col-md-6 control-label" name="nombre">Avances:</label>
-
-                                            <div class="col-md-12">
-                                                <textarea rows="4" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <!--sector donde se almacenan los documentos y links-->
-                                        <div class="form-group col-md-8">
-                                            <label class="col-md-6 control-label" name="nombre">Documentos:</label>
-                                            <div class="form-group col-md-12">
-                                                <table id="example" class="table thead-dark border border-dark">
-                                                    <thead class="thead-dark">
-                                                        <tr class="cabecera">
-                                                            <th scope="col"></th>
-                                                            <th scope="col">Nombre</th>
-                                                            <th scope="col">Tamaño</th>
-                                                            <th scope="col">Fecha</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-word"></i></th>
-                                                            <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-powerpoint"></i></th>
-                                                            <th scope="row"><a href="#">Presentación.pptx</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-pdf"></i></th>
-                                                            <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="col-md-12 control-label">Linsk:</label>
-                                            <div class="col-md-12 float-end">
-                                                <div class="">
-                                                    <textarea rows="7" class="form-control"></textarea>
+                                                        <option selected>Open this select menu</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <br>
-                                </form>
+                                        <br>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Descripción
+                                                    sesión:</label>
+
+                                                <div class="col-md-12">
+                                                    <textarea rows="4"
+                                                        class="form-control" readonly>{{sesion.DESCRIPCION}}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label"
+                                                    name="nombre">Asignaciones/Acuerdos:</label>
+
+                                                <div class="col-md-12">
+                                                    <textarea rows="4" class="form-control" readonly></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-6 control-label" name="nombre">Avances:</label>
+
+                                                <div class="col-md-12">
+                                                    <textarea rows="4" class="form-control" readonly></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <!--sector donde se almacenan los documentos y links-->
+                                            <div class="form-group col-md-8">
+                                                <label class="col-md-6 control-label" name="nombre">Documentos:</label>
+                                                <div class="form-group col-md-12">
+                                                    <table id="example" class="table thead-dark border border-dark">
+                                                        <thead class="thead-dark">
+                                                            <tr class="cabecera">
+                                                                <th scope="col"></th>
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Tamaño</th>
+                                                                <th scope="col">Fecha</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><i class="far fa-file-word"></i>
+                                                                </th>
+                                                                <th scope="row"><a href="#">Documentos.docx</a></th>
+                                                                <th scope="row">523.0</th>
+                                                                <th scope="row">16-09-16</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><i class="far fa-file-powerpoint"></i>
+                                                                </th>
+                                                                <th scope="row"><a href="#">Presentación.pptx</a>
+                                                                </th>
+                                                                <th scope="row">523.0</th>
+                                                                <th scope="row">16-09-16</th>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><i class="far fa-file-pdf"></i></th>
+                                                                <th scope="row"><a href="#">Manual.pdf</a></th>
+                                                                <th scope="row">523.0</th>
+                                                                <th scope="row">16-09-16</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <br>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <input type="file" multiple>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="col-md-12 control-label">Links:</label>
+                                                <div class="col-md-12 float-end">
+                                                    <div class="">
+                                                        <textarea rows="7" class="form-control" readonly></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </form>
+
+                                </div>
                             </div>
+
+                            {% endfor %}
+                            <br>
+
                         </div>
                     </div>
                 </div>
@@ -284,4 +310,50 @@
 {% endfor %}
 {% endif %}
 {% endblock %}
+
+{% block js %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            dom: 'lrtip',
+            "lengthMenu": [5],
+            "lengthChange": false,
+            "autoWidth": false,
+            "scrollX": true,
+            "language": {
+                "zeroRecords": "No se encontraron registros.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+
+        });
+    });
+</script>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
+{% endblock js %}
 

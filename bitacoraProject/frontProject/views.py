@@ -591,6 +591,8 @@ def visInfoProceso(request, id):
             proceso = requests.get(urlProcesos,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstadosProcesos,headers=headers).json()
+            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+            sesiones = requests.get(urlSesiones,headers=headers).json()
             listados = []
             
             for p in proceso:
@@ -639,11 +641,13 @@ def visInfoProceso(request, id):
                             }]
 
                         listados = json + listados
-
+            
+            sesiones = sesiones
+            print(sesiones)
             data = {
                 'usuario': perfil,
                 'entity':listados,
-            
+                'sesiones':sesiones
             }
             
             return render(request,'procesos/visInfoProceso.html',data)   

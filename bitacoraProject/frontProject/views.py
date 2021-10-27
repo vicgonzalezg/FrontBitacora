@@ -1179,11 +1179,14 @@ def infoProcCoach(request,id):
                             listados = json + listados
                 
                 sesiones = sesiones
+                estado = estado
                 print(sesiones)
+                print(estado)
                 data = {
                     'usuario': perfil,
                     'entity':listados,
-                    'sesiones':sesiones
+                    'sesiones':sesiones,
+                    'estados':estado
                 }
 
                 return render(request,'procesoCoach/infoProcCoach.html',data)

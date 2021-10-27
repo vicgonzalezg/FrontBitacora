@@ -13,11 +13,14 @@
 <div class="row container">
     <H2 class="text-center col-md-8" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
         {{procesos.NOMBREEMPRESA}}</H2>
-    <div class="form-group col-md-3 p-1">
+    <label class="col-md-2 ps-5 p-2">Estado Proceso:</label>
+    <div class="form-group col-md-2 p-1 float-start">
         <div class="col-md-12">
             <select class="form-select" aria-label="Default select example">
-
-                <option selected>Open this select menu</option>
+                <option selected>------------------</option>
+                {% for estado in estados %}
+                <option>{{estado.DESCRIPCION}}</option>
+                {% endfor %}
             </select>
         </div>
     </div>
@@ -169,10 +172,23 @@
                                     <form class="form-horizontal">
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label" name="nombre">Fecha
-                                                    sesión:</label>
-                                                <div class="col-md-12">
-                                                    <input type="date" id="hoy" class="form-control" min="2021-10-01">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="col-md-12 control-label" name="nombre">Fecha
+                                                            sesión:</label>
+                                                        <div class="col-md-12">
+                                                            <input type="date" id="hoy" class="form-control"
+                                                                min="2021-10-01" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="col-md-12 control-label" name="nombre">Hora
+                                                            sesión:</label>
+                                                        <div id="hora" class="col-md-12">
+                                                            <input class="col-md-12 p-1" id="appt-time" type="time"
+                                                                name="appt-time" min="12:00" max="18:00" required>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
@@ -202,7 +218,8 @@
                                                     name="nombre">Asignaciones/Acuerdos:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4" class="form-control">{{sesion.ASIGNACION}}</textarea>
+                                                    <textarea rows="4"
+                                                        class="form-control">{{sesion.ASIGNACION}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -212,7 +229,8 @@
                                                 <label class="col-md-6 control-label" name="nombre">Avances:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4" class="form-control">{{sesion.AVANCES}}</textarea>
+                                                    <textarea rows="4"
+                                                        class="form-control">{{sesion.AVANCES}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,6 +293,11 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="form-group col-md-12">
+                                            <button class="btn btn-primary float-end">Guardar Sesión {{ forloop.counter }}</button>
+                                            <br><br>
+                                        </div>
                                         <br>
                                     </form>
 
@@ -333,6 +356,7 @@
     today = yyyy + '-' + mm + '-' + dd;
     document.getElementById("hoy").setAttribute("min", today);
 </script>
+
 
 {% endblock %}
 

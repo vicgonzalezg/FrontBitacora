@@ -352,8 +352,9 @@
                                                 <label class="control-label col-md-2 ms-3" name="nombre">Estado:</label>
                                                 
                                                 <div class="col-md-6 form-check">
-                                                    
-                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
+                                                    <input class="form-check-input" name="activo" 
+                                                    type="checkbox" value="" id="flexCheckChecked" 
+                                                    {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
                                                         {% if usuario.ACTIVO == 1 %}
@@ -415,6 +416,18 @@
 {% endblock %}
 <!-- Custom script -->
 {% block js %}
+<script>
+    $('#flexCheckChecked').on('change', function () {
+        var checkboxvar = $('#flexCheckChecked').is(':checked');
+        
+        if (checkboxvar) {
+            $('label[for="flexCheckChecked"]').text('Habilitado');
+        }
+        else {
+            $('label[for="flexCheckChecked"]').text('Deshabilitado');
+        }
+    });
+</script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}"/>
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
@@ -441,16 +454,38 @@ $(document).ready(function (){
     });
     
     $('#table-filter').on('change', function(){
-       table.search(this.value).draw();   
+    	var search = [];
+      
+      $.each($('#table-filter option:selected'), function(){
+      		search.push($(this).val());
+      });
+      
+      search = search.join('|');
+      table.column(1).search(search, true, false).draw();  
     });
 
     $('#table-filter2').on('change', function(){
-       table.search(this.value).draw();   
+    	var search = [];
+      
+      $.each($('#table-filter2 option:selected'), function(){
+      		search.push($(this).val());
+      });
+      
+      search = search.join('|');
+      table.column(4).search(search, true, false).draw();
     });
+   /*  $('#table-filter').on('change', function(){
+       table.search(this.value).draw();   
+    }); */
+
+   /*  $('#table-filter2').on('change', function(){
+       table.search(this.value).draw();   
+    }); */
 
     $('#nombre').on('keyup change', function () {
         table.column(0).search($(this).val()).draw();
     });
 });
 </script>
+
 {% endblock js %}

@@ -197,11 +197,11 @@ def menuCoach(request):
             day = datetime.today().strftime('%Y-%m-%d')
             #print(day)
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION='+str(day)+'&COACH_ID='+str(id)
-            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID='+str(id)
+            urlSesionesCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             proceso = requests.get(urlProcesos,headers=headers).json()
-            procesosCal = requests.get(urlProcesosCal,headers=headers).json()
+            procesosCal = requests.get(urlSesionesCal,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstado,headers=headers).json()
             listados = []
@@ -1094,6 +1094,9 @@ def infoProcCoach(request,id):
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
             if request.method == 'POST':
+                
+                
+                print('FORMULARIO PROCESO')
                 """ nombreEmpresa = request.POST.get('nombre')
                 nombreCoachee = request.POST.get('nombre')
                 apellidoCoachee = request.POST.get('nombre')
@@ -1118,11 +1121,12 @@ def infoProcCoach(request,id):
                             "INDICADORES": indicadores,
                             "PLANACCION": planAccion
                 }
-                print(modProcCoach)
+                #print(modProcCoach)
                 #Metodo para modificar proceso Coach en API        
                 urlModProcesos = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
                 response =  requests.put(urlModProcesos, headers=headers,json=modProcCoach)
-                print(response.status_code)
+                #print(response.status_code)
+                
                 if response.status_code == 200:
                     messages.success(request, 'Proceso actualizado con éxito.')
                     return redirect('listProCoach')
@@ -1196,8 +1200,8 @@ def infoProcCoach(request,id):
                 sesiones = sesiones
                 estado = estado
                 estadoSesion = estadoSesion
-                print(sesiones)
-                print(estado)
+                #print(sesiones)
+                #print(estado)
                 data = {
                     'usuario': perfil,
                     'entity':listados,
@@ -1218,6 +1222,13 @@ def infoProcCoach(request,id):
     #    messages.warning(request,'Ingrese sus credenciales para acceder')
     #    return redirect('/')
 
+def infoSesionCoach(request,id):
+    if request.method == 'POST':
+        if 'fechaSesion' in request.POST:
+            idP =  request.POST.get('proceso')
+            print('FORMULARIO SESION')
+        return redirect('infoProcCoach',idP)
+    return redirect('listProCoach')
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 
 #Procesos asignados al Coachee

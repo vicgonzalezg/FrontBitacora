@@ -481,3 +481,49 @@ function modProcesoCoach(elem) {
     })
 }
 }
+/* ######################################################################################### */
+/*                                        Sesiones                                            */
+function modSesiones(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var fechaSesion = document.getElementById("fechaSesion"+'-'+id);
+    var apptime = document.getElementById("apptime"+'-'+id);
+    var estadoSesion = document.getElementById("estadoSesion"+'-'+id);
+    var descSesion = document.getElementById("descSesion"+'-'+id);
+    var asigSesion = document.getElementById("asigSesion"+'-'+id);
+    var avancesSesion = document.getElementById("avancesSesion"+'-'+id);
+    var link = document.getElementById("link"+'-'+id);
+    var proceso = document.getElementById("proceso")
+    {
+    var formSesiones = document.forms["formSesiones-"+id];
+    Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            /* Swal.fire({
+                icon: 'success',
+                timer: 2000,
+                title: 'Modificado!',
+                text: 'El proceso ha sido actualizado.',
+                showConfirmButton: false,
+            })
+            $('#exampleModal').modal('hide');
+            $(".modal-backdrop").remove(); */
+            formSesiones.submit();
+        }else if (result.isDenied) {
+            Swal.fire({
+                title: 'No se ha realizado ningun cambio.',
+                icon: 'info',
+                timer: 3000,
+                timerProgressBar: true
+            })
+        }
+    })
+}
+}

@@ -26,6 +26,7 @@ urlpatterns = [
     path('listProCoach/', views.listProCoach, name='listProCoach'),
     path('procAsig/', views.procAsig, name='procAsig'),
     path('infoProcCoach/<int:id>/', views.infoProcCoach, name='infoProcCoach'),
+    path('infoSesionCoach/<int:id>/', views.infoSesionCoach, name='infoSesionCoach'),
 
     #Perteneciente al proceso de Coachee
     path('menuCoachee/', views.menuCoachee, name='menuCoachee'),

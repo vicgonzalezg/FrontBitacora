@@ -588,16 +588,19 @@ def visInfoProceso(request, id):
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
+            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+            urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
             proceso = requests.get(urlProcesos,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstadosProcesos,headers=headers).json()
-            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
             sesiones = requests.get(urlSesiones,headers=headers).json()
+            estadoSesion = requests.get(urlEstadoSesion,headers=headers).json()
             listados = []
             
             for p in proceso:
                 for e in estado:
                     if p['ESTADOPROCESO_ID']==e['ID']:
+                        idProcesoEstado = p['ESTADOPROCESO_ID']
                         estadoDescripcion = e['DESCRIPCION']
                 for u in usuario:
                     if p['COACHEE_ID']==u['ID']:
@@ -637,17 +640,20 @@ def visInfoProceso(request, id):
                             "DESCRIPCION":estadoDescripcion,
                             "NOMBRECOACH":nombreCoach,
                             "APELLIDOCOACH":apellidoCoach,
-                            "ID": idProceso
+                            "ID": idProceso,
+                            "IDESTADOPROCESO": idProcesoEstado
                             }]
 
                         listados = json + listados
             
             sesiones = sesiones
+            estadoSesion = estadoSesion
             print(sesiones)
             data = {
                 'usuario': perfil,
                 'entity':listados,
-                'sesiones':sesiones
+                'sesiones':sesiones,
+                'estadosSesion':estadoSesion
             }
             
             return render(request,'procesos/visInfoProceso.html',data)   
@@ -910,6 +916,7 @@ def listProCoach(request):
             proceso = requests.get(urlProcesos,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstado,headers=headers).json()
+            
             listados = []
 
             #listado = proceso.update(usuario)
@@ -1122,12 +1129,13 @@ def infoProcCoach(request,id):
                 urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
                 urlUsuarios = 'http://127.0.0.1:8001/usuarios'
                 urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+                urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
                 proceso = requests.get(urlProcesos,headers=headers).json()
                 usuario = requests.get(urlUsuarios,headers=headers).json()
                 estado = requests.get(urlEstado,headers=headers).json()
                 urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
                 sesiones = requests.get(urlSesiones,headers=headers).json()
-                
+                estadoSesion = requests.get(urlEstadoSesion,headers=headers).json()
                 listados = []
 
                 #listado = proceso.update(usuario)
@@ -1182,13 +1190,15 @@ def infoProcCoach(request,id):
                 
                 sesiones = sesiones
                 estado = estado
+                estadoSesion = estadoSesion
                 print(sesiones)
                 print(estado)
                 data = {
                     'usuario': perfil,
                     'entity':listados,
                     'sesiones':sesiones,
-                    'estados':estado
+                    'estados':estado,
+                    'estadosSesion':estadoSesion
                 }
 
                 return render(request,'procesoCoach/infoProcCoach.html',data)

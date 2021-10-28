@@ -18,7 +18,6 @@
         <div class="col-md-12">
             <select class="form-select" aria-label="Default select example">
                 {% for estado in estados %}
-                   
                    <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %}
                    hidden {% endif %} {% if estado.ID == procesos.IDESTADOPROCESO %}
                    selected {% endif %}>{{estado.DESCRIPCION}}</option>
@@ -176,30 +175,33 @@
                                             <div class="form-group col-md-6">
                                                 <div class="row">
                                                     <div class="form-group col-md-6">
-                                                        <label class="col-md-12 control-label" name="nombre">Fecha
+                                                        <label class="col-md-12 control-label" name="fechaSesion">Fecha
                                                             sesión:</label>
                                                         <div class="col-md-12">
-                                                            <input type="date" id="hoy" class="form-control"
+                                                            <input type="date" id="hoy" name="fechaSesion" value="{{sesion.FECHASESION}}" class="form-control"
                                                                 min="2021-10-01" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-md-6">
-                                                        <label class="col-md-12 control-label" name="nombre">Hora
+                                                        <label class="col-md-12 control-label" name="horaSesion">Hora
                                                             sesión:</label>
                                                         <div id="hora" class="col-md-12">
-                                                            <input class="col-md-12 p-1" id="appt-time" type="time"
-                                                                name="appt-time" min="12:00" max="18:00" required>
+                                                            <input class="col-md-12 p-1" name="horaSesion" id="appt-time" type="time"
+                                                                name="appt-time" min="12:00" max="18:00" value="{{sesion.HORASESION}}" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label" name="nombre">Estado
+                                                <label class="col-md-6 control-label" name="estadoSesion">Estado
                                                     sesión:</label>
                                                 <div class="col-md-12">
                                                     <select class="form-select" aria-label="Default select example">
-
-                                                        <option selected>Open this select menu</option>
+                                                        {% for estSesion in estadosSesion %}
+                                                            <option name="estadoSesion" value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %}
+                                                            hidden {% endif %} {% if estSesion.ID == sesion.ESTADOSESION_ID %}
+                                                            selected {% endif %}>{{estSesion.DESCRIPCION}}</option>
+                                                        {% endfor %}
                                                     </select>
                                                 </div>
                                             </div>
@@ -207,20 +209,20 @@
                                         <br>
                                         <div class="row">
                                             <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label" name="nombre">Descripción
+                                                <label class="col-md-6 control-label" name="descSesion">Descripción
                                                     sesión:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4"
+                                                    <textarea rows="4" name="descSesion"
                                                         class="form-control">{{sesion.DESCRIPCION}}</textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label"
-                                                    name="nombre">Asignaciones/Acuerdos:</label>
+                                                    name="asigSesion">Asignaciones/Acuerdos:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4"
+                                                    <textarea rows="4" name="asigSesion"
                                                         class="form-control">{{sesion.ASIGNACION}}</textarea>
                                                 </div>
                                             </div>
@@ -228,10 +230,10 @@
                                         <br>
                                         <div class="row">
                                             <div class="form-group col-md-12">
-                                                <label class="col-md-6 control-label" name="nombre">Avances:</label>
+                                                <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
 
                                                 <div class="col-md-12">
-                                                    <textarea rows="4"
+                                                    <textarea rows="4" name="avancesSesion"
                                                         class="form-control">{{sesion.AVANCES}}</textarea>
                                                 </div>
                                             </div>

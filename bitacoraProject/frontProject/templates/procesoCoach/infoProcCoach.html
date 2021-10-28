@@ -12,14 +12,16 @@
 {% for procesos in entity %}
 <div class="row container">
     <H2 class="text-center col-md-8" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
-        {{procesos.NOMBREEMPRESA}}</H2>
+        {{procesos.NOMBREEMPRESA}} </H2>
     <label class="col-md-2 ps-5 p-2">Estado Proceso:</label>
     <div class="form-group col-md-2 p-1 float-start">
         <div class="col-md-12">
             <select class="form-select" aria-label="Default select example">
-                <option selected>------------------</option>
                 {% for estado in estados %}
-                <option>{{estado.DESCRIPCION}}</option>
+                   
+                   <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %}
+                   hidden {% endif %} {% if estado.ID == procesos.IDESTADOPROCESO %}
+                   selected {% endif %}>{{estado.DESCRIPCION}}</option>
                 {% endfor %}
             </select>
         </div>

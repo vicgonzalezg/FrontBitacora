@@ -1134,6 +1134,7 @@ def infoProcCoach(request,id):
                 for p in proceso:
                     for e in estado:
                         if p['ESTADOPROCESO_ID']==e['ID']:
+                            idProcesoEstado = p['ESTADOPROCESO_ID']
                             estadoDescripcion = e['DESCRIPCION']
                     for u in usuario:
                         if p['COACHEE_ID']==u['ID']:
@@ -1173,7 +1174,8 @@ def infoProcCoach(request,id):
                                 "DESCRIPCION":estadoDescripcion,
                                 "NOMBRECOACH":nombreCoach,
                                 "APELLIDOCOACH":apellidoCoach,
-                                "ID": idProceso
+                                "ID": idProceso,
+                                "IDESTADOPROCESO": idProcesoEstado
                                 }]
                     
                             listados = json + listados

@@ -42,10 +42,14 @@
         <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="col-md-12">
                 <h3 class="text-center fw-bold">Calendario</h3>
+                {% for procesos in procesosCalendario %}
+                    <p>{{procesos.FECHACREACION}}</p>
+                {% endfor %}
                 <div id="yourId" class="jalendar">
-                    <div class="added-event" data-type="task" data-date="24-10-2021"
-                         data-title="Cumpleaños Ivan Espindola">
+                    {% for procesos in procesosCalendario %}
+                    <div class="added-event" data-type="task" data-date="{{procesos.FECHACREACION}}" data-title="Proceso Empresa: {{ procesos.NOMBREEMPRESA }}">
                     </div>
+                    {% endfor %}
                 </div>
             </div> 
         </div>         
@@ -60,6 +64,7 @@
         weekColor: '#000000', // color de la semana
         dayColor: '#000000', // color de los dias 
         todayColor: '#52BE80', // color del dia de hoy 
+        dateType: "yyyy-mm-dd" 
     });
 </script>
 {% endblock %}

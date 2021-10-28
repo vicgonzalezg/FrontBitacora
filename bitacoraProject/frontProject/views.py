@@ -21,14 +21,14 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('user')
         password = request.POST.get('pass')
-        print(username,password)
+        #print(username,password)
         #r=services.LoginServices().generate_request(username,password)
         r = requests.post('http://127.0.0.1:8001/login', data = {'USUARIO':username,'CONTRASENA':password})
-        print(r.content)
+        #print(r.content)
 
         if r.status_code == 200:
             result = json.loads(r.content) 
-            print(result)
+            #print(result)
             nombre_usuario=result['USUARIO']['NOMBRE']+' '+result['USUARIO']['APELLIDO']
             perfil_usuario=result['USUARIO']['PERFIL_ID']
             nombre=result['USUARIO']['NOMBRE']
@@ -44,8 +44,8 @@ def login(request):
                             'apellidoUsuario':apellido,
                             'correo':correo}
             token = result['TOKEN']
-            print(token)
-            print('Hola soy un token que retorna don ivan: '+ token)
+            #print(token)
+            #print('Hola soy un token que retorna don ivan: '+ token)
             headers = {
                     'content-type': "application/json",
                     'authorization': "Bearer " + token
@@ -53,9 +53,9 @@ def login(request):
             request.session['Headers'] = headers
             
             request.session['Perfil_Usuario'] = datos_usuario
-            print(datos_usuario)
-            print(str(request.session['Headers']))
-            print(str(request.session['Perfil_Usuario']))
+            #print(datos_usuario)
+            #print(str(request.session['Headers']))
+            #print(str(request.session['Perfil_Usuario']))
             plantilla=''
             if perfil_usuario==1:
                 plantilla='menuAdmin'
@@ -197,13 +197,15 @@ def menuCoach(request):
             day = datetime.today().strftime('%Y-%m-%d')
             #print(day)
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION='+str(day)+'&COACH_ID='+str(id)
+            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             proceso = requests.get(urlProcesos,headers=headers).json()
+            procesosCal = requests.get(urlProcesosCal,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstado,headers=headers).json()
             listados = []
-
+            
             #listado = proceso.update(usuario)
             if len(proceso) > 0:
                 for p in proceso:
@@ -252,7 +254,7 @@ def menuCoach(request):
                                 }]
 
                             listados = json + listados
-
+                
                 page = request.GET.get('page',1)
 
                 try:
@@ -261,18 +263,21 @@ def menuCoach(request):
 
                 except:
                     raise Http404
-
+                
                 data = {
                     'usuario': perfil,
                     'entity':listado,
-                    'paginator':paginator
+                    'paginator':paginator,
+                    'procesosCalendario':procesosCal
                 }
+                print(data)
             else:
                 data = {
                 'usuario': perfil,
                 'entity':{'NOMBREEMPRESA':None},
+                'procesosCalendario':procesosCal
                 }
-
+            print(data)
             return render(request,'menu/menuCoach.html', data)
         else:
             if perfil['perfil']  == 1:

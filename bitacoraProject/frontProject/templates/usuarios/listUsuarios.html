@@ -192,7 +192,7 @@
                                                 
                                                 <div class="col-md-6 form-check">
                                                     
-                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
+                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
                                                         {% if usuario.ACTIVO == 1 %}
@@ -256,7 +256,7 @@
                                                 
                                                 <div class="col-md-6 form-check">
                                                     
-                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
+                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
                                                         {% if usuario.ACTIVO == 1 %}
@@ -417,9 +417,11 @@
 {% endblock %}
 <!-- Custom script -->
 {% block js %}
+<!-- Validar porque solo funciona con la primera fila -->
 <script>
-    $('#flexCheckChecked').on('change', function () {
-        var checkboxvar = $('#flexCheckChecked').is(':checked');
+    $(document).ready(function (elem){
+        console.log(elem.id)
+        var checkboxvar = $(elem.id).is(':checked');
         
         if (checkboxvar) {
             $('label[for="flexCheckChecked"]').text('Habilitado');
@@ -435,18 +437,19 @@
 $(document).ready(function (){
     var table = $('#example').DataTable({
        dom: 'lrtip',
-       "lengthMenu": [10],
-       "lengthChange": false,
+       "lengthMenu": [10,20,30,40,50],
+       "lengthChange": true,
        "autoWidth": false,
        "scrollX": true,
        "language": {
             "zeroRecords": "No se encontraron registros.",
             "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
+            "infoEmpty": " ",
+            "lengthMenu": "Mostrar _MENU_  filas",
             "infoFiltered": "(filtrado de un total de _MAX_ registros)",
             "paginate": {
-                    "first":      "First",
-                    "last":       "Last",
+                    "first":      "Primero",
+                    "last":       "Ultimo",
                     "next":       "Siguiente",
                     "previous":   "Anterior"
                     },

@@ -971,7 +971,7 @@ def modUsuarios(request,id):
                             "PERFIL_ID": PERFIL_ID
                             }
                 
-                #Metodo para crear usuario en API        
+                #Metodo para modificar usuario en API        
                 urlModUsuarios = 'http://127.0.0.1:8001/usuarios/'+ str(id) +'/'
                 response =  requests.put(urlModUsuarios, headers=headers,json=modificaUsuarioJson)
 
@@ -1313,12 +1313,54 @@ def infoProcCoach(request,id):
         return redirect('/')
 
 def infoSesionCoach(request,id):
-    if request.method == 'POST':
-        if 'fechaSesion' in request.POST:
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 2:
             idP =  request.POST.get('proceso')
-            print('FORMULARIO SESION')
-        return redirect('infoProcCoach',idP)
-    return redirect('listProCoach')
+            if request.method == 'POST':
+                #idP =  request.POST.get('proceso')
+                FECHASESION = request.POST.get('fechaSesion')
+                HORASESION = request.POST.get('horaSesion')
+                DESCRIPCION = request.POST.get('descSesion')
+                AVANCES = request.POST.get('asigSesion')
+                ASIGNACION = request.POST.get('avancesSesion')
+                #ACTIVO = request.POST.get('nombreCoachee')
+                ESTADOSESION_ID = request.POST.get('estadoSesion1')
+                                
+                modificarSesionesJson= {
+                        "ID": int(id),
+                        "FECHASESION": FECHASESION,
+                        "HORASESION": HORASESION,
+                        "DESCRIPCION": DESCRIPCION,
+                        "AVANCES": AVANCES,
+                        "ASIGNACION": ASIGNACION,
+                        #"ACTIVO": 1,
+                        "PROCESO_ID": int(idP),
+                        "ESTADOSESION_ID": int(ESTADOSESION_ID)
+                        }
+
+                print(modificarSesionesJson)
+                urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
+                response =  requests.put(urlSesiones, headers=headers,json=modificarSesionesJson)
+                print(response)
+                if response.status_code == 200:
+                    messages.success(request, 'Sesión actualizada con éxito.')
+                    return redirect('infoProcCoach',idP)
+                else:
+                    messages.error(request, 'Hubo un problema al actualizar la sesión.')
+                    return redirect('infoProcCoach',idP)
+            return redirect('listProCoach')
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla)
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
+
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 
 #Procesos asignados al Coachee
@@ -1424,9 +1466,11 @@ def imprimirProceso(request,id):
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
             proceso = requests.get(urlProcesos,headers=headers).json()
             usuario = requests.get(urlUsuarios,headers=headers).json()
             estado = requests.get(urlEstado,headers=headers).json()
+            sesiones = requests.get(urlSesiones,headers=headers).json()
             listados = []
 
             #listado = proceso.update(usuario)
@@ -1442,6 +1486,7 @@ def imprimirProceso(request,id):
                         correoCoachee = u['CORREO']
                         telefonoCoachee = u['FONO']
                         fechaCreacion = p['FECHACREACION']
+                        fechaTermino = p['FECHATERMINO']
                         cantsesiones = p['CANTSESIONES']
                         objetivo = p['OBJETIVOS']
                         indicadores = p['INDICADORES']
@@ -1464,6 +1509,7 @@ def imprimirProceso(request,id):
                             "CORREO":correoCoachee,
                             "FONO":telefonoCoachee,
                             "FECHACREACION":fechaCreacion,
+                            "FECHATERMINO":fechaTermino,
                             "CANTSESIONES":cantsesiones,
                             "OBJETIVOS": objetivo,
                             "INDICADORES": indicadores,
@@ -1485,10 +1531,12 @@ def imprimirProceso(request,id):
             
             data = {
                 'usuario': perfil,
-                'entity':listados
+                'entity':listados,
+                'sesiones':sesiones
             }
             context = {
-                 'entity':listados
+                 'entity':listados,
+                 'sesiones':sesiones
             }
             html_template = template.render(context)
             css_url = os.path.join(settings.BASE_DIR,'frontProject/static/css/bootstrap.css')

@@ -3,7 +3,7 @@
 <!--Formulario del proceso y sus sesiones -->
 <div class="bg-light">
     <div class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
-        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
+        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">
         <div class="container-fluid">
             <div>
                 <image class="col-xs-4">
@@ -17,6 +17,23 @@
                     <h1 class="nav-procesos">Reporte Empresa: {{procesos.NOMBREEMPRESA}}</h1>
                 </div>
             </div>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraSesion text-center">Fecha Creación:</th>
+                    <th class="cabeceraSesion text-center">Fecha Término:</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto text-center">{{procesos.FECHACREACION}}</p>
+                    </td><td>
+                        {% if procesos.FECHATERMINO == None %}
+                        <p class="texto text-center">Proceso no Finalizado</p>
+                        {% else %}
+                        <p class="texto text-center">{{procesos.FECHATERMINO}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
             <hr>
             <div class="row" style="margin-bottom: 2rem;">
                 <!--Datos personales del coachee-->
@@ -90,7 +107,7 @@
                 <br>
                 <table class="border w-100">
                     <tr class="border">
-                        <th class="cabeceraReporte text-center">Indicadores de exito:</th>
+                        <th class="cabeceraReporte text-center">Indicadores de éxito:</th>
                     </tr>
                     <tr>
                         <td>
@@ -112,18 +129,43 @@
             </div>
             <hr>
             <br>
-            {% for sesiones in entity %}
-
             <div class="nav-item">
-                <h2 class="nav-procesos cabeceraSesiones">Información de las Sesiónes</h2>
+                <h2 class="nav-procesos cabeceraSesiones">Información de las Sesiones</h2>
             </div>
+
+            {% for sesion in sesiones %}
+            <br>
+            <div class="nav-item">
+                <h3 class="">Sesión {{ forloop.counter }}</h3>
+            </div>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraSesion text-center">Fecha sesión:</th>
+                    <th class="cabeceraSesion text-center">Hora sesión:</th>
+                </tr>
+                <tr>
+                    <td>{% if sesion.FECHASESION == None %}
+                        <p class="texto text-center">No agendado</p>
+                        {% else %}
+                        <p class="texto text-center">{{sesion.FECHASESION}}</p>
+                        {% endif %}
+                    </td><td>
+                        {% if sesion.HORASESION == None %}
+                        <p class="texto text-center">No agendado</p>
+                        {% else %}
+                        <p class="texto text-center">{{sesion.HORASESION}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <br>
             <table class="border w-100">
                 <tr class="border">
                     <th class="cabeceraReporte text-center">Descripción sesión:</th>
                 </tr>
                 <tr>
                     <td>
-                        <p class="texto">Sesiones</p>
+                        <p class="texto">{{sesion.DESCRIPCION}}</p>
                     </td>
                 </tr>
             </table>
@@ -134,7 +176,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <p class="texto">Sesiones Asignaciones</p>
+                        <p class="texto">{{sesion.ASIGNACION}}</p>
                     </td>
                 </tr>
             </table>
@@ -145,11 +187,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <p class="texto">Sesiones Avance </p>
+                        <p class="texto">{{sesion.AVANCES}}</p>
                     </td>
                 </tr>
             </table>
-
+            <br>
+            <hr>
             {% endfor %}
         </div>
         <br>

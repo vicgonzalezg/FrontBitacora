@@ -13,7 +13,7 @@
 <div class="row container">
     <H2 class="text-center col-md-8" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
         {{procesos.NOMBREEMPRESA}} </H2>
-    <label class="col-md-2 ps-5 p-2">Estado Proceso:</label>
+    <label class="col-md-2 ps-5 p-2" style="font-weight: bold;">Estado Proceso:</label>
     <div class="form-group col-md-2 p-1 float-start">
         <div class="col-md-12">
             <select class="form-select" aria-label="Default select example">
@@ -84,7 +84,7 @@
                         <div class="form-group col-md-6">
                             <br>
                             <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
-
+                            <div>
                             <div class="col-md-12 col-lg-8">
                                 <input class="form-control" name="telefonoJefe" id="telefonoJefe-{{ procesos.ID }}"
                                     value="{{procesos.FONOJEFE}}" readonly>
@@ -156,16 +156,18 @@
                             </table>
                         </div>
                     </div>
-                    <br>
                 </div>
             </div>
+            <br>
+        <div class="container">
+            <button type="submit" onclick="modProcesoCoach(this);" data-id="{{procesos.ID}}"
+            class="btn btn-primary float-end col-md-2">Grabar</button>
+        </div>
+        <br>
+        <br>
+        </div>
         </form>
-        <br>
         
-        <button type="submit" onclick="modProcesoCoach(this);" data-id="{{procesos.ID}}"
-        class="btn btn-primary float-end col-md-2">Grabar</button>
-        <br>
-        <br>
             <div class="container">
                 <div class="row mt-3">
                     <div class="col-md-12">
@@ -305,31 +307,30 @@
                                             </div>
                                         </div>
                                         <input type="text" name="proceso" class="d-none" value="{{procesos.ID}}">
-                                        
-                                        <br>
                                     </form>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group container col-md-12">
                                         <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);" data-id="{{sesion.ID}}">Guardar Sesión {{ forloop.counter }}</button>
-                                        <br><br>
+                                        <br>
+                                        <br>
                                     </div>
                                 </div>
                             </div>
-
                             {% endfor %}
-                            <br>
                             <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    
-    <br>
     <!--Boton para almacena la informacion del proceso-->
-    <a href="{% url 'listProCoach' %}" class="btn btn-secondary float-start col-md-2">Volver</a>
-    <span class="col-md-1"></span>
-    <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
-            class="btn btn-primary float-end col-md-2">Reporte</a>
+    <div class="container">
+        <br>
+        <a href="{% url 'listProCoach' %}" class="btn btn-secondary float-start col-md-2">Volver</a>
+        <span class="col-md-1"></span>
+        <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
+                class="btn btn-primary float-end col-md-2">Reporte</a>
+    </div>
+    <br>
     <br>
 </div>
 {% endfor %}
@@ -380,6 +381,8 @@
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
+            "info": false,
+            "paginate": false,
             "language": {
                 "zeroRecords": "No se encontraron registros.",
                 "info": "Mostrando página _PAGE_ de _PAGES_",

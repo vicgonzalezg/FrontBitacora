@@ -14,43 +14,39 @@
   <div class="row">
     <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
       <h3 class="text-center">Sesiones del día</h3>
-      <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+      {% for proceso in entity %}
+      {% if proceso.NOMBRE == None %}
+      <br>
+      <br>
+      <h5 class="text-center">No hay sesiones para el día de hoy</h5>
+      {% else %}
+      <a href="{% url 'infoProCoachee' proceso.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action"
+        style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
         <div class="d-flex w-100 justify-content-between">
-          <h4 class="mb-1">Proceso Empresa: Enjoy</h4>
+          <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
         </div>
-        <h5 class="mb-1">Estado: Segunda Sesión</h5>
-        <p class="mb-1">Coach: Ivan Espindola</p>
-        <p class="mb-1">Coachee: Danilo Gómez</p>
+        <h6 class="mb-1">sesion: {{ forloop.counter }}</h6>
+        <p class="mb-1">Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
+        <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
       </a>
+      <br>
+      {% endif %}
+      {% endfor %}
+
+      <!-- Paginación -->
+      <div>
+        {% include 'base/paginator.html' %}
+      </div>
     </div>
     <!-- Calendario -->
     <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
       <div class="col-md-12">
-        <h3 class="text-center">Calendario</h3>
-        <div class="elegant-calencar d-md-flex py-1">
-          <div class="wrap-header d-flex align-items-center img"
-            style="background-image: url(../../static/imagenes/bg.jpg);">
-            <p id="reset">Hoy</p>
-            <div id="header" class="p-0">
-              <!-- <div class="pre-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-left"></i></div> -->
-              <div class="head-info">
-                <div class="head-month"></div>
-                <div class="head-day"></div>
-              </div>
-              <!-- <div class="next-button d-flex align-items-center justify-content-center"><i class="fa fa-chevron-right"></i></div> -->
-            </div>
+        <h3 class="text-center fw-bold">Calendario</h3>
+        <div id="yourId" class="jalendar">
+          {% for proceso in entity %}
+          <div class="added-event" data-type="task" data-date="{{proceso.FECHACREACION}}" data-title="Proceso Empresa: {{ proceso.NOMBREEMPRESA }}">
           </div>
-          <!--Calendario-->
-          <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12">
-              <h3 class="text-center fw-bold">Calendario</h3>
-                <div id="yourId" class="jalendar">
-                    <div class="added-event" data-type="task" data-date="24-10-2021"
-                         data-title="Cumpleaños Ivan Espindola">
-                    </div>
-                </div>
-            </div> 
-        </div> 
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -58,13 +54,13 @@
 </div>
 <script>
   $('#yourId').jalendar({
-      color: '#FFFFFF',
-      //color2: 'rgba( 255, 255, 255, 0.9 )',
-      lang: 'ES',
-      titleColor: '#000000', // color del mes 
-      weekColor: '#000000', // color de la semana
-      dayColor: '#000000', // color de los dias 
-      todayColor: '#52BE80', // color del dia de hoy 
+    color: '#FFFFFF',
+    //color2: 'rgba( 255, 255, 255, 0.9 )',
+    lang: 'ES',
+    titleColor: '#000000', // color del mes 
+    weekColor: '#000000', // color de la semana
+    dayColor: '#000000', // color de los dias 
+    todayColor: '#52BE80', // color del dia de hoy 
   });
 </script>
 {% endblock %}

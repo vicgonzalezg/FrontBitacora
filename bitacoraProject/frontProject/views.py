@@ -294,12 +294,94 @@ def menuCoachee(request):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        
         if perfil['perfil'] == 3:
+            id=perfil['id']
+            #print(day)
+            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACHEE_ID='+str(id)
+            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            urlsesion = 'http://127.0.0.1:8001/sesiones'
+            proceso = requests.get(urlProcesos,headers=headers).json()
+            usuario = requests.get(urlUsuarios,headers=headers).json()
+            estado = requests.get(urlEstado,headers=headers).json()
+            sesiones = requests.get(urlsesion,headers=headers).json()
+            listados = []
+            canSesiones = 0
 
-            data = {
-            'usuario': perfil,
-            }
+            #listado = proceso.update(usuario)
+            if len(proceso) > 0:
+                for p in proceso:
+                    for e in estado:
+                        if p['ESTADOPROCESO_ID']==e['ID']:
+                            estadoDescripcion = e['DESCRIPCION']
+                    for u in usuario:
+                        if p['COACHEE_ID']==u['ID']:
+                            nombreEmpresa = p['NOMBREEMPRESA']
+                            nombreCoachee = u['NOMBRE']
+                            apellidoCoachee = u['APELLIDO']
+                            correoCoachee = u['CORREO']
+                            telefonoCoachee = u['FONO']
+                            fechaCreacion = p['FECHACREACION']
+                            cantsesiones = p['CANTSESIONES']
+                            objetivo = p['OBJETIVOS']
+                            indicadores = p['INDICADORES']
+                            planAccion = p['PLANACCION']
+                            nombreJefe = u['NOMBREJEFE']
+                            emailJefe = u['EMAILJEFE']
+                            fonoJefe = u['FONOJEFE']
+                            idProceso = p['ID']
+                    for uc in usuario:
+                        if p['COACH_ID'] ==uc['ID']:
+                            nombreCoach= uc['NOMBRE']
+                            apellidoCoach= uc['APELLIDO']
+                    for s in sesiones:
+                        if p['ID'] == s['PROCESO_ID']:
+                            
+
+                            json=[{
+                                "NOMBREEMPRESA": nombreEmpresa,
+                                "NOMBRE":nombreCoachee,
+                                "APELLIDO":apellidoCoachee,
+                                "CORREO":correoCoachee,
+                                "FONO":telefonoCoachee,
+                                "FECHACREACION":fechaCreacion,
+                                "CANTSESIONES":cantsesiones,
+                                "OBJETIVOS": objetivo,
+                                "INDICADORES": indicadores,
+                                "PLANACCION": planAccion,
+                                "NOMBREJEFE": nombreJefe,
+                                "EMAILJEFE": emailJefe,
+                                "FONOJEFE": fonoJefe,  
+                                "DESCRIPCION":estadoDescripcion,
+                                "NOMBRECOACH":nombreCoach,
+                                "APELLIDOCOACH":apellidoCoach,
+                                "IDSESION": canSesiones,
+                                "ID": idProceso
+                                
+                                }]
+
+                            listados = json + listados
+
+                page = request.GET.get('page',1)
+
+                try:
+                    paginator = Paginator(listados,4)
+                    listado = paginator.page(page)
+
+                except:
+                    raise Http404
+                print(listados)
+                data = {
+                    'usuario': perfil,
+                    'entity':listado,
+                    'paginator':paginator
+                }
+            else:
+                data = {
+                'usuario': perfil,
+                'entity':{'NOMBREEMPRESA':None},
+                }
+
             return render(request,'menu/menuCoachee.html', data)
         else:
             if perfil['perfil']  == 1:
@@ -307,8 +389,12 @@ def menuCoachee(request):
             elif perfil['perfil']  == 2:
                 plantilla='menuCoach'
             return redirect(plantilla)
-
+    
     except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
+
+ #   except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
 
@@ -587,6 +673,7 @@ def modProceso(request,id):
 
 #información Proceso
 def visInfoProceso(request, id):
+    try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
@@ -669,6 +756,9 @@ def visInfoProceso(request, id):
                 plantilla='menuCoachee'
             return redirect(plantilla) 
 
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
 
 
 
@@ -1089,7 +1179,7 @@ def procAsig(request):
         return redirect('/') 
 
 def infoProcCoach(request,id):
-    #try:
+    try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
@@ -1218,9 +1308,9 @@ def infoProcCoach(request,id):
                 plantilla='menuCoachee'
             return redirect(plantilla)
 
-    #except Exception as e:
-    #    messages.warning(request,'Ingrese sus credenciales para acceder')
-    #    return redirect('/')
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
 
 def infoSesionCoach(request,id):
     if request.method == 'POST':
@@ -1232,25 +1322,97 @@ def infoSesionCoach(request,id):
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 
 #Procesos asignados al Coachee
-def infoProCoachee(request):
+def infoProCoachee(request, id):
     try:
+        headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 3:
-            data = {
-                    'usuario': perfil
-                }
+            if request.method == 'GET': 
+                urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
+                urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+                urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+                urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+                urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+                proceso = requests.get(urlProcesos,headers=headers).json()
+                usuario = requests.get(urlUsuarios,headers=headers).json()
+                estado = requests.get(urlEstado,headers=headers).json()
+                sesiones = requests.get(urlSesiones,headers=headers).json()
+                estadoSesion = requests.get(urlEstadoSesion,headers=headers).json()
+                listados = []
+                print(sesiones)
+                #listado = proceso.update(usuario)
+                for p in proceso:
+                    for e in estado:
+                        if p['ESTADOPROCESO_ID']==e['ID']:
+                            idProcesoEstado = p['ESTADOPROCESO_ID']
+                            estadoDescripcion = e['DESCRIPCION']
+                    for u in usuario:
+                        if p['COACHEE_ID']==u['ID']:
+                            nombreEmpresa = p['NOMBREEMPRESA']
+                            nombreCoachee = u['NOMBRE']
+                            apellidoCoachee = u['APELLIDO']
+                            correoCoachee = u['CORREO']
+                            telefonoCoachee = u['FONO']
+                            fechaCreacion = p['FECHACREACION']
+                            cantsesiones = p['CANTSESIONES']
+                            objetivo = p['OBJETIVOS']
+                            indicadores = p['INDICADORES']
+                            planAccion = p['PLANACCION']
+                            nombreJefe = u['NOMBREJEFE']
+                            emailJefe = u['EMAILJEFE']
+                            fonoJefe = u['FONOJEFE']
+                            idProceso = p['ID']
+                    for uc in usuario:
+                        if p['COACH_ID'] ==uc['ID']:
+                            nombreCoach= uc['NOMBRE']
+                            apellidoCoach= uc['APELLIDO']
+            
+                            json=[{
+                                "NOMBREEMPRESA": nombreEmpresa,
+                                "NOMBRE":nombreCoachee,
+                                "APELLIDO":apellidoCoachee,
+                                "CORREO":correoCoachee,
+                                "FONO":telefonoCoachee,
+                                "FECHACREACION":fechaCreacion,
+                                "CANTSESIONES":cantsesiones,
+                                "OBJETIVOS": objetivo,
+                                "INDICADORES": indicadores,
+                                "PLANACCION": planAccion,
+                                "NOMBREJEFE": nombreJefe,
+                                "EMAILJEFE": emailJefe,
+                                "FONOJEFE": fonoJefe,  
+                                "DESCRIPCION":estadoDescripcion,
 
-            return render(request,'procesoCoachee/infoProCoachee.html',data)
+                                "NOMBRECOACH":nombreCoach,
+                                "APELLIDOCOACH":apellidoCoach,
+                                "IDESTADOPROCESO": idProcesoEstado,
+                                "ID": idProceso
+                                }]
+                    
+                            listados = json + listados
+                
+                sesiones = sesiones
+                estado = estado
+                estadoSesion = estadoSesion
+                data = {
+                    'usuario': perfil,
+                    'entity':listados,
+                    'sesiones':sesiones,
+                    'estados':estado,
+                    'estadosSesion':estadoSesion
+                }
+          
+                return render(request,'procesoCoachee/infoProCoachee.html',data)
         else:
             if perfil['perfil']  == 1:
                 plantilla='menuAdmin'
             elif perfil['perfil']  == 2:
                 plantilla='menuCoach'
-            return redirect(plantilla)
+            return redirect(plantilla) 
 
     except Exception as e:
         messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/') 
+        return redirect('/')
 
 #Imprimi Reporte
 

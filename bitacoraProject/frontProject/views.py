@@ -637,8 +637,8 @@ def modProceso(request,id):
                 ACTIVO = 1
                 ESTADOPROCESO_ID = 1
                 ADMINISTRADOR_ID = 1
-                COACH_ID = 5
-                COACHEE_ID = 4
+                #COACH_ID = 5
+                #COACHEE_ID = 4
 
                 modificarProcesoJson={
                         "ID": ID,
@@ -771,10 +771,13 @@ def finProceso(request,id):
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
             urlProcesos = 'http://127.0.0.1:8001/procesos/'+str(id)+'/'
-            
+            day = datetime.today().strftime('%Y-%m-%d')
+
             finProcesoJson ={
                 "ID":id,
-                "ESTADOPROCESO_ID":6 
+                "FECHATERMINO":day,
+                "ACTIVO":0,
+                "ESTADOPROCESO_ID":6
                 }
             print(finProcesoJson)
             response =  requests.put(urlProcesos,json=finProcesoJson,headers=headers)
@@ -900,7 +903,7 @@ def nuevoUsuario(request):
                 #Metodo para crear usuario en API        
                 urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
                 response =  requests.post(urlCrearUsuarios, headers=headers,json=crearUsuariosJson)
-                
+                print(response)
                 if response.status_code == 201:
                     #mensaje para avisar al front que se creo el usuario.
                     messages.success(request, 'Usuario creado con éxito.')
@@ -1252,11 +1255,11 @@ def infoProcCoach(request,id):
                             "PLANACCION": planAccion,
                             "ESTADOPROCESO_ID": estadoProceso
                 }
-                #print(modProcCoach)
+                print(modProcCoach)
                 #Metodo para modificar proceso Coach en API        
                 urlModProcesos = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
                 response =  requests.put(urlModProcesos, headers=headers,json=modProcCoach)
-                #print(response.status_code)
+                print(response.status_code)
                 
                 if response.status_code == 200:
                     messages.success(request, 'Proceso actualizado con éxito.')
@@ -1365,27 +1368,27 @@ def infoSesionCoach(request,id):
                 FECHASESION = request.POST.get('fechaSesion')
                 HORASESION = request.POST.get('horaSesion')
                 DESCRIPCION = request.POST.get('descSesion')
-                AVANCES = request.POST.get('asigSesion')
-                ASIGNACION = request.POST.get('avancesSesion')
+                AVANCES = request.POST.get('avancesSesion')
+                ASIGNACION = request.POST.get('asigSesion')
                 #ACTIVO = request.POST.get('nombreCoachee')
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
                                 
                 modificarSesionesJson= {
-                        "ID": int(id),
+                        "ID": id,
                         "FECHASESION": FECHASESION,
                         "HORASESION": HORASESION,
                         "DESCRIPCION": DESCRIPCION,
                         "AVANCES": AVANCES,
                         "ASIGNACION": ASIGNACION,
                         #"ACTIVO": 1,
-                        "PROCESO_ID": int(idP),
-                        "ESTADOSESION_ID": int(ESTADOSESION_ID)
+                        "PROCESO_ID": idP,
+                        "ESTADOSESION_ID": ESTADOSESION_ID
                         }
 
-                print(modificarSesionesJson)
+                #print(modificarSesionesJson)
                 urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
                 response =  requests.put(urlSesiones, headers=headers,json=modificarSesionesJson)
-                print(response)
+                #print(response)
                 if response.status_code == 200:
                     messages.success(request, 'Sesión actualizada con éxito.')
                     return redirect('infoProcCoach',idP)

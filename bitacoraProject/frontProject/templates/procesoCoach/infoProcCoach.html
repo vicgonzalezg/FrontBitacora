@@ -33,7 +33,8 @@
                                         <select class="col-md-7 form-select" name="estadoProceso" aria-label="Default select example">
                                             {% for estado in estados %}
                                             <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
-                                            {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} >{{estado.DESCRIPCION}}</option>
+                                            {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} 
+                                            {% if estado.ID == 6 %} hidden {% endif %}>{{estado.DESCRIPCION}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -148,8 +149,8 @@
                                         <tr class="bg-light">
                                             {% if sesion.FECHASESION == None %}
                                             <th scope="row">Sesión: {{ forloop.counter }}</th>
-                                            <th scope="row">SIN AGENDAR</th>
-                                            <th scope="row">SIN AGENDAR</th>
+                                            <th scope="row">Sin Agendar</th>
+                                            <th scope="row">Sin Agendar</th>
                                             {% else %}
                                             <th scope="row">Sesión: {{ forloop.counter }}</th>
                                             <th scope="row">{{sesion.FECHASESION}}</th>

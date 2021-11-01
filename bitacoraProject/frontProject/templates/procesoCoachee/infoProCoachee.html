@@ -148,6 +148,7 @@
                         </div>
                     </div>
                     <br>
+                    <br>
                 </div>
             </div>
         </div>
@@ -175,16 +176,16 @@
                                                     <div class="col-md-12">
                                                         <input type="date" id="hoy" name="fechaSesion"
                                                             value="{{sesion.FECHASESION}}" class="form-control"
-                                                            min="2021-10-01" required readonly>
+                                                            min="2021-10-01" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="col-md-12 control-label" name="horaSesion">Hora
                                                         sesión:</label>
-                                                    <div id="hora" class="col-md-12">
+                                                    <div id="hora" class="col-md-12" readonly>
                                                         <input class="col-md-12 p-1" name="horaSesion" id="appt-time"
                                                             type="time" name="appt-time" min="12:00" max="18:00"
-                                                            value="{{sesion.HORASESION}}" required disabled>
+                                                            value="{{sesion.HORASESION}}"  disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,21 +194,12 @@
                                             <label class="col-md-6 control-label" name="estadoSesion">Estado
                                                 sesión:</label>
                                             <div class="col-md-12">
-                                                <select class="form-select" aria-label="Default select example"
-                                                    disabled>
+                                                <select class="form-select" aria-label="Default select example" disabled>
                                                     {% for estSesion in estadosSesion %}
-                                                        {% if estSesion.ID < sesion.ESTADOSESION_ID %} 
-                                                            <option name="estadoSesion" value="{{estSesion.ID}}" 
-                                                                hidde>{{estSesion.DESCRIPCION}}</option>
-                                                        {% endif %} 
-                                                        {% if estSesion.ID == sesion.ESTADOSESION_ID %} 
-                                                            <option name="estadoSesion" value="{{estSesion.ID}}" 
-                                                            selected>{{estSesion.DESCRIPCION}}</option>
-                                                        {% endif %}
-                                                        {% if estSesion.ID > sesion.ESTADOSESION_ID %} 
-                                                            <option name="estadoSesion" value="{{estSesion.ID}}">
-                                                                {{estSesion.DESCRIPCION}}</option>
-                                                        {% endif %} 
+                                                    <option name="estadoSesion" id="estadoSesion-{{ sesion.ID }}"
+                                                        value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %} hidden {% endif %} 
+                                                        {% if estSesion.ID == sesion.ESTADOSESION_ID %} selected {% endif %}>
+                                                        {{estSesion.DESCRIPCION}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>

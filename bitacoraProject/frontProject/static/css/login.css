@@ -2,9 +2,14 @@
 html,body {
     height: 100%;
   }
-  @media screen and (max-width: 425px) {
+  @media screen and (min-width: 425px) {
     html,body {
         height: max-content;
+      }
+  }
+  @media screen and (min-width: 320px) {
+    html,body {
+        height: 100%;
       }
   }
 /* Color del texto en el login */

@@ -17,16 +17,9 @@
     <div class="form-group col-md-2 p-1 float-start">
         <div class="col-md-12">
             <select class="form-select" aria-label="Default select example">
-                {% for estSesion in estadosSesion %}
-                    {% if estSesion.ID < sesion.ESTADOSESION_ID %} 
-                    <option name="estadoSesion" value="{{estSesion.ID}}" hidde>{{estado.DESCRIPCION}}</option>
-                    {% endif %}
-                    {% if estSesion.ID == sesion.ESTADOSESION_ID %}
-                    <option name="estadoSesion" value="{{estSesion.ID}}" selected>{{estSesion.DESCRIPCION}}</option>
-                    {% endif %}
-                    {% if estSesion.ID > sesion.ESTADOSESION_ID %} 
-                    <option name="estadoSesion" value="{{estSesion.ID}}">{{estSesion.DESCRIPCION}}</option>
-                    {% endif %}
+                {% for estado in estados %}
+                <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
+                {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} >{{estado.DESCRIPCION}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -214,19 +207,10 @@
                                             <select class="form-select" name="estadoSesion1"
                                                 aria-label="Default select example">
                                                 {% for estSesion in estadosSesion %}
-                                                {% if estSesion.ID < sesion.ESTADOSESION_ID %} <option
-                                                    name="estadoSesion" value="{{estSesion.ID}}" hidde>
-                                                    {{estado.DESCRIPCION}}</option>
-                                                    {% endif %}
-                                                    {% if estSesion.ID == sesion.ESTADOSESION_ID %}
-                                                    <option name="estadoSesion" value="{{estSesion.ID}}" selected>
-                                                        {{estSesion.DESCRIPCION}}</option>
-                                                    {% endif %}
-                                                    {% if estSesion.ID > sesion.ESTADOSESION_ID %}
-                                                    <option name="estadoSesion" value="{{estSesion.ID}}">
-                                                        {{estSesion.DESCRIPCION}}</option>
-                                                    {% endif %}
-                                                    {% endfor %}
+                                                <option name="estadoSesion" id="estadoSesion-{{ sesion.ID }}"
+                                                    value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %} hidden {% endif %} 
+                                                    {% if estSesion.ID == sesion.ESTADOSESION_ID %} selected {% endif %}>{{estSesion.DESCRIPCION}}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>

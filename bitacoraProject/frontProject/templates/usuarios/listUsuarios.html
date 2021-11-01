@@ -190,9 +190,9 @@
                                                 <br>
                                                 <label class="control-label col-md-2 ms-3" name="nombre">Estado:</label>
                                                 
-                                                <div class="col-md-6 form-check">
+                                                <div class="col-md-6 form-check" >
                                                     
-                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
+                                                    <input class="form-check-input" name="activo" type="checkbox" onclick="cambiaNombre(this);" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
                                                         {% if usuario.ACTIVO == 1 %}
@@ -256,7 +256,7 @@
                                                 
                                                 <div class="col-md-6 form-check">
                                                     
-                                                    <input class="form-check-input" name="activo" type="checkbox" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
+                                                    <input class="form-check-input" name="activo" type="checkbox" onclick="cambiaNombre(this);" value="" id="flexCheckChecked-{{ usuario.ID }}" {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
                                                         {% if usuario.ACTIVO == 1 %}
@@ -351,9 +351,9 @@
                                                 <br>
                                                 <label class="control-label col-md-2 ms-3" name="nombre">Estado:</label>
                                                 
-                                                <div class="col-md-6 form-check">
-                                                    <input class="form-check-input" name="activo" 
-                                                    type="checkbox" value="" id="flexCheckChecked" 
+                                                <div class="col-md-6 form-check" >
+                                                    <input class="form-check-input" onclick="cambiaNombre(this);" name="activo" 
+                                                    type="checkbox" value="" id="flexCheckChecked-{{usuario.ID}}" 
                                                     {% if usuario.ACTIVO == 1 %} checked {% else %} '' {% endif %}>
                                                     
                                                     <label class="form-check-label ms-1" for="flexCheckChecked">
@@ -372,7 +372,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button onclick="location.reload();" type="button" class="btn btn-secondary"
+                                    <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cancelar</button>
                                     <span class="col-md-1"></span>
 
@@ -419,17 +419,17 @@
 {% block js %}
 <!-- Validar porque solo funciona con la primera fila -->
 <script>
-    $(document).ready(function (elem){
-        console.log(elem.id)
-        var checkboxvar = $(elem.id).is(':checked');
-        
-        if (checkboxvar) {
-            $('label[for="flexCheckChecked"]').text('Habilitado');
-        }
-        else {
-            $('label[for="flexCheckChecked"]').text('Deshabilitado');
-        }
-    });
+   function cambiaNombre(cb){
+    console.log(cb.checked);
+    console.log(cb.id)
+    if (cb.checked) {
+        $('label[for="flexCheckChecked"]').text('Habilitado');
+    }
+    else {
+        $('label[for="flexCheckChecked"]').text('Deshabilitado');
+    }
+};
+
 </script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}"/>
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>

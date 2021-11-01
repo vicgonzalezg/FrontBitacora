@@ -11,6 +11,7 @@ urlpatterns = [
     path('buscaProceso/', views.buscaProceso, name='buscaProceso'),
     path('modProceso/<int:id>/', views.modProceso, name='modProceso'),
     path('visInfoProceso/<int:id>/', views.visInfoProceso, name='visInfoProceso'),
+    path('finProceso/<int:id>/', views.finProceso, name='finProceso'),
     path('usuariosAdmin/', views.usuariosAdmin, name='usuariosAdmin'),
     path('nuevoUsuario/', views.nuevoUsuario, name='nuevoUsuario'),
     path('listUsuarios/', views.listUsuarios, name='listUsuarios'),

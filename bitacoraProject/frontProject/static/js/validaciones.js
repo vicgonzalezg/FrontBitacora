@@ -1,15 +1,26 @@
+/* Función para cambiar el estado de los usuarios. */
+function cambiaNombre(cb){
+    if (cb.checked) {
+        $('label[for="flexCheckChecked"]').text('Habilitado');
+    }
+    else {
+        $('label[for="flexCheckChecked"]').text('Deshabilitado');
+    }
+};
 
+/* Función para validar el email */
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
+/* Función para validar el telefono */
 function validateTelefono(telefono) {
     var phoneno = /^[0-9]+$/;
     return phoneno.test(String(telefono))
 }
 /* ------------------------------ USUARIOS -------------------------------------*/
-//Crear usuarios
+//Crear usuarios Administradores
 function crearAdmin() {
     event.preventDefault();
     var nombre = document.getElementById("nombreAdmin");
@@ -61,6 +72,7 @@ function crearAdmin() {
     }
 }
 
+//Crear usuarios Coach
 function crearCoach() {
     event.preventDefault();
     var nombre = document.getElementById("nombreCoach");
@@ -112,6 +124,7 @@ function crearCoach() {
     }
 }
 
+//Crear usuarios Coachee
 function crearCoachee() {
     event.preventDefault();
     var nombreEmp = document.getElementById("nombreEmpCoachee");
@@ -170,7 +183,7 @@ function crearCoachee() {
 }
 
 //Modificar Usuarios
-
+//Administradores
 function modificarAdmin(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
@@ -233,6 +246,7 @@ function modificarAdmin(elem) {
     }
 }
 
+//Coach
 function modificarCoach(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
@@ -286,6 +300,7 @@ function modificarCoach(elem) {
     }
 }
 
+//Coachee
 function modificarCoachee(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
@@ -392,6 +407,7 @@ function newProceso() {
   }
 }
 
+//Modificar Proceso Administrador
 function modProceso(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
@@ -438,6 +454,7 @@ function modProceso(elem) {
 }
 }
 
+//Modificar Proceso Coach
 function modProcesoCoach(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
@@ -483,6 +500,7 @@ function modProcesoCoach(elem) {
 }
 /* ######################################################################################### */
 /*                                        Sesiones                                            */
+//Modificar sesiones Coach
 function modSesiones(elem) {
     event.preventDefault();
     var id = $(elem).data("id");

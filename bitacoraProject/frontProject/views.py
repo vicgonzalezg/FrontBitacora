@@ -16,6 +16,7 @@ from weasyprint import HTML, CSS
 from bitacoraProject import settings 
 from bitacoraProject.wsgi import *
 import base64
+
 #definimos el login
 def login(request):
     if request.method == 'POST':
@@ -94,7 +95,7 @@ def get_cashflows(request):
         content_type="application/json"
     )
 
-#Perfil
+#Perfil de usuarios
 def perfil(request):
     try:
         headers = request.session['Headers']
@@ -395,14 +396,14 @@ def menuCoachee(request):
         return redirect('/')
 
  #   except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+ #       messages.warning(request,'Ingrese sus credenciales para acceder')
+ #       return redirect('/')
 
 
 ###################Perteneciente al administrador-----------------------------------------------------
 
-##############################Paginas de Procesos
-
+# --------------------------------  Paginas de Procesos ----------------------------------------------
+#Procesos admin Principal
 def procesosAdmin(request):
     try:
         headers = request.session['Headers']
@@ -641,11 +642,11 @@ def modProceso(request,id):
                         "NOMBREEMPRESA": NOMBREEMPRESA.title(),
                         "CANTSESIONES": CANTSESIONES,
                         "FECHACREACION":FECHACREACION,
-                        "ACTIVO": ACTIVO,
-                        "ESTADOPROCESO_ID": ESTADOPROCESO_ID,
+                        #"ACTIVO": ACTIVO,
+                        #"ESTADOPROCESO_ID": ESTADOPROCESO_ID,
                         "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
-                        "COACH_ID": COACH_ID,
-                        "COACHEE_ID": COACHEE_ID
+                        #"COACH_ID": COACH_ID,
+                        #"COACHEE_ID": COACHEE_ID
                         }
                 
                 modProceso = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
@@ -760,11 +761,47 @@ def visInfoProceso(request, id):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
 
+#Finalizar un proceso
+def finProceso(request,id):
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 1:
+            urlProcesos = 'http://127.0.0.1:8001/procesos/'+str(id)+'/'
+            
+            finProcesoJson ={
+                "ID":id,
+                "ESTADOPROCESO_ID":6 
+                }
+            print(finProcesoJson)
+            response =  requests.put(urlProcesos,json=finProcesoJson,headers=headers)
+            print(response)
+            if response.status_code == 200:
+                #mensaje para avisar al front que se modifico el proceso.
+                messages.success(request, 'Proceso finalizado con éxito.')
+                return redirect('buscaProceso')
+            elif response.status_code == 409:
+                messages.warning(request, 'El proceso ya está finalizado.')
+                return redirect('buscaProceso')
+            else:
+                messages.error(request, 'Hubo un problema al finalizar el proceso.')
+                return redirect('buscaProceso')
+            #return redirect('buscaProceso')
+        else:
+            if perfil['perfil']  == 2:
+                plantilla='menuCoach'
+            elif perfil['perfil']  == 3:
+                plantilla='menuCoachee'
+            return redirect(plantilla) 
+
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')    
 
 
 ## ----------------------------------- USUARIOS ------------------------------------------
 
-#usuarios admin
+#usuarios admin Principal
 def usuariosAdmin(request):
     try:
         headers = request.session['Headers']
@@ -997,7 +1034,7 @@ def modUsuarios(request,id):
 
 # ------------------------ Perteneciente al Coach ------------------------------
 
-# #listar Proceso
+# #listar Proceso Coach 
 def listProCoach(request):
     try:
         headers = request.session['Headers']
@@ -1178,15 +1215,14 @@ def procAsig(request):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/') 
 
+#Obtener y modificar de los procesos coach
 def infoProcCoach(request,id):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
             if request.method == 'POST':
-                
-                
-                print('FORMULARIO PROCESO')
+                #print('FORMULARIO PROCESO')
                 """ nombreEmpresa = request.POST.get('nombre')
                 nombreCoachee = request.POST.get('nombre')
                 apellidoCoachee = request.POST.get('nombre')
@@ -1312,6 +1348,7 @@ def infoProcCoach(request,id):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
 
+#Modificar sesiones Coach
 def infoSesionCoach(request,id):
     try:
         headers = request.session['Headers']
@@ -1462,7 +1499,7 @@ def imprimirProceso(request,id):
     try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
-        if perfil['perfil'] == 2:
+        if perfil['perfil'] == 2 or perfil['perfil'] == 1:
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID='+str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'

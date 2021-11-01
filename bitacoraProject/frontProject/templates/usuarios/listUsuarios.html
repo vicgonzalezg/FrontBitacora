@@ -418,17 +418,6 @@
 <!-- Custom script -->
 {% block js %}
 <!-- Validar porque solo funciona con la primera fila -->
-<script>
-   function cambiaNombre(cb){
-    if (cb.checked) {
-        $('label[for="flexCheckChecked"]').text('Habilitado');
-    }
-    else {
-        $('label[for="flexCheckChecked"]').text('Deshabilitado');
-    }
-};
-
-</script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.dataTables.min.css' %}"/>
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>

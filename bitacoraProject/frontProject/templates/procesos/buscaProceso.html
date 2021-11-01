@@ -150,7 +150,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button onclick="location.reload();" type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Cancelar</button>
                                                 <span class="col-md-1"></span>
 
@@ -178,14 +178,13 @@
                             <div class="modal-body">
                               Proceso Empresa: {{proceso.NOMBREEMPRESA}} <br>
                               Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }} <br>
-                              Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }} <br>
-                              
+                              Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }} <br>  
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <span class="col-md-1"></span>
-                                <button type="button" onclick="finalizarProceso()" class="btn btn-primary">Finalizar
-                                    Proceso</button>
+                                <a type="button" href="{% url 'finProceso' proceso.ID %}" onclick="finalizarProceso();" class="btn btn-primary">Finalizar
+                                    Proceso</a>
                             </div>
                           </div>
                         </div>

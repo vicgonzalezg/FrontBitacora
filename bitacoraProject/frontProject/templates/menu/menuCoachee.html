@@ -13,23 +13,27 @@
 <div class="container">
   <div class="row">
     <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-      <h3 class="text-center">Sesiones del día</h3>
+      <h3 class="text-center">Sesiones</h3>
       {% for proceso in entity %}
       {% if proceso.NOMBRE == None %}
       <br>
       <br>
-      <h5 class="text-center">No hay sesiones para el día de hoy</h5>
+      <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+          <div class="d-flex w-100 justify-content-center">
+              <h5 class="mb-1 text-center">No hay sesiones para el día de hoy</h5>
+          </div>
+      </a>
       {% else %}
       <a href="{% url 'infoProCoachee' proceso.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action"
         style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
         </div>
-        <h6 class="mb-1">sesion: {{ forloop.counter }}</h6>
+        <h6 class="mb-1">Sesión: {{ forloop.counter }}</h6>
         <p class="mb-1">Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
         <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
       </a>
-      <br>
+      
       {% endif %}
       {% endfor %}
 

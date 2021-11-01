@@ -26,8 +26,11 @@
             {% for proceso in entity %}
             {% if proceso.NOMBREEMPRESA == None %}
             <br>
-            <br>
-            <h5 class="text-center">No hay procesos</h5>
+            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                <div class="d-flex w-100 justify-content-center">
+                    <h5 class="mb-1 text-center">No hay procesos</h5>
+                </div>
+            </a>
             {% else %}
             <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action"
                 style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">

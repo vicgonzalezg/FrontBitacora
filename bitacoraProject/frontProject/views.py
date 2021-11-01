@@ -1236,6 +1236,7 @@ def infoProcCoach(request,id):
                 objetivo = request.POST.get('objetivosProc')
                 indicadores = request.POST.get('indicadoresProc')
                 planAccion = request.POST.get('planAccionProc')
+                estadoProceso = request.POST.get('estadoProceso')
                 """ nombreJefe = request.POST.get('nombre')
                 emailJefe = request.POST.get('nombre')
                 fonoJefe = request.POST.get('nombre')
@@ -1248,7 +1249,8 @@ def infoProcCoach(request,id):
                             "ID":idProceso,
                             "OBJETIVOS":objetivo,
                             "INDICADORES": indicadores,
-                            "PLANACCION": planAccion
+                            "PLANACCION": planAccion,
+                            "ESTADOPROCESO_ID": estadoProceso
                 }
                 #print(modProcCoach)
                 #Metodo para modificar proceso Coach en API        

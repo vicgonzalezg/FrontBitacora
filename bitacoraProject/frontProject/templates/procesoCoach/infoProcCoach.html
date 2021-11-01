@@ -11,19 +11,8 @@
 {% block content %}
 {% for procesos in entity %}
 <div class="row container">
-    <H2 class="text-center col-md-8" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
+    <H2 class="text-center col-md-12" name="nombreEmpre" id="nombreEmpre-{{ procesos.ID }}">Proceso Empresa:
         {{procesos.NOMBREEMPRESA}} </H2>
-    <label class="col-md-2 ps-5 p-2" style="font-weight: bold;">Estado Proceso:</label>
-    <div class="form-group col-md-2 p-1 float-start">
-        <div class="col-md-12">
-            <select class="form-select" aria-label="Default select example">
-                {% for estado in estados %}
-                <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
-                {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} >{{estado.DESCRIPCION}}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
 </div>
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
@@ -33,6 +22,19 @@
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->
                 <div class="panel-body mt-2">
+                    <div class="row">
+                        <div class="form-group col-md-2 p-1 float-start">
+                            <div class="col-md-12">
+                                <label class="col-md-12 ps-5 p-2" style="font-weight: bold;">Estado Proceso:</label>
+                                <select class="form-select" name="estadoProceso" aria-label="Default select example">
+                                    {% for estado in estados %}
+                                    <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
+                                    {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} >{{estado.DESCRIPCION}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <br>

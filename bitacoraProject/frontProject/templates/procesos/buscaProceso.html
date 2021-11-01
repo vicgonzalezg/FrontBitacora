@@ -47,15 +47,15 @@
         <div class="row">
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
-                    <input id="coacheeUsuario" class="contactInput form-control" placeholder="Buscar por Coachee">
+                    <input id="coacheeUsuario" class="contactInput form-control" placeholder="Buscar por Coach">
                 </div>
             </div>
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
-                    <input id="coachUsuario" class="contactInput form-control" placeholder="Buscar por Coach">
+                    <input id="coachUsuario" class="contactInput form-control" placeholder="Buscar por Coachee">
                 </div>
             </div>
-            <span class="col-xs-6 col-md-6 py-1"></span>
+            <span class="col-xs-6 col-md-3 py-1"></span>
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
                     <input id="nombre" class="contactInput form-control" placeholder="Buscar por Empresa">
@@ -193,8 +193,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <span class="col-md-1"></span>
-                                <a type="button" href="{% url 'finProceso' proceso.ID %}" onclick="finalizarProceso();" class="btn btn-primary">Finalizar
-                                    Proceso</a>
+                                <a type="button" href="{% url 'finProceso' proceso.ID %}" onclick="finalizarProceso();" class="btn btn-primary">Si, Finalizar!
+                                    </a>
                             </div>
                           </div>
                         </div>

@@ -45,7 +45,17 @@
 <div class="container">
     <div class="col-md-12">
         <div class="row">
-            <span class="col-xs-9 col-md-9 py-1"></span>
+            <div class="col-xs-3 col-md-3 py-1">
+                <div class="form-group">
+                    <input id="coacheeUsuario" class="contactInput form-control" placeholder="Buscar por Coachee">
+                </div>
+            </div>
+            <div class="col-xs-3 col-md-3 py-1">
+                <div class="form-group">
+                    <input id="coachUsuario" class="contactInput form-control" placeholder="Buscar por Coach">
+                </div>
+            </div>
+            <span class="col-xs-6 col-md-6 py-1"></span>
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
                     <input id="nombre" class="contactInput form-control" placeholder="Buscar por Empresa">
@@ -241,6 +251,12 @@ $(document).ready(function (){
 
     $('#nombre').on('keyup change', function () {
         table.column(0).search($(this).val()).draw();
+    });
+    $('#coachUsuario').on('keyup change', function () {
+        table.column(1).search($(this).val()).draw();
+    });
+    $('#coacheeUsuario').on('keyup change', function () {
+        table.column(2).search($(this).val()).draw();
     });
 });
 </script>

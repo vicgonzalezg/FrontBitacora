@@ -110,7 +110,7 @@
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
                                 <textarea rows="7" class="form-control" name="planAccionProc"
-                                    id="planAccionProc-{{ procesos.ID }}" readonly>{{procesos.PLANACCION}}</textarea>
+                                    id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
                         <!--Tabla con registro de fechas de las sesiones-->
@@ -124,176 +124,201 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for sesion in sesiones %}
                                     <tr class="bg-light">
-                                        <th scope="row">1</th>
-                                        <th scope="row">05/06/2021</th>
-                                        <th scope="row">10:00</th>
+                                        {% if sesion.FECHASESION == None %}
+                                        <th scope="row">Sesión: {{ forloop.counter }}</th>
+                                        <th scope="row">SIN AGENDAR</th>
+                                        <th scope="row">SIN AGENDAR</th>
+                                        {% else %}
+                                        <th scope="row">Sesión: {{ forloop.counter }}</th>
+                                        <th scope="row">{{sesion.FECHASESION}}</th>
+                                        <th scope="row">{{sesion.HORASESION}}</th>
+                                        {% endif %}
                                     </tr>
-                                    <tr class="bg-light">
-                                        <th scope="row">2</th>
-                                        <th scope="row">15/06/2021</th>
-                                        <th scope="row">10:00</th>
-                                    </tr>
-                                    <tr class="bg-light">
-                                        <th scope="row">3</th>
-                                        <th scope="row">25/06/2021</th>
-                                        <th scope="row">10:00</th>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="col-md-12">
+                            <button type="submit" onclick="modPlanAccion(this)" data-id="{{procesos.ID}}"
+                                class="btn btn-primary float-start col-md-2">Grabar</button>
                         </div>
                     </div>
                     <br>
                 </div>
             </div>
-
-            <div class="container">
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <!--registro de cada sesión-->
-                            {% for sesion in sesiones %}                             
-                            <p class="collapsible">Sesión {{ forloop.counter }}</p>
-                            <div class="content">
-                                <div class="panel-body">
-                                    <!--Registro de Fecha/hora y estado de cada sesión-->
-                                    <form class="form-horizontal">
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <label class="col-md-12 control-label" name="fechaSesion">Fecha
-                                                            sesión:</label>
-                                                        <div class="col-md-12">
-                                                            <input type="date" id="hoy" name="fechaSesion" value="{{sesion.FECHASESION}}" class="form-control"
-                                                                min="2021-10-01" required readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label class="col-md-12 control-label" name="horaSesion">Hora
-                                                            sesión:</label>
-                                                        <div id="hora" class="col-md-12">
-                                                            <input class="col-md-12 p-1" name="horaSesion" id="appt-time" type="time"
-                                                                name="appt-time" min="12:00" max="18:00" value="{{sesion.HORASESION}}" required disabled>
-                                                        </div>
+        </div>
+    </form>
+    {% endfor %}
+    {% for procesos in entity %}
+    <div class="container">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!--registro de cada sesión-->
+                        {% for sesion in sesiones %}
+                        <p class="collapsible">Sesión {{ forloop.counter }}</p>
+                        <div class="content">
+                            <div class="panel-body">
+                                <!--Registro de Fecha/hora y estado de cada sesión-->
+                                <form class="form-horizontal" method="POST">{% csrf_token %}
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="fechaSesion">Fecha
+                                                        sesión:</label>
+                                                    <div class="col-md-12">
+                                                        <input type="date" id="hoy" name="fechaSesion"
+                                                            value="{{sesion.FECHASESION}}" class="form-control"
+                                                            min="2021-10-01" required readonly>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label" name="estadoSesion">Estado
-                                                    sesión:</label>
-                                                <div class="col-md-12">
-                                                    <select class="form-select" aria-label="Default select example" disabled>
-                                                        {% for estSesion in estadosSesion %}
-                                                            <option name="estadoSesion" value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %}
-                                                            hidden {% endif %} {% if estSesion.ID == sesion.ESTADOSESION_ID %}
-                                                            selected {% endif %} >{{estSesion.DESCRIPCION}}</option>
-                                                        {% endfor %}
-                                                    </select>
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-md-12 control-label" name="horaSesion">Hora
+                                                        sesión:</label>
+                                                    <div id="hora" class="col-md-12">
+                                                        <input class="col-md-12 p-1" name="horaSesion" id="appt-time"
+                                                            type="time" name="appt-time" min="12:00" max="18:00"
+                                                            value="{{sesion.HORASESION}}" required disabled>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label" name="descSesion">Descripción
-                                                    sesión:</label>
-
-                                                <div class="col-md-12">
-                                                    <textarea rows="4" name="descSesion"
-                                                        class="form-control" readonly>{{sesion.DESCRIPCION}}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="col-md-6 control-label"
-                                                    name="asigSesion">Asignaciones/Acuerdos:</label>
-
-                                                <div class="col-md-12">
-                                                    <textarea rows="4" name="asigSesion"
-                                                        class="form-control" readonly>{{sesion.ASIGNACION}}</textarea>
-                                                </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="estadoSesion">Estado
+                                                sesión:</label>
+                                            <div class="col-md-12">
+                                                <select class="form-select" aria-label="Default select example"
+                                                    disabled>
+                                                    {% for estSesion in estadosSesion %}
+                                                        {% if estSesion.ID < sesion.ESTADOSESION_ID %} 
+                                                            <option name="estadoSesion" value="{{estSesion.ID}}" 
+                                                                hidde>{{estSesion.DESCRIPCION}}</option>
+                                                        {% endif %} 
+                                                        {% if estSesion.ID == sesion.ESTADOSESION_ID %} 
+                                                            <option name="estadoSesion" value="{{estSesion.ID}}" 
+                                                            selected>{{estSesion.DESCRIPCION}}</option>
+                                                        {% endif %}
+                                                        {% if estSesion.ID > sesion.ESTADOSESION_ID %} 
+                                                            <option name="estadoSesion" value="{{estSesion.ID}}">
+                                                                {{estSesion.DESCRIPCION}}</option>
+                                                        {% endif %} 
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row">
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="descSesion">Descripción
+                                                sesión:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea rows="4" name="descSesion" class="form-control"
+                                                    readonly>{{sesion.DESCRIPCION}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label"
+                                                name="asigSesion">Asignaciones/Acuerdos:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea rows="4" name="asigSesion" class="form-control"
+                                                    readonly>{{sesion.ASIGNACION}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
+
+                                            <div class="col-md-12">
+                                                <textarea rows="4" name="avancesSesion" class="form-control"
+                                                    readonly>{{sesion.AVANCES}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <!--sector donde se almacenan los documentos y links-->
+                                        <div class="form-group col-md-8">
+                                            <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                             <div class="form-group col-md-12">
-                                                <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
+                                                <table id="example" class="table thead-dark border border-dark">
+                                                    <thead class="thead-dark">
+                                                        <tr class="cabecera">
+                                                            <th scope="col"></th>
+                                                            <th scope="col">Nombre</th>
+                                                            <th scope="col">Tamaño</th>
+                                                            <th scope="col">Fecha</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-word"></i>
+                                                            </th>
+                                                            <th scope="row"><a href="#">Documentos.docx</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-powerpoint"></i>
+                                                            </th>
+                                                            <th scope="row"><a href="#">Presentación.pptx</a>
+                                                            </th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-pdf"></i></th>
+                                                            <th scope="row"><a href="#">Manual.pdf</a></th>
+                                                            <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
-                                                <div class="col-md-12">
-                                                    <textarea rows="4" name="avancesSesion"
-                                                        class="form-control" readonly>{{sesion.AVANCES}}</textarea>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="col-md-12 control-label">Links:</label>
+                                            <div class="col-md-12 float-end">
+                                                <div class="">
+                                                    <textarea rows="7" class="form-control" readonly></textarea>
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row">
-                                            <!--sector donde se almacenan los documentos y links-->
-                                            <div class="form-group col-md-8">
-                                                <label class="col-md-6 control-label" name="nombre">Documentos:</label>
-                                                <div class="form-group col-md-12">
-                                                    <table id="example" class="table thead-dark border border-dark">
-                                                        <thead class="thead-dark">
-                                                            <tr class="cabecera">
-                                                                <th scope="col"></th>
-                                                                <th scope="col">Nombre</th>
-                                                                <th scope="col">Tamaño</th>
-                                                                <th scope="col">Fecha</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-word"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-powerpoint"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="#">Presentación.pptx</a>
-                                                                </th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-pdf"></i></th>
-                                                                <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label class="col-md-12 control-label">Links:</label>
-                                                <div class="col-md-12 float-end">
-                                                    <div class="">
-                                                        <textarea rows="7" class="form-control" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="container">
+                                        <button type="submit" onclick="" data-id="{{procesos.ID}}"
+                                            class="btn btn-primary float-end col-md-2">Grabar</button>
+                                    </div>
+                                    <br>
+                                </form>
 
-                                    </form>
-
-                                </div>
                             </div>
-
-                            {% endfor %}
                             <br>
-
                         </div>
+
+                        {% endfor %}
+                        <br>
+
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
     <br>
     <!--Boton para almacena la informacion del proceso-->
-    <a onclick = "window.close ()" class="btn btn-secondary float-start col-md-2">Cerrar</a>
+    <a onclick="window.close ()" class="btn btn-secondary float-start col-md-2">Cerrar</a>
     <br>
     <br>
     <br>
@@ -332,6 +357,8 @@
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
+            "info": false,
+            "paginate": false,
             "language": {
                 "zeroRecords": "No se encontraron registros.",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -351,18 +378,17 @@
 <script>
     var coll = document.getElementsByClassName("collapsible");
     var i;
-    
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.maxHeight){
-          content.style.maxHeight = null;
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-        } 
-      });
-    }
-    </script>
-{% endblock js %}
 
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+</script>
+{% endblock js %}

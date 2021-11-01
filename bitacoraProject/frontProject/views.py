@@ -147,6 +147,7 @@ def menuAdmin(request):
                             nombreJefe = u['NOMBREJEFE']
                             emailJefe = u['EMAILJEFE']
                             fonoJefe = u['FONOJEFE']
+                            idProceso = p['ID']
 
                             json=[{
                                 "NOMBREEMPRESA": nombreEmpresa,
@@ -162,7 +163,8 @@ def menuAdmin(request):
                                 "NOMBREJEFE": nombreJefe,
                                 "EMAILJEFE": emailJefe,
                                 "FONOJEFE": fonoJefe,  
-                                "DESCRIPCION":estadoDescripcion
+                                "DESCRIPCION":estadoDescripcion,
+                                "ID": idProceso
                                 }]
 
                             listados = json + listados
@@ -337,6 +339,7 @@ def menuCoachee(request):
                             apellidoCoach= uc['APELLIDO']
                     for s in sesiones:
                         if p['ID'] == s['PROCESO_ID']:
+                            fechasesion= s['FECHASESION'] 
                             
 
                             json=[{
@@ -357,6 +360,7 @@ def menuCoachee(request):
                                 "NOMBRECOACH":nombreCoach,
                                 "APELLIDOCOACH":apellidoCoach,
                                 "IDSESION": canSesiones,
+                                "FECHASESION":fechasesion,
                                 "ID": idProceso
                                 
                                 }]
@@ -395,9 +399,6 @@ def menuCoachee(request):
         messages.warning(request,'Ingrese sus credenciales para acceder')
         return redirect('/')
 
- #   except Exception as e:
- #       messages.warning(request,'Ingrese sus credenciales para acceder')
- #       return redirect('/')
 
 
 ###################Perteneciente al administrador-----------------------------------------------------
@@ -439,6 +440,7 @@ def procesosAdmin(request):
                             nombreJefe = u['NOMBREJEFE']
                             emailJefe = u['EMAILJEFE']
                             fonoJefe = u['FONOJEFE']
+                            idProceso = p['ID']
 
                             json=[{
                                 "NOMBREEMPRESA": nombreEmpresa,
@@ -454,7 +456,8 @@ def procesosAdmin(request):
                                 "NOMBREJEFE": nombreJefe,
                                 "EMAILJEFE": emailJefe,
                                 "FONOJEFE": fonoJefe,  
-                                "DESCRIPCION":estadoDescripcion
+                                "DESCRIPCION":estadoDescripcion,
+                                "ID": idProceso
                                 }]
 
                             listados = json + listados
@@ -1217,7 +1220,7 @@ def procAsig(request):
 
 #Obtener y modificar de los procesos coach
 def infoProcCoach(request,id):
-    try:
+    #try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
@@ -1344,9 +1347,9 @@ def infoProcCoach(request,id):
                 plantilla='menuCoachee'
             return redirect(plantilla)
 
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+     #   messages.warning(request,'Ingrese sus credenciales para acceder')
+      #  return redirect('/')
 
 #Modificar sesiones Coach
 def infoSesionCoach(request,id):
@@ -1402,7 +1405,7 @@ def infoSesionCoach(request,id):
 
 #Procesos asignados al Coachee
 def infoProCoachee(request, id):
-    try:
+    #try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 3:
@@ -1489,9 +1492,9 @@ def infoProCoachee(request, id):
                 plantilla='menuCoach'
             return redirect(plantilla) 
 
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+     #   messages.warning(request,'Ingrese sus credenciales para acceder')
+      #  return redirect('/')
 
 #Imprimi Reporte
 
@@ -1595,6 +1598,44 @@ def imprimirProceso(request,id):
                 plantilla='menuAdmin'
             elif perfil['perfil']  == 3:
                 plantilla='menuCoachee'
+            return redirect(plantilla)
+
+    except Exception as e:
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
+
+
+#---------------------- modificar plan de accion coachee----------
+def modPlanAccion(request,id):
+    try:
+        headers = request.session['Headers']
+        perfil = request.session['Perfil_Usuario']
+        if perfil['perfil'] == 3:
+            if request.method == 'POST':
+                ID = id
+                PLANDEACCION = request.POST.get('planAccionProc')
+                modificarPlanJson={
+                        "ID": ID,
+                        "NOMBREEMPRESA": PLANDEACCION
+                        }
+                
+                modPlanAccion = 'http://127.0.0.1:8001/procesos/'+ str(id) +'/'
+                response =  requests.put(modPlanAccion,json=modificarPlanJson,headers=headers)
+                
+                if response.status_code == 200:
+                    #mensaje para avisar al front que se modifico el proceso.
+                    messages.success(request, 'Plan de acción modificado con éxito.')
+                    return redirect('infoProCoachee')
+                else:
+                    messages.error(request, 'Hubo un problema al modificar el Plan de Acción.')
+                    return redirect('infoProCoachee')
+
+            return redirect('infoProCoachee') 
+        else:
+            if perfil['perfil']  == 1:
+                plantilla='menuAdmin'
+            elif perfil['perfil']  == 2:
+                plantilla='menuCoach'
             return redirect(plantilla)
 
     except Exception as e:

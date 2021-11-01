@@ -25,7 +25,7 @@
       </a>
       {% else %}
       <a href="{% url 'infoProCoachee' proceso.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action"
-        style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+        style="border-radius: 5px; margin-block-end: 10px;" aria-current="true" target="_blank">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
         </div>
@@ -48,7 +48,7 @@
         <h3 class="text-center fw-bold">Calendario</h3>
         <div id="yourId" class="jalendar">
           {% for proceso in entity %}
-          <div class="added-event" data-type="task" data-date="{{proceso.FECHACREACION}}" data-title="Proceso Empresa: {{ proceso.NOMBREEMPRESA }}">
+          <div class="added-event" data-type="task" data-date="{{proceso.FECHASESION}}" data-title="Proceso Empresa: {{ proceso.NOMBREEMPRESA }}">
           </div>
           {% endfor %}
         </div>

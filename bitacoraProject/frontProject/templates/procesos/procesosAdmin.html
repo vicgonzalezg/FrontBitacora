@@ -4,7 +4,7 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/jalendar.min.css' %}" type="text/css" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 <!--jQuery-->
 <script type="text/javascript" src="{% static 'js/jalendar.min.js' %}"></script>
 {% endblock %}
@@ -67,6 +67,7 @@
         weekColor: '#000000', // color de la semana
         dayColor: '#000000', // color de los dias 
         todayColor: '#52BE80', // color del dia de hoy 
+        dateType: "yyyy-mm-dd"
     });
 </script>
 

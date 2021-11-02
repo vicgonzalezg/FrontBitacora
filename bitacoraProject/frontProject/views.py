@@ -490,7 +490,9 @@ def nuevoProceso(request):
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+            urlProcesos = 'http://127.0.0.1:8001/procesos'
             usuarios = requests.get(urlUsuarios,headers=headers).json()
+            procesos = requests.get(urlProcesos,headers=headers).json()
             if request.method == 'POST' and perfil['perfil'] == 1:
                 #Obtener datos del Front
                 NOMBREEMPRESA = request.POST.get('nombreEmpre')
@@ -528,6 +530,7 @@ def nuevoProceso(request):
             data = {
                 'usuario': perfil,
                 'list_usuario':usuarios,
+                'entity':procesos
                 }
 
             return render(request,'procesos/nuevoProceso.html', data) 

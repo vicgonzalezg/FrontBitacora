@@ -775,13 +775,28 @@ def finProceso(request,id):
         if perfil['perfil'] == 1:
             urlProcesos = 'http://127.0.0.1:8001/procesos/'+str(id)+'/'
             day = datetime.today().strftime('%Y-%m-%d')
+            print(request)
+            """ proceso= requests.get(urlProcesos,headers=headers)
+            for p in proceso:
+                objetivo = p['OBJETIVOS']
+                indicadores = p['INDICADORES']
+                planaccion = p['PLANACCION']
 
+                finProcesoJson ={
+                    "ID":id,
+                    "FECHATERMINO":day,
+                    "OBJETIVOS":objetivo,
+                    "INDICADORES":indicadores,
+                    "PLANACCION":planaccion,
+                    "ACTIVO":0,
+                    "ESTADOPROCESO_ID":6
+                    } """
             finProcesoJson ={
-                "ID":id,
-                "FECHATERMINO":day,
-                "ACTIVO":0,
-                "ESTADOPROCESO_ID":6
-                }
+                    "ID":id,
+                    "FECHATERMINO":day,
+                    "ACTIVO":0,
+                    "ESTADOPROCESO_ID":6
+                    }
             print(finProcesoJson)
             response =  requests.put(urlProcesos,json=finProcesoJson,headers=headers)
             print(response)

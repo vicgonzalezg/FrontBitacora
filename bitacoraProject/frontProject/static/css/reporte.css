@@ -1,0 +1,36 @@
+.cabeceraReporte{
+    background-color: #98b2be;
+    width: 100%;
+}
+.cabeceraSesion{
+    background-color: #98b2be;
+    width: 50%;
+}
+
+.cabeceraSesiones{
+    background-color: #002b49;
+}
+
+.nav-procesos {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.texto {
+    max-width: 100%;
+    color: black;
+    background-color: transparent;
+}
+
+.imagenLogo {
+    background-image:  url("../imagenes/logo-thinkgo.png");
+    background-image:  transparent;
+    background-position: left;
+    background-repeat: no-repeat;
+    width: 230px;
+    height: 75px;
+    background-color: #002b49;
+}

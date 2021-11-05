@@ -12,6 +12,8 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/footer.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <script src="{% static 'js/validaciones.js'%}"></script>
     <!-- Se agrega bloque para el head -->
     {% block head %} {% endblock %}
     <!-- Se agrega bloque para los titulos -->
@@ -19,42 +21,43 @@
 </head>
 
 <body id="imagen-fondo">
+
+
     <!-- ESTO HAY QUE REVISARLO, Al ingresar a otra "pagina" no muestra el menu -->
     <!-- hay que ver si lo dejamos aca o en cada html -->
     <!-- Inicio Sidebar collapse por prefil -->
     {% if usuario.perfil == 1 or usuario.perfil == 2 %}
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> {% if usuario.perfil == 1 %}
         <a href="{% url 'menuAdmin' %}">
             <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
         </a>
         <!-- ESTO HAY QUE REVISARLO, SE DEJARA EL PERFIL Y CERRAR SESION ACA O ABAJO -->
         <!-- Opciones segun perfil -->
-        {% if usuario.perfil == 1 %}
+
         <!--<a href="{% url 'menuAdmin' %}">Inicio</a>-->
         <a href="{% url 'menuAdmin' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
         <a href="{% url 'procesosAdmin' %}" id="sidebarmenu">Procesos</a>
         <ul class="d-sm-block d-md-none" id="sidebarmenu">
             <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
             <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
-            <a href="{% url 'listProceso'%}">Listar Proceso</a>
-            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
         </ul>
         <a href="{% url 'usuariosAdmin' %}" id="sidebarmenu">Usuarios</a>
-        <ul class="d-sm-block d-md-none"  id="sidebarmenu">
-            <a href="{% url 'nuevoProceso'%}">Nuevo Proceso</a>
-            <a href="{% url 'buscaProceso'%}">Modificar Proceso</a>
-            <a href="{% url 'listProceso'%}">Listar Proceso</a>
-            <a href="{% url 'termiProceso'%}">Finalizar Proceso</a>
+        <ul class="d-sm-block d-md-none" id="sidebarmenu">
+            <a href="{% url 'nuevoUsuario'%}">Nuevo Usuario</a>
+            <a href="{% url 'listUsuarios'%}">Listar Usuarios</a>
         </ul>
         <!--
         <a href="#">Perfil</a>
         <a href="/">Cerrar Sesión</a>
         -->
         {% elif usuario.perfil == 2 %}
-        <a href="#">Procesos Asignados</a>
-        <a href="{% url 'listProCoach'%}">Listar Proceso</a>
-        {% endif %}
+        <a href="{% url 'menuCoach' %}">
+            <img src="{% static 'imagenes/logo-thinkgo.png' %}" class="img-fluid" alt="Logo ThinkGo">
+        </a>
+        <a href="{% url 'menuCoach' %}" id="sidebarmenu" class="d-sm-block d-md-none">Menú Principal</a>
+        <a href="{% url 'procAsig' %}">Procesos Asignados</a>
+        <a href="{% url 'listProCoach'%}">Listar Proceso</a> {% endif %}
     </div>
     {% endif %}
 
@@ -64,27 +67,28 @@
         <div class="header">
             <!-- Botón para el menu sidebar -->
             {% if usuario.perfil == 1 or usuario.perfil == 2 %}
-            <button class="openbtn" onclick="openNav()">&#9776; Menú </button>
-            {% elif usuario.perfil == 3 %}
-            <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            <button class="openbtn" onclick="openNav()">&#9776; Menú </button> {% elif usuario.perfil == 3 %}
+            <a href="{% url 'menuCoachee' %}">
+                <img class="openbtnimg" src="{% static 'imagenes/logo-thinkgo.png' %}">
+            </a>
             {% endif %}
             <!-- Bienvenida al usuario por su nombre -->
-            <button class="openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
+            <button class="col-xs-10 openbtn dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
                 style="float:right;">Hola {{ usuario.nombre }}</button>
 
             <!-- Opciones del perfil  -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Perfil</a>
-                <a class="dropdown-item" href="/">Cerrar Sesión</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Perfil</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
             </div>
         </div>
     </div>
 
     <!-- Se agrega bloque para el body -->
     {% block content%} {% endblock%}
-<!-- Footer -->
+    <!-- Footer -->
 
-<!--footer class="page-footer font-small mdb-color darken-3 pt-4">
+    <!--footer class="page-footer font-small mdb-color darken-3 pt-4">
 
      Copyright 
     <div class="footer-copyright text-center py-3">© 2021 Copyright: Castivine
@@ -93,15 +97,14 @@
 
 </footer>
  Footer -->
- <footer class="footer">
-    <div class="container">
-        <br>
-      <div class="footer-copyright text-center ">© 2021 Copyright: Castivine | Autorizado por Nelson Gómez</div>
-    </div>
-  </footer>
+    <footer class="footer">
+        <div class="container">
+            <br>
+            <div class="footer-copyright text-center ">© 2021 Copyright: Castivine</div>
+        </div>
+    </footer>
 
 </body>
-
 
 
 <!-- Script JS necesarios para el Menu -->
@@ -111,7 +114,19 @@
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/menu.js' %}"></script>
+<!-- Custom script -->
+{% block js %} {% endblock js %}
 
+
+<!--Modal perfil-->
+<div style="display: hidden;" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            {% include 'Perfil/perfil.html' %}
+        </div>
+    </div>
+</div>
 
 
 

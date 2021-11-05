@@ -49,6 +49,7 @@
                         <input type="checkbox" name="connected" class="form-check-input">
                         <label for="connected" class="form-check-label">Recordarme</label>
                     </div>
+                   
                     <!-- Boton Ingresar -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Ingresar</button>
@@ -69,5 +70,17 @@
 <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/sweetalert2@11.js' %}"></script>
+{% if messages %}
+{% for message in messages %}
+    <script>
+        Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{{ message.tags }}',
+                    heightAuto: false
+                })
+    </script>
+{% endfor %}
+{% endif %}
 
 </html>

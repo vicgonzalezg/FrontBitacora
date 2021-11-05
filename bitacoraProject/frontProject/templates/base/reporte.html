@@ -1,0 +1,201 @@
+{% load static %}
+{% for procesos in entity %}
+<!--Formulario del proceso y sus sesiones -->
+<div class="bg-light">
+    <div class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
+        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">
+        <div class="container-fluid">
+            <div>
+                <image class="col-xs-4">
+                        <p class="imagenLogo">
+                            <br />
+                        </p>
+                </image>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 cabeceraSesiones text-center">
+                    <h1 class="nav-procesos">Reporte Empresa: {{procesos.NOMBREEMPRESA}}</h1>
+                </div>
+            </div>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraSesion text-center">Fecha Creación:</th>
+                    <th class="cabeceraSesion text-center">Fecha Término:</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto text-center">{{procesos.FECHACREACION}}</p>
+                    </td><td>
+                        {% if procesos.FECHATERMINO == None %}
+                        <p class="texto text-center">Proceso no Finalizado</p>
+                        {% else %}
+                        <p class="texto text-center">{{procesos.FECHATERMINO}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <div class="row" style="margin-bottom: 2rem;">
+                <!--Datos personales del coachee-->
+                <table class="border">
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Coachee</th>
+
+                    </tr>
+                    <tr>
+                        <td>Nombre Coachee:</td>
+                        <td>{{procesos.NOMBRE}}
+                            {{procesos.APELLIDO}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Coachee:</td>
+                        <td>{{procesos.CORREO}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Coachee:</td>
+                        <td>{{procesos.FONO}}</td>
+                    </tr>
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Jefe</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre Jefe:</td>
+                        <td>{{procesos.NOMBREJEFE}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Jefe:</td>
+                        <td>{{procesos.EMAILJEFE}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Jefe:</td>
+                        <td>{{procesos.FONOJEFE}}</td>
+                    </tr>
+                    <!-- Comentar si no es necesario los datos del Coach en el Reporte-->
+                    <tr class="border">
+                        <th colspan="2" class="cabeceraReporte text-center">Datos Coach</th>
+                    </tr>
+                    <tr>
+                        <td>Nombre Coach:</td>
+                        <td>{{procesos.NOMBRECOACH}} {{procesos.APELLIDOCOACH}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Coach:</td>
+                        <td>{{procesos.CORREOCOACH}}</td>
+                    </tr>
+                    <tr>
+                        <td>Telefono Coach:</td>
+                        <td>{{procesos.FONOCOACH}}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div style="margin-bottom: 2rem;">
+                <!--Datos del proceso-->
+                <div class="nav-item">
+                    <h2 class="nav-procesos cabeceraSesiones">Información del Proceso</h2>
+                </div>
+                <table class="border w-100">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Objetivo del proceso:</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="texto">{{procesos.OBJETIVOS}}</p>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <table class="border w-100">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Indicadores de éxito:</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="texto">{{procesos.INDICADORES}}</p>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <table class="border w-100">
+                    <tr class="border">
+                        <th class="cabeceraReporte text-center">Plan de Acción:</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="texto">{{procesos.PLANACCION}}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <br>
+            <div class="nav-item">
+                <h2 class="nav-procesos cabeceraSesiones">Información de las Sesiones</h2>
+            </div>
+
+            {% for sesion in sesiones %}
+            <br>
+            <div class="nav-item">
+                <h3 class="">Sesión {{ forloop.counter }}</h3>
+            </div>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraSesion text-center">Fecha sesión:</th>
+                    <th class="cabeceraSesion text-center">Hora sesión:</th>
+                </tr>
+                <tr>
+                    <td>{% if sesion.FECHASESION == None %}
+                        <p class="texto text-center">No agendado</p>
+                        {% else %}
+                        <p class="texto text-center">{{sesion.FECHASESION}}</p>
+                        {% endif %}
+                    </td><td>
+                        {% if sesion.HORASESION == None %}
+                        <p class="texto text-center">No agendado</p>
+                        {% else %}
+                        <p class="texto text-center">{{sesion.HORASESION}}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">Descripción sesión:</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto">{{sesion.DESCRIPCION}}</p>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">Asignaciones/Acuerdos:</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto">{{sesion.ASIGNACION}}</p>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">ㅤㅤAvances:ㅤㅤ</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto">{{sesion.AVANCES}}</p>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <hr>
+            {% endfor %}
+        </div>
+        <br>
+    </div>
+</div>
+{% endfor %}

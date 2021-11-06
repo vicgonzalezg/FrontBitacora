@@ -28,7 +28,8 @@
                                     <div class="col-md-6 row container">
                                         <span class="col-md-1"></span>
                                         <label class="col-md-4 p-2" style="font-weight: bold;">Estado Proceso:</label>
-                                        <select class="col-md-7 form-select" name="estadoProceso" aria-label="Default select example">
+                                        <select class="col-md-7 form-select" name="estadoProceso" aria-label="Default select example"
+                                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                             {% for estado in estados %}
                                             <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
                                             {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} 
@@ -108,14 +109,16 @@
                                 <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                                 <div class="col-md-12">
                                     <textarea rows="5" class="form-control" name="objetivosProc"
-                                        id="objetivosProc-{{ procesos.ID }}">{{procesos.OBJETIVOS}}</textarea>
+                                        id="objetivosProc-{{ procesos.ID }}"
+                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{procesos.OBJETIVOS}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                                 <div class="col-md-12 col-lg-8">
                                     <textarea rows="5" class="form-control" name="indicadoresProc"
-                                        id="indicadoresProc-{{ procesos.ID }}">{{procesos.INDICADORES}}</textarea>
+                                        id="indicadoresProc-{{ procesos.ID }}"
+                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{procesos.INDICADORES}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +132,8 @@
                                 <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                                 <div class="col-md-12">
                                     <textarea rows="7" class="form-control" name="planAccionProc"
-                                        id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
+                                        id="planAccionProc-{{ procesos.ID }}"
+                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{procesos.PLANACCION}}</textarea>
                                 </div>
                             </div>
                             <!--Tabla con registro de fechas de las sesiones-->
@@ -165,7 +169,8 @@
                 <br>
                 <div class="container">
                     <button type="submit" onclick="modProcesoCoach(this);" data-id="{{procesos.ID}}"
-                        class="btn btn-primary float-end col-md-2">Grabar</button>
+                        class="btn btn-primary float-end col-md-2"
+                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>Grabar</button>
                 </div>
                 <br>
                 <br>
@@ -178,7 +183,7 @@
                 <div class="row">
                     <!--registro de cada sesión-->
                     {% for sesion in sesiones %}
-                    <p class="collapsible">Sesión {{ forloop.counter }}</p>
+                    <p class="collapsible" id="{{ sesion.ID }}" onclick="fecha(this);">Sesión {{ forloop.counter }}</p>
                     <div class="content">
                         <div class="panel-body">
                             <!--Registro de Fecha/hora y estado de cada sesión-->
@@ -191,9 +196,10 @@
                                                 <label class="col-md-12 control-label" name="fechaSesion">Fecha
                                                     sesión:</label>
                                                 <div class="col-md-12">
-                                                    <input type="date" id="hoy" name="fechaSesion"
+                                                    <input type="date"  name="fechaSesion"
                                                         id="fechaSesion-{{ sesion.ID }}" value="{{sesion.FECHASESION}}"
-                                                        class="form-control" min="2021-10-01" required>
+                                                        class="form-control" min="2021-10-01" 
+                                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %} >
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
@@ -202,7 +208,8 @@
                                                 <div id="hora" class="col-md-12">
                                                     <input class="col-md-12 p-1" name="horaSesion"
                                                         id="apptime-{{ sesion.ID }}" type="time" name="appt-time"
-                                                        min="12:00" max="18:00" value="{{sesion.HORASESION}}" required>
+                                                        min="09:00:00" max="18:00:00" value="{{sesion.HORASESION}}"
+                                                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                         </div>
@@ -212,7 +219,8 @@
                                             sesión:</label>
                                         <div class="col-md-12">
                                             <select class="form-select" name="estadoSesion1"
-                                                aria-label="Default select example">
+                                                aria-label="Default select example"
+                                                {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                                 {% for estSesion in estadosSesion %}
                                                 <option name="estadoSesion" id="estadoSesion-{{ sesion.ID }}"
                                                     value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %} hidden {% endif %} 
@@ -230,7 +238,8 @@
 
                                         <div class="col-md-12">
                                             <textarea rows="4" name="descSesion" class="form-control"
-                                                id="descSesion--{{ sesion.ID }}">{{sesion.DESCRIPCION}}</textarea>
+                                                id="descSesion--{{ sesion.ID }}"
+                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.DESCRIPCION}}</textarea>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -239,7 +248,8 @@
 
                                         <div class="col-md-12">
                                             <textarea rows="4" name="asigSesion" class="form-control"
-                                                id="asigSesion-{{ sesion.ID }}">{{sesion.ASIGNACION}}</textarea>
+                                                id="asigSesion-{{ sesion.ID }}"
+                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.ASIGNACION}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -250,7 +260,8 @@
 
                                         <div class="col-md-12">
                                             <textarea rows="4" name="avancesSesion" class="form-control"
-                                                id="avancesSesion-{{ sesion.ID }}">{{sesion.AVANCES}}</textarea>
+                                                id="avancesSesion-{{ sesion.ID }}"
+                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.AVANCES}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +309,7 @@
                                             <br>
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <input type="file" multiple>
+                                                    <input type="file" multiple {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                             <br>
@@ -309,23 +320,26 @@
                                         <div class="col-md-12 float-end">
                                             <div class="">
                                                 <textarea rows="7" class="form-control" id="link-{{ sesion.ID }}"
-                                                    name="link"></textarea>
+                                                    name="link"
+                                                    {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" name="proceso" class="d-none" value="{{procesos.ID}}">
+                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                             </form>
                             <div class="form-group container col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"
-                                    data-id="{{sesion.ID}}">Guardar Sesión {{ forloop.counter }}</button>
+                                    data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}
+                                    >Guardar Sesión {{ forloop.counter }}</button>
                                 <br>
                                 <br>
                             </div>
                             <br>
                         </div>
                     </div>
-
+                    
                     {% endfor %}
                     <br>
                 </div>
@@ -361,22 +375,23 @@
 {% endfor %}
 {% endif %}
 <script>
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd
-    }
-    if (mm < 10) {
-        mm = '0' + mm
-    }
+    function fecha(elem) {
+        var today = new Date();
+        var id = $(elem).attr("id")
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
 
-    today = yyyy + '-' + mm + '-' + dd;
-    document.getElementById("hoy").setAttribute("min", today);
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("fechaSesion"+'-'+id).setAttribute("min", today);
+    };
 </script>
-
-
 {% endblock %}
 
 <!-- Custom script -->

@@ -504,14 +504,21 @@ function modProcesoCoach(elem) {
 function modSesiones(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
-    var fechaSesion = document.getElementById("fechaSesion"+'-'+id);
-    var apptime = document.getElementById("apptime"+'-'+id);
+    var fechaSesion = document.getElementById("fechaSesion"+'-'+id).value;
+    var apptime = document.getElementById("apptime"+'-'+id).value;
     var estadoSesion = document.getElementById("estadoSesion"+'-'+id);
     var descSesion = document.getElementById("descSesion"+'-'+id);
     var asigSesion = document.getElementById("asigSesion"+'-'+id);
     var avancesSesion = document.getElementById("avancesSesion"+'-'+id);
     var link = document.getElementById("link"+'-'+id);
     var proceso = document.getElementById("proceso")
+    if (!fechaSesion || !apptime) {
+        Swal.fire('Los campos fecha y hora de la sesión son obligatorios!', '', 'info')
+    }
+    else if (apptime < '08:00:00' || apptime > '19:00:00'){
+        Swal.fire('El horario de la sesión debe estar en el rango 08:30 a 19:00 hrs.', '', 'info')
+    }
+    else
     {
     var formSesiones = document.forms["formSesiones-"+id];
     Swal.fire({

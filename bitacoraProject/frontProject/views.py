@@ -1450,78 +1450,18 @@ def infoSesionCoach(request, id):
                 "ESTADOSESION_ID": ESTADOSESION_ID
             }
 
-            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(idP)
-            responseSesiones = requests.get(
-                urlSesiones, headers=headers).json()
-            
-            urlSesion = 'http://127.0.0.1:8001/sesiones?ID='+str(id)
-            responseSesion = requests.get(
-                urlSesion, headers=headers).json()
-            
-
-            print(modificarSesionesJson['ID'])
-            print(responseSesiones[0]['ID'])
-            if responseSesiones[0]['ID'] == modificarSesionesJson['ID']:
-                urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
-                response = requests.put(
-                    urlSesiones, headers=headers, json=modificarSesionesJson)
-                print(response.status_code)
-                if response.status_code == 200:
-                    messages.success(request, 'Sesión actualizada con éxito.')
-                    return redirect('infoProcCoach', idP)
-                else:
-                    messages.error(
-                        request, 'Hubo un problema al actualizar la sesión.')
-                    return redirect('infoProcCoach', idP)
-                print('Sesion Response: '+ str(responseSesiones[0]['ID']) + ' es igual a Sesion a modificar: ' + str(modificarSesionesJson['ID']))
-            elif responseSesiones[0]['ID'] <= modificarSesionesJson['ID']:
-                print('Sesion Response: '+ str(responseSesiones[0]['ID']) + ' es menor  a Sesion a modificar: ' + str(modificarSesionesJson['ID']))
-                print('ACA DEBERIA IR UN FOR RECORRIENDO LAS SESIONES MENORES A LA QUE QUEREMOS MODIFICAR')
-                for ss in responseSesiones:
-                    if ss['ID'] <= modificarSesionesJson['ID'] and ss['ESTADOSESION_ID'] <= 3:
-                        if ss['ID']-1 < modificarSesionesJson['ID'] and ss['ESTADOSESION_ID'] == 4:
-                            urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
-                            response = requests.put(
-                                urlSesiones, headers=headers, json=modificarSesionesJson)
-                            print(response.status_code)
-                            if response.status_code == 200:
-                                messages.success(request, 'Sesión actualizada con éxito.')
-                                return redirect('infoProcCoach', idP)
-                            else:
-                                messages.error(
-                                    request, 'Hubo un problema al actualizar la sesión.')
-                                return redirect('infoProcCoach', idP)
-                        else: 
-                            print('no grabo na')
-                            messages.error(
-                                request, 'Hubo un problema al actualizar la sesión.')
-                            return redirect('infoProcCoach', idP)
-                        #La sesion 49 esta en estado 4 finalizado.
-                        
-                        #con este for e if se validan todas las sesiones anteriores que esten en estado 1 o 2 o 3
-                        #print('Ss: '+ str(ss['ID']) + ' es menor  a Sesion a modificar: ' + str(modificarSesionesJson['ID']))
-                        #print('Ss: '+ str(ss['ID']) + ' estado es: ' + str(ss['ESTADOSESION_ID']))
-                        
-            elif responseSesiones[0]['ID'] >= modificarSesionesJson['ID']:
-                print('Sesion Response: '+ str(responseSesiones[0]['ID']) + ' es mayor  a Sesion a modificar: ' + str(modificarSesionesJson['ID']))
-                print('ACA NUNCA DEBERIA LLEGAR')
-            #
-            #    for s in modificarSesionesJson:
-                    #print(s[6])
-            #        if s[7] >= 3 and ss['ID'] < id and ss['ESTADOSESION_ID'] != 4:
-            #            print(ss['ID'])
-            #            print(s['ID'])
-            #            print('NO PUT sesion mayor a la actual')
-            #        elif s['ESTADOSESION_ID'] <= 3 and ss['ID'] == id and ss['ESTADOSESION_ID'] < 4:
-            #            print(ss['ID'])
-            #            print(s['ID'])
-            #            print('PUT Sesion actual estado 1 o 2 o 3')
-                    #elif s['ESTADOSESION_ID'] <= 3 and ss['ID'] < id and ss['ESTADOSESION_ID'] == 4:
-                    #    print(ss['ID'])
-                    #    print(s['ID'])
-                    #    print('PUT Sesion mayor a la actual')
-                 
-                    
+            # print(modificarSesionesJson)
+            urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
+            response = requests.put(
+                urlSesiones, headers=headers, json=modificarSesionesJson)
+            print(response.status_code)
+            if response.status_code == 200:
+                messages.success(request, 'Sesión actualizada con éxito.')
+                return redirect('infoProcCoach', idP)
+            else:
+                messages.error(
+                    request, 'Hubo un problema al actualizar la sesión.')
+                return redirect('infoProcCoach', idP)
         return redirect('listProCoach')
     else:
         if perfil['perfil'] == 1:
@@ -1529,8 +1469,6 @@ def infoSesionCoach(request, id):
         elif perfil['perfil'] == 3:
             plantilla = 'menuCoachee'
         return redirect(plantilla)
-            # print(modificarSesionesJson)
-
     # except Exception as e:
     #    messages.warning(request,'Ingrese sus credenciales para acceder')
     #    return redirect('/')

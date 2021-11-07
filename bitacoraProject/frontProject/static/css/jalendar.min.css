@@ -91,7 +91,8 @@
     -moz-transition: all 1s cubic-bezier(.45, .24, .36, 1.31);
     -ms-transition: all 1s cubic-bezier(.45, .24, .36, 1.31);
     -o-transition: all 1s cubic-bezier(.45, .24, .36, 1.31);
-    transition: all 1s cubic-bezier(.45, .24, .36, 1.31)
+    transition: all 1s cubic-bezier(.45, .24, .36, 1.31);
+    margin-block-end: 25%;
 }
 
 .jalendar .jalendar-container .jalendar-pages>.header {
@@ -353,11 +354,11 @@
     position: absolute;
     bottom: 20px;
     width: 100%;
-    display: none
+    display: none;
 }
 
 .jalendar .jalendar-container .jalendar-pages .add-event .close-button:hover {
-    background-color: rgba(0, 0, 0, .2)
+    background-color: rgba(0, 0, 0, .2);
 }
 
 .jalendar .jalendar-container .jalendar-pages .add-event .events {
@@ -400,7 +401,7 @@
     right: -20px;
     width: 100%;
     height: 1px;
-    background-color: rgba(255, 255, 255, .2)
+    background-color: rgba(255, 255, 255, .2);
 }
 
 .jalendar .jalendar-container .jalendar-pages .add-event .events .events-list .event-single a {

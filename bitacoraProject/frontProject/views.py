@@ -70,7 +70,7 @@ def login(request):
                 plantilla = 'menuCoachee'
             return redirect(plantilla)
         else:
-            messages.error(request, 'Usuario y/o contraseña incorrectos.')
+            messages.error(request, r.text.replace('"', ''))
             return render(request, 'login/login.html')
     return render(request, 'login/login.html')
 
@@ -133,9 +133,13 @@ def menuAdmin(request):
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
+            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
             proceso = requests.get(urlProcesos, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstado, headers=headers).json()
+            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
+            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
             listados = []
             #listado = proceso.update(usuario)
             if len(proceso) > 0:
@@ -179,17 +183,44 @@ def menuAdmin(request):
                             }]
 
                             listados = json + listados
+                
+                sesionesCalendario3=[]
+                for sCal in sesionesCalendario:
+                    #Descarta las sesiones Finalizadas y sin fecha 
+                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                        for pCal in procesosCal:
+                            #Descarta los procesos finalizados.
+                            if pCal['ESTADOPROCESO_ID'] != 6:
+                                for u in usuario:
+                                    if pCal['COACHEE_ID'] == u['ID']:
+                                        if pCal['ID'] == sCal['PROCESO_ID']:
+                                            fechaSesion = sCal['FECHASESION']
+                                            estadoSesion = sCal['ESTADOSESION_ID']
+                                            nombreEmpresa = pCal['NOMBREEMPRESA']
+                                            nombreCoachee = u['NOMBRE']
+                                            apellidoCoachee = u['APELLIDO']
 
-                    data = {
-                        'usuario': perfil,
-                        'entity': listados,
-                    }
+                                            sesionesCalendario2 = [{
+                                                "NOMBREEMPRESA": nombreEmpresa,
+                                                "NOMBRE": nombreCoachee,
+                                                "APELLIDO": apellidoCoachee,
+                                                "FECHASESION": fechaSesion,
+                                                "ESTADOSESION_ID":estadoSesion
+                                            }]
+
+                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
+                print(sesionesCalendario3)
+                data = {
+                    'usuario': perfil,
+                    'entity': listados,
+                    'sesiones': sesionesCalendario3
+                }
             else:
                 data = {
                     'usuario': perfil,
                     'entity': {'NOMBREEMPRESA': None},
                 }
-            print(data['entity'])
+            #print(data['entity'])
             return render(request, 'menu/menuAdmin.html', data)
         else:
             if perfil['perfil'] == 2:
@@ -213,18 +244,21 @@ def menuCoach(request):
             # print(day)
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION=' + \
                 str(day)+'&COACH_ID='+str(id)
-            urlSesionesCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + \
-                str(id)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + str(id)
+            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
+            
             proceso = requests.get(urlProcesos, headers=headers).json()
-            procesosCal = requests.get(urlSesionesCal, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstado, headers=headers).json()
+            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
             listados = []
 
             #listado = proceso.update(usuario)
-            if len(proceso) > 0:
+            print(len(procesosCal))
+            if len(proceso) > 0 or len(procesosCal) > 0:
                 for p in proceso:
                     for e in estado:
                         if p['ESTADOPROCESO_ID'] == e['ID']:
@@ -271,7 +305,33 @@ def menuCoach(request):
                             }]
 
                             listados = json + listados
+                
+                sesionesCalendario3=[]
+                for sCal in sesionesCalendario:
+                    #Descarta las sesiones Finalizadas y sin fecha 
+                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                        for pCal in procesosCal:
+                            #Descarta los procesos Finalizados
+                            if pCal['ESTADOPROCESO_ID'] != 6:
+                                for u in usuario:
+                                    if pCal['COACHEE_ID'] == u['ID']:
+                                        if pCal['ID'] == sCal['PROCESO_ID']:
+                                            fechaSesion = sCal['FECHASESION']
+                                            estadoSesion = sCal['ESTADOSESION_ID']
+                                            nombreEmpresa = pCal['NOMBREEMPRESA']
+                                            nombreCoachee = u['NOMBRE']
+                                            apellidoCoachee = u['APELLIDO']
 
+                                            sesionesCalendario2 = [{
+                                                "NOMBREEMPRESA": nombreEmpresa,
+                                                "NOMBRE": nombreCoachee,
+                                                "APELLIDO": apellidoCoachee,
+                                                "FECHASESION": fechaSesion,
+                                                "ESTADOSESION_ID":estadoSesion
+                                            }]
+
+                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
+                print(sesionesCalendario3)
                 page = request.GET.get('page', 1)
 
                 try:
@@ -284,17 +344,18 @@ def menuCoach(request):
                 data = {
                     'usuario': perfil,
                     'entity': listado,
+                    #'entity': procesosCal,
                     'paginator': paginator,
-                    'procesosCalendario': procesosCal
+                    'sesiones': sesionesCalendario3
                 }
-                print(data)
+                #print(data)
             else:
                 data = {
                     'usuario': perfil,
                     'entity': {'NOMBREEMPRESA': None},
                     'procesosCalendario': procesosCal
                 }
-            print(data)
+            #print(data)
             return render(request, 'menu/menuCoach.html', data)
         else:
             if perfil['perfil'] == 1:
@@ -320,6 +381,7 @@ def menuCoachee(request):
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstado = 'http://127.0.0.1:8001/estados-procesos'
             urlsesion = 'http://127.0.0.1:8001/sesiones'
+
             proceso = requests.get(urlProcesos, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstado, headers=headers).json()
@@ -382,6 +444,31 @@ def menuCoachee(request):
 
                             listados = json + listados
 
+                sesionesCalendario3=[]
+                for sCal in sesiones:
+                    #Descarta las sesiones Finalizadas y sin fecha 
+                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                        for pCal in proceso:
+                            #Descarta los procesos Finalizados
+                            if pCal['ESTADOPROCESO_ID'] != 6:
+                                for u in usuario:
+                                    if pCal['COACHEE_ID'] == u['ID']:
+                                        if pCal['ID'] == sCal['PROCESO_ID']:
+                                            fechaSesion = sCal['FECHASESION']
+                                            estadoSesion = sCal['ESTADOSESION_ID']
+                                            nombreEmpresa = pCal['NOMBREEMPRESA']
+                                            nombreCoachee = u['NOMBRE']
+                                            apellidoCoachee = u['APELLIDO']
+
+                                            sesionesCalendario2 = [{
+                                                "NOMBREEMPRESA": nombreEmpresa,
+                                                "NOMBRE": nombreCoachee,
+                                                "APELLIDO": apellidoCoachee,
+                                                "FECHASESION": fechaSesion,
+                                                "ESTADOSESION_ID":estadoSesion
+                                            }]
+
+                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
                 page = request.GET.get('page', 1)
 
                 try:
@@ -390,11 +477,12 @@ def menuCoachee(request):
 
                 except:
                     raise Http404
-                print(listados)
+                #print(listados)
                 data = {
                     'usuario': perfil,
                     'entity': listado,
-                    'paginator': paginator
+                    'paginator': paginator,
+                    'sesiones': sesionesCalendario3
                 }
             else:
                 data = {
@@ -427,10 +515,13 @@ def procesosAdmin(request):
             urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
             urlEstados = 'http://127.0.0.1:8001/estados-procesos'
-
+            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
+            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
             proceso = requests.get(urlProcesos, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstados, headers=headers).json()
+            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
+            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
             listados = []
             if len(proceso) > 0:
                 for p in proceso:
@@ -475,11 +566,38 @@ def procesosAdmin(request):
                             }]
 
                             listados = json + listados
+                
+                sesionesCalendario3=[]
+                for sCal in sesionesCalendario:
+                    #Descarta las sesiones Finalizadas y sin fecha 
+                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                        for pCal in procesosCal:
+                            #Descarta los procesos Finalizados
+                            if pCal['ESTADOPROCESO_ID'] != 6:
+                                for u in usuario:
+                                    if pCal['COACHEE_ID'] == u['ID']:
+                                        if pCal['ID'] == sCal['PROCESO_ID']:
+                                            fechaSesion = sCal['FECHASESION']
+                                            estadoSesion = sCal['ESTADOSESION_ID']
+                                            nombreEmpresa = pCal['NOMBREEMPRESA']
+                                            nombreCoachee = u['NOMBRE']
+                                            apellidoCoachee = u['APELLIDO']
 
-                    data = {
-                        'usuario': perfil,
-                        'entity': listados,
-                    }
+                                            sesionesCalendario2 = [{
+                                                "NOMBREEMPRESA": nombreEmpresa,
+                                                "NOMBRE": nombreCoachee,
+                                                "APELLIDO": apellidoCoachee,
+                                                "FECHASESION": fechaSesion,
+                                                "ESTADOSESION_ID":estadoSesion
+                                            }]
+
+                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
+
+                data = {
+                    'usuario': perfil,
+                    'entity': listados,
+                    'sesiones': sesionesCalendario3
+                }
             else:
                 data = {
                     'usuario': perfil,
@@ -506,9 +624,15 @@ def nuevoProceso(request):
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 1:
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlProcesos = 'http://127.0.0.1:8001/procesos'
-            usuarios = requests.get(urlUsuarios, headers=headers).json()
-            procesos = requests.get(urlProcesos, headers=headers).json()
+            #urlProcesos = 'http://127.0.0.1:8001/procesos'
+            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
+            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
+            usuario = requests.get(urlUsuarios, headers=headers).json()
+            #procesos = requests.get(urlProcesos, headers=headers).json()
+            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
+            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+
+
             if request.method == 'POST' and perfil['perfil'] == 1:
                 # Obtener datos del Front
                 NOMBREEMPRESA = request.POST.get('nombreEmpre')
@@ -531,23 +655,50 @@ def nuevoProceso(request):
                     "COACH_ID": COACH_ID,
                     "COACHEE_ID": COACHEE_ID
                 }
-                # Metodo para crear usuario en API
+                # Metodo para crear procesos en API
                 url = 'http://127.0.0.1:8001/procesos'
                 response = requests.post(url, headers=headers, json=json)
 
                 if response.status_code == 201:
-                    # mensaje para avisar al front que se creo el usuario.
+                    # mensaje para avisar al front que se creo el proceso.
                     messages.success(request, 'Proceso creado con éxito.')
                     return redirect('nuevoProceso')
                 else:
                     messages.error(
                         request, 'Hubo un problema al crear el proceso.')
                     return redirect('nuevoProceso')
+            
+            sesionesCalendario3=[]
+            for sCal in sesionesCalendario:
+                #Descarta las sesiones Finalizadas y sin fecha 
+                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                    for pCal in procesosCal:
+                        #Descarta los procesos Finalizados
+                        if pCal['ESTADOPROCESO_ID'] != 6:
+                            for u in usuario:
+                                if pCal['COACHEE_ID'] == u['ID']:
+                                    if pCal['ID'] == sCal['PROCESO_ID']:
+                                        fechaSesion = sCal['FECHASESION']
+                                        estadoSesion = sCal['ESTADOSESION_ID']
+                                        nombreEmpresa = pCal['NOMBREEMPRESA']
+                                        nombreCoachee = u['NOMBRE']
+                                        apellidoCoachee = u['APELLIDO']
+
+                                        sesionesCalendario2 = [{
+                                            "NOMBREEMPRESA": nombreEmpresa,
+                                            "NOMBRE": nombreCoachee,
+                                            "APELLIDO": apellidoCoachee,
+                                            "FECHASESION": fechaSesion,
+                                            "ESTADOSESION_ID":estadoSesion
+                                        }]
+
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
 
             data = {
                 'usuario': perfil,
-                'list_usuario': usuarios,
-                'entity': procesos
+                'list_usuario': usuario,
+                #'entity': procesos,
+                'sesiones': sesionesCalendario3
             }
 
             return render(request, 'procesos/nuevoProceso.html', data)
@@ -834,7 +985,7 @@ def finProceso(request, id):
                 # mensaje para avisar al front que se modifico el proceso.
                 messages.success(request, 'Proceso finalizado con éxito.')
                 return redirect('buscaProceso')
-            elif response.status_code == 409:
+            elif response.status_code == 404:
                 messages.warning(request, 'El proceso ya está finalizado.')
                 return redirect('buscaProceso')
             else:
@@ -1450,17 +1601,17 @@ def infoSesionCoach(request, id):
                 "ESTADOSESION_ID": ESTADOSESION_ID
             }
 
-            # print(modificarSesionesJson)
+            print(modificarSesionesJson)
             urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
             response = requests.put(
                 urlSesiones, headers=headers, json=modificarSesionesJson)
-            print(response.status_code)
+            print()
             if response.status_code == 200:
                 messages.success(request, 'Sesión actualizada con éxito.')
                 return redirect('infoProcCoach', idP)
             else:
                 messages.error(
-                    request, 'Hubo un problema al actualizar la sesión.')
+                    request, response.text.replace('"', ''))
                 return redirect('infoProcCoach', idP)
         return redirect('listProCoach')
     else:

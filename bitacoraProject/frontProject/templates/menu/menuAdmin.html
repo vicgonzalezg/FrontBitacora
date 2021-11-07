@@ -32,30 +32,9 @@
 
     </div>
     <!-- Calendario -->
-    <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
-      <div class="col-md-12 align-items-center ps-5">
-        <h3 class="text-center fw-bold">Calendario</h3>
-        <div id="yourId" class="jalendar">
-          {% for proceso in entity %}
-          <div class="added-event" data-type="task" data-date="{{proceso.FECHACREACION}}" data-title="Proceso Empresa: {{ proceso.NOMBREEMPRESA }}">
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
+    {% include "base/calendario.html" %}
   </div>
 </div>
-<script>
-  $('#yourId').jalendar({
-        color: '#FFFFFF',
-        //color2: 'rgba( 255, 255, 255, 0.9 )',
-        lang: 'ES',
-        titleColor: '#000000', // color del mes 
-        weekColor: '#000000', // color de la semana
-        dayColor: '#000000', // color de los dias 
-        todayColor: '#52BE80', // color del dia de hoy 
-        dateType: "yyyy-mm-dd" 
-    });
-</script>
+
 
 {% endblock %}

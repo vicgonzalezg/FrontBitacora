@@ -235,21 +235,21 @@ def menuAdmin(request):
 
 
 def menuCoach(request):
-    try:
+    #try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 2:
             id = perfil['id']
             day = datetime.today().strftime('%Y-%m-%d')
             # print(day)
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5&FECHACREACION=' + \
-                str(day)+'&COACH_ID='+str(id)
+            urlSesionesDia = 'http://127.0.0.1:8001/sesiones?ordering=-ID&limit=5&FECHASESION=' + \
+                str(day)
             urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+            urlEstado = 'http://127.0.0.1:8001/estados-sesiones'
             urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + str(id)
             urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
             
-            proceso = requests.get(urlProcesos, headers=headers).json()
+            sesionesDia = requests.get(urlSesionesDia, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstado, headers=headers).json()
             procesosCal = requests.get(urlProcesosCal, headers=headers).json()
@@ -257,54 +257,37 @@ def menuCoach(request):
             listados = []
 
             #listado = proceso.update(usuario)
-            print(len(procesosCal))
-            if len(proceso) > 0 or len(procesosCal) > 0:
-                for p in proceso:
-                    for e in estado:
-                        if p['ESTADOPROCESO_ID'] == e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID'] == u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            fechaCreacion = p['FECHACREACION']
-                            cantsesiones = p['CANTSESIONES']
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
-                    for uc in usuario:
-                        if p['COACH_ID'] == uc['ID']:
-                            nombreCoach = uc['NOMBRE']
-                            apellidoCoach = uc['APELLIDO']
+            #print(len(procesosCal))
+            #Busca las sesiones del dia con los datos necesarios para el front.
+            if len(procesosCal) > 0:
+                for s in sesionesDia:
+                    for p in procesosCal:
+                        if p['ID'] == s['PROCESO_ID']:
+                            for e in estado:
+                                if s['ESTADOSESION_ID'] == e['ID']:
+                                    estadoDescripcion = e['DESCRIPCION']
+                            for u in usuario:
+                                if p['COACHEE_ID'] == u['ID']:
+                                    nombreEmpresa = p['NOMBREEMPRESA']
+                                    nombreCoachee = u['NOMBRE']
+                                    apellidoCoachee = u['APELLIDO']
+                                    idProceso = p['ID']
+                            for uc in usuario:
+                                if p['COACH_ID'] == uc['ID']:
+                                    nombreCoach = uc['NOMBRE']
+                                    apellidoCoach = uc['APELLIDO']
+                                    
+                                    json = [{
+                                        "NOMBREEMPRESA": nombreEmpresa,
+                                        "NOMBRE": nombreCoachee,
+                                        "APELLIDO": apellidoCoachee,
+                                        "DESCRIPCION": estadoDescripcion,
+                                        "NOMBRECOACH": nombreCoach,
+                                        "APELLIDOCOACH": apellidoCoach,
+                                        "ID": idProceso
+                                    }]
 
-                            json = [{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE": nombreCoachee,
-                                "APELLIDO": apellidoCoachee,
-                                "CORREO": correoCoachee,
-                                "FONO": telefonoCoachee,
-                                "FECHACREACION": fechaCreacion,
-                                "CANTSESIONES": cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,
-                                "DESCRIPCION": estadoDescripcion,
-                                "NOMBRECOACH": nombreCoach,
-                                "APELLIDOCOACH": apellidoCoach,
-                                "ID": idProceso
-                            }]
-
-                            listados = json + listados
+                                    listados = json + listados
                 
                 sesionesCalendario3=[]
                 for sCal in sesionesCalendario:
@@ -331,13 +314,13 @@ def menuCoach(request):
                                             }]
 
                                             sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
-                print(sesionesCalendario3)
+                #print(sesionesCalendario3)
                 page = request.GET.get('page', 1)
 
                 try:
                     paginator = Paginator(listados, 4)
                     listado = paginator.page(page)
-
+                #No deberia llegar aca.
                 except:
                     raise Http404
 
@@ -364,9 +347,9 @@ def menuCoach(request):
                 plantilla = 'menuCoachee'
             return redirect(plantilla)
 
-    except Exception as e:
-        messages.warning(request, 'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+    #    messages.warning(request, 'Ingrese sus credenciales para acceder')
+    #    return redirect('/')
 
 
 def menuCoachee(request):

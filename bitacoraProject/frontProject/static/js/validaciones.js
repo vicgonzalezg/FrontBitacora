@@ -60,13 +60,6 @@ function crearAdmin() {
             //    }).then(function () {
                     formAdmin.submit();
             //    })
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'Usuario no se ha registrado',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
             }
         });
     }
@@ -112,14 +105,7 @@ function crearCoach() {
             //    }).then(function () {
                     form.submit();
             //    })
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'Usuario no se ha registrado',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
-            }
+            } 
         });
     }
 }
@@ -170,14 +156,7 @@ function crearCoachee() {
             //    }).then(function () {
                     form.submit();
             //    })
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'Usuario no se ha registrado',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
-            }
+            } 
         });
     }
 }
@@ -233,15 +212,7 @@ function modificarAdmin(elem) {
                     formAdmin.submit();
                     
                 //})
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'No se ha realizado ningun cambio.',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
-                
-            }
+            } 
         });
     }
 }
@@ -288,13 +259,6 @@ function modificarCoach(elem) {
                 //    console.log($('#formCoach'));
                     formCoach.submit();
                 //})
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'No se ha realizado ningun cambio.',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
             }
         });
     }
@@ -348,14 +312,7 @@ function modificarCoachee(elem) {
                     //console.log($('#formCoachee'));
                     formCoachee.submit();
             //    })
-            } else if (result.isDenied) {
-                Swal.fire({
-                    title: 'No se ha realizado ningun cambio.',
-                    icon: 'info',
-                    timer: 3000,
-                    timerProgressBar: true
-                })
-            }
+            } 
         });
     }
 }
@@ -395,14 +352,7 @@ function newProceso() {
               }).then(function(){ */
                   formProc.submit();
               /* }) */
-          } else if (result.isDenied) {
-              Swal.fire({
-                  title:'El proceso no se ha creado',
-                  icon: 'info',
-                  timer: 2000,
-                  timerProgressBar: true
-              })
-          }
+          } 
       });
   }
 }
@@ -442,13 +392,6 @@ function modProceso(elem) {
             $('#exampleModal').modal('hide');
             $(".modal-backdrop").remove(); */
             formModProceso.submit();
-        }else if (result.isDenied) {
-            Swal.fire({
-                title: 'No se ha realizado ningun cambio.',
-                icon: 'info',
-                timer: 3000,
-                timerProgressBar: true
-            })
         }
     })
 }
@@ -487,13 +430,6 @@ function modProcesoCoach(elem) {
             $('#exampleModal').modal('hide');
             $(".modal-backdrop").remove(); */
             formModProceso.submit();
-        }else if (result.isDenied) {
-            Swal.fire({
-                title: 'No se ha realizado ningun cambio.',
-                icon: 'info',
-                timer: 3000,
-                timerProgressBar: true
-            })
         }
     })
 }
@@ -541,13 +477,6 @@ function modSesiones(elem) {
             $('#exampleModal').modal('hide');
             $(".modal-backdrop").remove(); */
             formSesiones.submit();
-        }else if (result.isDenied) {
-            Swal.fire({
-                title: 'No se ha realizado ningun cambio.',
-                icon: 'info',
-                timer: 3000,
-                timerProgressBar: true
-            })
         }
     })
 }

@@ -29,10 +29,23 @@
                     <input id="coachUsuario" class="contactInput form-control" placeholder="Buscar por Coachee">
                 </div>
             </div>
-            <span class="col-xs-6 col-md-3 py-1"></span>
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
                     <input id="nombre" class="contactInput form-control" placeholder="Buscar por Empresa">
+                </div>
+            </div>
+             <!--filtro Estado Procesos-->
+            <div class="col-xs-3 col-md-3 py-1">
+                <div class="form-group">
+                    <select id="table-filter" name="estado" class="form-select form-control">
+                        <option name="estado" value="">Todos los estados</option>
+                        <option name="estado" >No iniciado</option>
+                        <option name="estado" >Reunión de levantamiento</option>
+                        <option name="estado" >En curso</option>
+                        <option name="estado" >Reunión de avances</option>
+                        <option name="estado" >Reunión de cierre</option>
+                        <option name="estado" >Finalizado</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -231,6 +244,9 @@ $(document).ready(function (){
     });
     $('#coacheeUsuario').on('keyup change', function () {
         table.column(2).search($(this).val()).draw();
+    });
+    $('#table-filter').on('change', function(){
+       table.search(this.value).draw();   
     });
 });
 </script>

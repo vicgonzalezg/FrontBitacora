@@ -16,13 +16,7 @@
         <div class="list-group d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center">Sesiones del día</h3>
 
-            {% for sesiones in entity %} {% if sesiones.NOMBREEMPRESA == None %}
-            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                <div class="d-flex w-100 justify-content-center">
-                    <h5 class="mb-1 text-center">No hay sesiones para el día de hoy</h5>
-                </div>
-            </a>
-            {% else %}
+            {% for sesiones in entity %} 
             <a href="{% url 'infoProcCoach' sesiones.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Proceso Empresa: {{ sesiones.NOMBREEMPRESA }}</h5>
@@ -31,11 +25,10 @@
                 <p class="mb-1">Coach: {{ sesiones.NOMBRE }} {{ sesiones.APELLIDO }}</p>
                 <p class="mb-1">Coachee: {{ sesiones.NOMBRECOACH }} {{ sesiones.APELLIDOCOACH }}</p>
             </a>
-            {% endif %}
             {% empty %}
             <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <div class="d-flex w-100 justify-content-center">
-                    <h5 class="mb-1 text-center">No hay sesiones para el día de hoy</h5>
+                    <h5 class="mb-1 text-center">No hay sesiones para el día de hoy.</h5>
                 </div>
             </a>
             {% endfor %}

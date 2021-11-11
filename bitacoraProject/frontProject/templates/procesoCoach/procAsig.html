@@ -14,19 +14,6 @@
             <h3 class="text-center fw-bold text-center">Procesos Asignados</h3>
                      
             {% for procesos in entity %}
-                {% if procesos.NOMBREEMPRESA == None %}
-                <br>
-                <div class="row">
-                <span class="col-md-3"></span>
-                <a href="#" class="col-md-6 rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                    <div class="col-md-12 d-flex w-100 justify-content-center">
-                        <h5 class="mb-1 text-center">No hay procesos en estado no iniciados</h5>
-                    </div>
-                </a>
-                <span class="col-md-3"></span>
-                </div>
-                {% else %}   
-                <br>            
                 <div class="row justify-content-center">
                     <br>
                     <span class="col-md-1"></span>
@@ -40,8 +27,18 @@
                     </a>
                     <span class="col-md-1"></span>
                 </div>
-                {% endif %}
-            {% endfor %}
+                               
+                {% empty %}
+                <div class="row">
+                    <span class="col-md-3"></span>
+                    <a href="#" class="col-md-6 rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                        <div class="col-md-12 d-flex w-100 justify-content-center">
+                            <h5 class="mb-1 text-center">No hay procesos en estado no iniciados</h5>
+                        </div>
+                    </a>
+                    <span class="col-md-3"></span>
+                    </div>
+                {% endfor %}
            
             <br>
             

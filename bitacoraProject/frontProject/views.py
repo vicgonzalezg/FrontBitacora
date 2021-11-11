@@ -142,84 +142,84 @@ def menuAdmin(request):
             procesosCal = requests.get(urlProcesosCal, headers=headers).json()
             listados = []
             #listado = proceso.update(usuario)
-            if len(proceso) > 0:
-                for p in proceso:
-                    for e in estado:
-                        if p['ESTADOPROCESO_ID'] == e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID'] == u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            cantsesiones = p['CANTSESIONES']
-                            fechaIni = p["FECHACREACION"]
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
+            #if len(proceso) > 0:
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID'] == e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID'] == u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        cantsesiones = p['CANTSESIONES']
+                        fechaIni = p["FECHACREACION"]
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
 
-                            json = [{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE": nombreCoachee,
-                                "APELLIDO": apellidoCoachee,
-                                "CORREO": correoCoachee,
-                                "FONO": telefonoCoachee,
-                                "CANTSESIONES": cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "FECHACREACION": fechaIni,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,
-                                "DESCRIPCION": estadoDescripcion,
-                                "ID": idProceso
-                            }]
+                        json = [{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE": nombreCoachee,
+                            "APELLIDO": apellidoCoachee,
+                            "CORREO": correoCoachee,
+                            "FONO": telefonoCoachee,
+                            "CANTSESIONES": cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "FECHACREACION": fechaIni,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,
+                            "DESCRIPCION": estadoDescripcion,
+                            "ID": idProceso
+                        }]
 
-                            listados = json + listados
-                
-                sesionesCalendario3=[]
-                for sCal in sesionesCalendario:
-                    #Descarta las sesiones Finalizadas y sin fecha 
-                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                        for pCal in procesosCal:
-                            #Descarta los procesos finalizados.
-                            if pCal['ESTADOPROCESO_ID'] != 6:
-                                for u in usuario:
-                                    if pCal['COACHEE_ID'] == u['ID']:
-                                        if pCal['ID'] == sCal['PROCESO_ID']:
-                                            fechaSesion = sCal['FECHASESION']
-                                            estadoSesion = sCal['ESTADOSESION_ID']
-                                            nombreEmpresa = pCal['NOMBREEMPRESA']
-                                            nombreCoachee = u['NOMBRE']
-                                            apellidoCoachee = u['APELLIDO']
+                        listados = json + listados
+            
+            sesionesCalendario3=[]
+            for sCal in sesionesCalendario:
+                #Descarta las sesiones Finalizadas y sin fecha 
+                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                    for pCal in procesosCal:
+                        #Descarta los procesos finalizados.
+                        if pCal['ESTADOPROCESO_ID'] != 6:
+                            for u in usuario:
+                                if pCal['COACHEE_ID'] == u['ID']:
+                                    if pCal['ID'] == sCal['PROCESO_ID']:
+                                        fechaSesion = sCal['FECHASESION']
+                                        estadoSesion = sCal['ESTADOSESION_ID']
+                                        nombreEmpresa = pCal['NOMBREEMPRESA']
+                                        nombreCoachee = u['NOMBRE']
+                                        apellidoCoachee = u['APELLIDO']
 
-                                            sesionesCalendario2 = [{
-                                                "NOMBREEMPRESA": nombreEmpresa,
-                                                "NOMBRE": nombreCoachee,
-                                                "APELLIDO": apellidoCoachee,
-                                                "FECHASESION": fechaSesion,
-                                                "ESTADOSESION_ID":estadoSesion
-                                            }]
+                                        sesionesCalendario2 = [{
+                                            "NOMBREEMPRESA": nombreEmpresa,
+                                            "NOMBRE": nombreCoachee,
+                                            "APELLIDO": apellidoCoachee,
+                                            "FECHASESION": fechaSesion,
+                                            "ESTADOSESION_ID":estadoSesion
+                                        }]
 
-                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
-                print(sesionesCalendario3)
-                data = {
-                    'usuario': perfil,
-                    'entity': listados,
-                    'sesiones': sesionesCalendario3
-                }
-            else:
-                data = {
-                    'usuario': perfil,
-                    'entity': {'NOMBREEMPRESA': None},
-                }
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
+            #print(sesionesCalendario3)
+            data = {
+                'usuario': perfil,
+                'entity': listados,
+                'sesiones': sesionesCalendario3
+            }
+            #else:
+            #    data = {
+            #        'usuario': perfil,
+            #        'entity': {'NOMBREEMPRESA': None},
+            #    }
             #print(data['entity'])
             return render(request, 'menu/menuAdmin.html', data)
         else:
@@ -259,85 +259,85 @@ def menuCoach(request):
             #listado = proceso.update(usuario)
             #print(len(procesosCal))
             #Busca las sesiones del dia con los datos necesarios para el front.
-            if len(procesosCal) > 0:
-                for s in sesionesDia:
-                    for p in procesosCal:
-                        if p['ID'] == s['PROCESO_ID']:
-                            for e in estado:
-                                if s['ESTADOSESION_ID'] == e['ID']:
-                                    estadoDescripcion = e['DESCRIPCION']
+            #if len(procesosCal) > 0:
+            for s in sesionesDia:
+                for p in procesosCal:
+                    if p['ID'] == s['PROCESO_ID']:
+                        for e in estado:
+                            if s['ESTADOSESION_ID'] == e['ID']:
+                                estadoDescripcion = e['DESCRIPCION']
+                        for u in usuario:
+                            if p['COACHEE_ID'] == u['ID']:
+                                nombreEmpresa = p['NOMBREEMPRESA']
+                                nombreCoachee = u['NOMBRE']
+                                apellidoCoachee = u['APELLIDO']
+                                idProceso = p['ID']
+                        for uc in usuario:
+                            if p['COACH_ID'] == uc['ID']:
+                                nombreCoach = uc['NOMBRE']
+                                apellidoCoach = uc['APELLIDO']
+                                
+                                json = [{
+                                    "NOMBREEMPRESA": nombreEmpresa,
+                                    "NOMBRE": nombreCoachee,
+                                    "APELLIDO": apellidoCoachee,
+                                    "DESCRIPCION": estadoDescripcion,
+                                    "NOMBRECOACH": nombreCoach,
+                                    "APELLIDOCOACH": apellidoCoach,
+                                    "ID": idProceso
+                                }]
+
+                                listados = json + listados
+            
+            sesionesCalendario3=[]
+            for sCal in sesionesCalendario:
+                #Descarta las sesiones Finalizadas y sin fecha 
+                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                    for pCal in procesosCal:
+                        #Descarta los procesos Finalizados
+                        if pCal['ESTADOPROCESO_ID'] != 6:
                             for u in usuario:
-                                if p['COACHEE_ID'] == u['ID']:
-                                    nombreEmpresa = p['NOMBREEMPRESA']
-                                    nombreCoachee = u['NOMBRE']
-                                    apellidoCoachee = u['APELLIDO']
-                                    idProceso = p['ID']
-                            for uc in usuario:
-                                if p['COACH_ID'] == uc['ID']:
-                                    nombreCoach = uc['NOMBRE']
-                                    apellidoCoach = uc['APELLIDO']
-                                    
-                                    json = [{
-                                        "NOMBREEMPRESA": nombreEmpresa,
-                                        "NOMBRE": nombreCoachee,
-                                        "APELLIDO": apellidoCoachee,
-                                        "DESCRIPCION": estadoDescripcion,
-                                        "NOMBRECOACH": nombreCoach,
-                                        "APELLIDOCOACH": apellidoCoach,
-                                        "ID": idProceso
-                                    }]
+                                if pCal['COACHEE_ID'] == u['ID']:
+                                    if pCal['ID'] == sCal['PROCESO_ID']:
+                                        fechaSesion = sCal['FECHASESION']
+                                        estadoSesion = sCal['ESTADOSESION_ID']
+                                        nombreEmpresa = pCal['NOMBREEMPRESA']
+                                        nombreCoachee = u['NOMBRE']
+                                        apellidoCoachee = u['APELLIDO']
 
-                                    listados = json + listados
-                
-                sesionesCalendario3=[]
-                for sCal in sesionesCalendario:
-                    #Descarta las sesiones Finalizadas y sin fecha 
-                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                        for pCal in procesosCal:
-                            #Descarta los procesos Finalizados
-                            if pCal['ESTADOPROCESO_ID'] != 6:
-                                for u in usuario:
-                                    if pCal['COACHEE_ID'] == u['ID']:
-                                        if pCal['ID'] == sCal['PROCESO_ID']:
-                                            fechaSesion = sCal['FECHASESION']
-                                            estadoSesion = sCal['ESTADOSESION_ID']
-                                            nombreEmpresa = pCal['NOMBREEMPRESA']
-                                            nombreCoachee = u['NOMBRE']
-                                            apellidoCoachee = u['APELLIDO']
+                                        sesionesCalendario2 = [{
+                                            "NOMBREEMPRESA": nombreEmpresa,
+                                            "NOMBRE": nombreCoachee,
+                                            "APELLIDO": apellidoCoachee,
+                                            "FECHASESION": fechaSesion,
+                                            "ESTADOSESION_ID":estadoSesion
+                                        }]
 
-                                            sesionesCalendario2 = [{
-                                                "NOMBREEMPRESA": nombreEmpresa,
-                                                "NOMBRE": nombreCoachee,
-                                                "APELLIDO": apellidoCoachee,
-                                                "FECHASESION": fechaSesion,
-                                                "ESTADOSESION_ID":estadoSesion
-                                            }]
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
+            #print(sesionesCalendario3)
+            page = request.GET.get('page', 1)
 
-                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
-                #print(sesionesCalendario3)
-                page = request.GET.get('page', 1)
+            try:
+                paginator = Paginator(listados, 4)
+                listado = paginator.page(page)
+            #No deberia llegar aca.
+            except:
+                raise Http404
 
-                try:
-                    paginator = Paginator(listados, 4)
-                    listado = paginator.page(page)
-                #No deberia llegar aca.
-                except:
-                    raise Http404
-
-                data = {
-                    'usuario': perfil,
-                    'entity': listado,
-                    #'entity': procesosCal,
-                    'paginator': paginator,
-                    'sesiones': sesionesCalendario3
-                }
+            data = {
+                'usuario': perfil,
+                'entity': listado,
+                #'entity': procesosCal,
+                'paginator': paginator,
+                'sesiones': sesionesCalendario3
+            }
                 #print(data)
-            else:
-                data = {
-                    'usuario': perfil,
-                    'entity': {'NOMBREEMPRESA': None},
-                    'procesosCalendario': procesosCal
-                }
+            #else:
+            #    data = {
+            #        'usuario': perfil,
+            #        'entity': {'NOMBREEMPRESA': None},
+            #        'procesosCalendario': procesosCal
+            #    }
             #print(data)
             return render(request, 'menu/menuCoach.html', data)
         else:
@@ -373,105 +373,105 @@ def menuCoachee(request):
             canSesiones = 0
 
             #listado = proceso.update(usuario)
-            if len(proceso) > 0:
-                for p in proceso:
-                    for e in estado:
-                        if p['ESTADOPROCESO_ID'] == e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID'] == u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            fechaCreacion = p['FECHACREACION']
-                            cantsesiones = p['CANTSESIONES']
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
-                    for uc in usuario:
-                        if p['COACH_ID'] == uc['ID']:
-                            nombreCoach = uc['NOMBRE']
-                            apellidoCoach = uc['APELLIDO']
-                    for s in sesiones:
-                        if p['ID'] == s['PROCESO_ID']:
-                            fechasesion = s['FECHASESION']
+            #if len(proceso) > 0:
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID'] == e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID'] == u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] == uc['ID']:
+                        nombreCoach = uc['NOMBRE']
+                        apellidoCoach = uc['APELLIDO']
+                for s in sesiones:
+                    if p['ID'] == s['PROCESO_ID']:
+                        fechasesion = s['FECHASESION']
 
-                            json = [{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE": nombreCoachee,
-                                "APELLIDO": apellidoCoachee,
-                                "CORREO": correoCoachee,
-                                "FONO": telefonoCoachee,
-                                "FECHACREACION": fechaCreacion,
-                                "CANTSESIONES": cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,
-                                "DESCRIPCION": estadoDescripcion,
-                                "NOMBRECOACH": nombreCoach,
-                                "APELLIDOCOACH": apellidoCoach,
-                                "IDSESION": canSesiones,
-                                "FECHASESION": fechasesion,
-                                "ID": idProceso
+                        json = [{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE": nombreCoachee,
+                            "APELLIDO": apellidoCoachee,
+                            "CORREO": correoCoachee,
+                            "FONO": telefonoCoachee,
+                            "FECHACREACION": fechaCreacion,
+                            "CANTSESIONES": cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,
+                            "DESCRIPCION": estadoDescripcion,
+                            "NOMBRECOACH": nombreCoach,
+                            "APELLIDOCOACH": apellidoCoach,
+                            "IDSESION": canSesiones,
+                            "FECHASESION": fechasesion,
+                            "ID": idProceso
 
-                            }]
+                        }]
 
-                            listados = json + listados
+                        listados = json + listados
 
-                sesionesCalendario3=[]
-                for sCal in sesiones:
-                    #Descarta las sesiones Finalizadas y sin fecha 
-                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                        for pCal in proceso:
-                            #Descarta los procesos Finalizados
-                            if pCal['ESTADOPROCESO_ID'] != 6:
-                                for u in usuario:
-                                    if pCal['COACHEE_ID'] == u['ID']:
-                                        if pCal['ID'] == sCal['PROCESO_ID']:
-                                            fechaSesion = sCal['FECHASESION']
-                                            estadoSesion = sCal['ESTADOSESION_ID']
-                                            nombreEmpresa = pCal['NOMBREEMPRESA']
-                                            nombreCoachee = u['NOMBRE']
-                                            apellidoCoachee = u['APELLIDO']
+            sesionesCalendario3=[]
+            for sCal in sesiones:
+                #Descarta las sesiones Finalizadas y sin fecha 
+                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                    for pCal in proceso:
+                        #Descarta los procesos Finalizados
+                        if pCal['ESTADOPROCESO_ID'] != 6:
+                            for u in usuario:
+                                if pCal['COACHEE_ID'] == u['ID']:
+                                    if pCal['ID'] == sCal['PROCESO_ID']:
+                                        fechaSesion = sCal['FECHASESION']
+                                        estadoSesion = sCal['ESTADOSESION_ID']
+                                        nombreEmpresa = pCal['NOMBREEMPRESA']
+                                        nombreCoachee = u['NOMBRE']
+                                        apellidoCoachee = u['APELLIDO']
 
-                                            sesionesCalendario2 = [{
-                                                "NOMBREEMPRESA": nombreEmpresa,
-                                                "NOMBRE": nombreCoachee,
-                                                "APELLIDO": apellidoCoachee,
-                                                "FECHASESION": fechaSesion,
-                                                "ESTADOSESION_ID":estadoSesion
-                                            }]
+                                        sesionesCalendario2 = [{
+                                            "NOMBREEMPRESA": nombreEmpresa,
+                                            "NOMBRE": nombreCoachee,
+                                            "APELLIDO": apellidoCoachee,
+                                            "FECHASESION": fechaSesion,
+                                            "ESTADOSESION_ID":estadoSesion
+                                        }]
 
-                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
-                page = request.GET.get('page', 1)
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
+            page = request.GET.get('page', 1)
 
-                try:
-                    paginator = Paginator(listados, 4)
-                    listado = paginator.page(page)
+            try:
+                paginator = Paginator(listados, 4)
+                listado = paginator.page(page)
 
-                except:
-                    raise Http404
-                #print(listados)
-                data = {
-                    'usuario': perfil,
-                    'entity': listado,
-                    'paginator': paginator,
-                    'sesiones': sesionesCalendario3
-                }
-            else:
-                data = {
-                    'usuario': perfil,
-                    'entity': {'NOMBREEMPRESA': None},
-                }
+            except:
+                raise Http404
+            #print(listados)
+            data = {
+                'usuario': perfil,
+                'entity': listado,
+                'paginator': paginator,
+                'sesiones': sesionesCalendario3
+            }
+            #else:
+            #    data = {
+            #        'usuario': perfil,
+            #        'entity': {'NOMBREEMPRESA': None},
+            #    }
 
             return render(request, 'menu/menuCoachee.html', data)
         else:
@@ -506,86 +506,86 @@ def procesosAdmin(request):
             sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
             procesosCal = requests.get(urlProcesosCal, headers=headers).json()
             listados = []
-            if len(proceso) > 0:
-                for p in proceso:
-                    for e in estado:
-                        # print(str(p['ESTADOPROCESO_ID']))
-                        # print(str(e['ID']))
-                        if p['ESTADOPROCESO_ID'] == e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID'] == u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            cantsesiones = p['CANTSESIONES']
-                            fechaIni = p["FECHACREACION"]
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
+            #if len(proceso) > 0:
+            for p in proceso:
+                for e in estado:
+                    # print(str(p['ESTADOPROCESO_ID']))
+                    # print(str(e['ID']))
+                    if p['ESTADOPROCESO_ID'] == e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID'] == u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        cantsesiones = p['CANTSESIONES']
+                        fechaIni = p["FECHACREACION"]
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
 
-                            json = [{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE": nombreCoachee,
-                                "APELLIDO": apellidoCoachee,
-                                "CORREO": correoCoachee,
-                                "FONO": telefonoCoachee,
-                                "CANTSESIONES": cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "FECHACREACION": fechaIni,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,
-                                "DESCRIPCION": estadoDescripcion,
-                                "ID": idProceso
-                            }]
+                        json = [{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE": nombreCoachee,
+                            "APELLIDO": apellidoCoachee,
+                            "CORREO": correoCoachee,
+                            "FONO": telefonoCoachee,
+                            "CANTSESIONES": cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "FECHACREACION": fechaIni,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,
+                            "DESCRIPCION": estadoDescripcion,
+                            "ID": idProceso
+                        }]
 
-                            listados = json + listados
-                
-                sesionesCalendario3=[]
-                for sCal in sesionesCalendario:
-                    #Descarta las sesiones Finalizadas y sin fecha 
-                    if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                        for pCal in procesosCal:
-                            #Descarta los procesos Finalizados
-                            if pCal['ESTADOPROCESO_ID'] != 6:
-                                for u in usuario:
-                                    if pCal['COACHEE_ID'] == u['ID']:
-                                        if pCal['ID'] == sCal['PROCESO_ID']:
-                                            fechaSesion = sCal['FECHASESION']
-                                            estadoSesion = sCal['ESTADOSESION_ID']
-                                            nombreEmpresa = pCal['NOMBREEMPRESA']
-                                            nombreCoachee = u['NOMBRE']
-                                            apellidoCoachee = u['APELLIDO']
+                        listados = json + listados
+            
+            sesionesCalendario3=[]
+            for sCal in sesionesCalendario:
+                #Descarta las sesiones Finalizadas y sin fecha 
+                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                    for pCal in procesosCal:
+                        #Descarta los procesos Finalizados
+                        if pCal['ESTADOPROCESO_ID'] != 6:
+                            for u in usuario:
+                                if pCal['COACHEE_ID'] == u['ID']:
+                                    if pCal['ID'] == sCal['PROCESO_ID']:
+                                        fechaSesion = sCal['FECHASESION']
+                                        estadoSesion = sCal['ESTADOSESION_ID']
+                                        nombreEmpresa = pCal['NOMBREEMPRESA']
+                                        nombreCoachee = u['NOMBRE']
+                                        apellidoCoachee = u['APELLIDO']
 
-                                            sesionesCalendario2 = [{
-                                                "NOMBREEMPRESA": nombreEmpresa,
-                                                "NOMBRE": nombreCoachee,
-                                                "APELLIDO": apellidoCoachee,
-                                                "FECHASESION": fechaSesion,
-                                                "ESTADOSESION_ID":estadoSesion
-                                            }]
+                                        sesionesCalendario2 = [{
+                                            "NOMBREEMPRESA": nombreEmpresa,
+                                            "NOMBRE": nombreCoachee,
+                                            "APELLIDO": apellidoCoachee,
+                                            "FECHASESION": fechaSesion,
+                                            "ESTADOSESION_ID":estadoSesion
+                                        }]
 
-                                            sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
 
-                data = {
-                    'usuario': perfil,
-                    'entity': listados,
-                    'sesiones': sesionesCalendario3
-                }
-            else:
-                data = {
-                    'usuario': perfil,
-                    'entity': {'NOMBREEMPRESA': None},
-                }
+            data = {
+                'usuario': perfil,
+                'entity': listados,
+                'sesiones': sesionesCalendario3
+            }
+            #else:
+            #    data = {
+            #        'usuario': perfil,
+            #        'entity': {'NOMBREEMPRESA': None},
+            #    }
 
             return render(request, 'procesos/procesosAdmin.html', data)
         else:
@@ -1331,73 +1331,73 @@ def procAsig(request):
             listados = []
 
             #listado = proceso.update(usuario)
-            if len(proceso) > 0:
-                for p in proceso:
-                    for e in estado:
-                        if p['ESTADOPROCESO_ID'] == e['ID']:
-                            estadoDescripcion = e['DESCRIPCION']
-                    for u in usuario:
-                        if p['COACHEE_ID'] == u['ID']:
-                            nombreEmpresa = p['NOMBREEMPRESA']
-                            nombreCoachee = u['NOMBRE']
-                            apellidoCoachee = u['APELLIDO']
-                            correoCoachee = u['CORREO']
-                            telefonoCoachee = u['FONO']
-                            fechaCreacion = p['FECHACREACION']
-                            cantsesiones = p['CANTSESIONES']
-                            objetivo = p['OBJETIVOS']
-                            indicadores = p['INDICADORES']
-                            planAccion = p['PLANACCION']
-                            nombreJefe = u['NOMBREJEFE']
-                            emailJefe = u['EMAILJEFE']
-                            fonoJefe = u['FONOJEFE']
-                            idProceso = p['ID']
-                    for uc in usuario:
-                        if p['COACH_ID'] == uc['ID']:
-                            nombreCoach = uc['NOMBRE']
-                            apellidoCoach = uc['APELLIDO']
+            #if len(proceso) > 0:
+            for p in proceso:
+                for e in estado:
+                    if p['ESTADOPROCESO_ID'] == e['ID']:
+                        estadoDescripcion = e['DESCRIPCION']
+                for u in usuario:
+                    if p['COACHEE_ID'] == u['ID']:
+                        nombreEmpresa = p['NOMBREEMPRESA']
+                        nombreCoachee = u['NOMBRE']
+                        apellidoCoachee = u['APELLIDO']
+                        correoCoachee = u['CORREO']
+                        telefonoCoachee = u['FONO']
+                        fechaCreacion = p['FECHACREACION']
+                        cantsesiones = p['CANTSESIONES']
+                        objetivo = p['OBJETIVOS']
+                        indicadores = p['INDICADORES']
+                        planAccion = p['PLANACCION']
+                        nombreJefe = u['NOMBREJEFE']
+                        emailJefe = u['EMAILJEFE']
+                        fonoJefe = u['FONOJEFE']
+                        idProceso = p['ID']
+                for uc in usuario:
+                    if p['COACH_ID'] == uc['ID']:
+                        nombreCoach = uc['NOMBRE']
+                        apellidoCoach = uc['APELLIDO']
 
-                            json = [{
-                                "NOMBREEMPRESA": nombreEmpresa,
-                                "NOMBRE": nombreCoachee,
-                                "APELLIDO": apellidoCoachee,
-                                "CORREO": correoCoachee,
-                                "FONO": telefonoCoachee,
-                                "FECHACREACION": fechaCreacion,
-                                "CANTSESIONES": cantsesiones,
-                                "OBJETIVOS": objetivo,
-                                "INDICADORES": indicadores,
-                                "PLANACCION": planAccion,
-                                "NOMBREJEFE": nombreJefe,
-                                "EMAILJEFE": emailJefe,
-                                "FONOJEFE": fonoJefe,
-                                "DESCRIPCION": estadoDescripcion,
-                                "NOMBRECOACH": nombreCoach,
-                                "APELLIDOCOACH": apellidoCoach,
-                                "ID": idProceso
-                            }]
+                        json = [{
+                            "NOMBREEMPRESA": nombreEmpresa,
+                            "NOMBRE": nombreCoachee,
+                            "APELLIDO": apellidoCoachee,
+                            "CORREO": correoCoachee,
+                            "FONO": telefonoCoachee,
+                            "FECHACREACION": fechaCreacion,
+                            "CANTSESIONES": cantsesiones,
+                            "OBJETIVOS": objetivo,
+                            "INDICADORES": indicadores,
+                            "PLANACCION": planAccion,
+                            "NOMBREJEFE": nombreJefe,
+                            "EMAILJEFE": emailJefe,
+                            "FONOJEFE": fonoJefe,
+                            "DESCRIPCION": estadoDescripcion,
+                            "NOMBRECOACH": nombreCoach,
+                            "APELLIDOCOACH": apellidoCoach,
+                            "ID": idProceso
+                        }]
 
-                            listados = json + listados
+                        listados = json + listados
 
-                page = request.GET.get('page', 1)
+            page = request.GET.get('page', 1)
 
-                try:
-                    paginator = Paginator(listados, 10)
-                    listado = paginator.page(page)
+            try:
+                paginator = Paginator(listados, 10)
+                listado = paginator.page(page)
 
-                except:
-                    raise Http404
+            except:
+                raise Http404
 
-                data = {
-                    'usuario': perfil,
-                    'entity': listado,
-                    'paginator': paginator
-                }
-            else:
-                data = {
-                    'usuario': perfil,
-                    'entity': {'NOMBREEMPRESA': None},
-                }
+            data = {
+                'usuario': perfil,
+                'entity': listado,
+                'paginator': paginator
+            }
+            #else:
+            #    data = {
+            #        'usuario': perfil,
+            #        'entity': {'NOMBREEMPRESA': None},
+            #    }
 
             return render(request, 'procesoCoach/procAsig.html', data)
 

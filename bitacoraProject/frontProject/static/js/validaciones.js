@@ -28,7 +28,7 @@ function crearAdmin() {
     var email = document.getElementById("emailAdmin");
     var telefono = document.getElementById("telefonoAdmin");
     var idioma = document.getElementById("idiomaAdmin");
-    //console.log(nombre.value)
+    
     if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
     }
@@ -46,20 +46,12 @@ function crearAdmin() {
             title: '¿Está seguro de crear al usuario Administrador?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-            //    Swal.fire({
-            //        title: 'Usuario agregado',
-            //        icon: 'success',
-            //        timer: 3000,
-            //        timerProgressBar: true
-            //    }).then(function () {
-                    formAdmin.submit();
-            //    })
+                    formAdmin.submit();   
             }
         });
     }
@@ -73,7 +65,7 @@ function crearCoach() {
     var email = document.getElementById("emailCoach");
     var telefono = document.getElementById("telefonoCoach");
     var idioma = document.getElementById("idiomaCoach");
-    //console.log(nombre.value)
+
     if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
     } else if (!(validateEmail(email.value))) {
@@ -91,20 +83,12 @@ function crearCoach() {
             title: '¿Está seguro de crear al usuario Coach?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-            //    Swal.fire({
-            //        title: 'Usuario Coach creado con éxito!',
-            //        icon: 'success',
-            //        timer: 3000,
-            //        timerProgressBar: true
-            //    }).then(function () {
                     form.submit();
-            //    })
             } 
         });
     }
@@ -123,7 +107,7 @@ function crearCoachee() {
     var emailJefe = document.getElementById("emailJefeCoachee");
     var telefono = document.getElementById("telefonoCoachee");
     var telefonoJefe = document.getElementById("telefonoJefeCoachee");
-    //console.log(nombre.value)
+
     if (nombreEmp.value == "" || nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "" ||
         nombreJefe.value == "" || apellidoJefe.value == "" || emailJefe.value == "" || telefonoJefe.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
@@ -142,20 +126,12 @@ function crearCoachee() {
             title: '¿Está seguro de crear al usuario Coachee?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-            //    Swal.fire({
-            //        title: 'Usuario Coachee creado con éxito!',
-            //        icon: 'success',
-            //        timer: 3000,
-            //        timerProgressBar: true
-            //    }).then(function () {
                     form.submit();
-            //    })
             } 
         });
     }
@@ -167,7 +143,7 @@ function modificarAdmin(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
     console.log($('#formAdmin'));
-    //alert(id);
+
     var nombre = document.getElementById("nombreAdmin"+'-'+id);
     var apellido = document.getElementById("apellidoAdmin"+'-'+id);
     var email = document.getElementById("emailAdmin"+'-'+id);
@@ -196,22 +172,12 @@ function modificarAdmin(elem) {
             title: '¿Está seguro de los cambios para el usuario Administrador?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                //Swal.fire({
-                //    title: 'Usuario Administrador actualizado con éxito.',
-                //    icon: 'success',
-                //    timer: 3000,
-                //    timerProgressBar: true
-                //}).then(function () {
-                //    console.log($('#formAdmin'));
                     formAdmin.submit();
-                    
-                //})
             } 
         });
     }
@@ -226,7 +192,7 @@ function modificarCoach(elem) {
     var email = document.getElementById("emailCoach"+'-'+id);
     var telefono = document.getElementById("telefonoCoach"+'-'+id);
     var idioma = document.getElementById("idiomaCoach"+'-'+id);
-    //console.log(nombre.value)
+
     if (nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
     } else if (!(validateEmail(email.value))) {
@@ -244,21 +210,12 @@ function modificarCoach(elem) {
             title: '¿Está seguro de los cambios para el usuario Coach?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                //Swal.fire({
-                //    title: 'Usuario Coach actualizado con éxito!',
-                //    icon: 'success',
-                //    timer: 3000,
-                //    timerProgressBar: true
-                //}).then(function () {
-                //    console.log($('#formCoach'));
                     formCoach.submit();
-                //})
             }
         });
     }
@@ -273,12 +230,11 @@ function modificarCoachee(elem) {
     var nombre = document.getElementById("nombreCoachee"+'-'+id);
     var apellido = document.getElementById("apellidoCoachee"+'-'+id);
     var nombreJefe = document.getElementById("nombreJefeCoachee"+'-'+id);
-    //var apellidoJefe = document.getElementById("apellidoJefeCoachee"+'-'+id);
     var email = document.getElementById("emailCoachee"+'-'+id);
     var emailJefe = document.getElementById("emailJefeCoachee"+'-'+id);
     var telefono = document.getElementById("telefonoCoachee"+'-'+id);
     var telefonoJefe = document.getElementById("telefonoJefeCoachee"+'-'+id);
-    //console.log(nombre.value)
+
     if (nombreEmp.value == "" || nombre.value == "" || apellido.value == "" || email.value == "" || telefono.value == "" || idioma.value == "" ||
         nombreJefe.value == "" || emailJefe.value == "" || telefonoJefe.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
@@ -297,21 +253,12 @@ function modificarCoachee(elem) {
             title: '¿Está seguro de los cambios para el usuario Coachee?',
             showDenyButton: true,
             icon: 'question',
-            //showCancelButton: true,
             confirmButtonText: `Si`,
             denyButtonText: `No`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-            //    Swal.fire({
-            //        title: 'Usuario Coachee actualizado con éxito!',
-            //        icon: 'success',
-            //        timer: 3000,
-            //        timerProgressBar: true
-            //    }).then(function () {
-                    //console.log($('#formCoachee'));
                     formCoachee.submit();
-            //    })
             } 
         });
     }
@@ -344,12 +291,6 @@ function newProceso() {
       }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-              /* Swal.fire({
-                  title:'Proceso creado',
-                  icon: 'success',
-                  timer: 2000,
-                  timerProgressBar: true
-              }).then(function(){ */
                   formProc.submit();
               /* }) */
           } 
@@ -382,15 +323,6 @@ function modProceso(elem) {
         confirmButtonText: 'Si, Realizar!'
     }).then((result) => {
         if (result.isConfirmed) {
-            /* Swal.fire({
-                icon: 'success',
-                timer: 2000,
-                title: 'Modificado!',
-                text: 'El proceso ha sido actualizado.',
-                showConfirmButton: false,
-            })
-            $('#exampleModal').modal('hide');
-            $(".modal-backdrop").remove(); */
             formModProceso.submit();
         }
     })
@@ -404,7 +336,7 @@ function modProcesoCoach(elem) {
     var objetivosProc = document.getElementById("objetivosProc"+'-'+id);
     var indicadoresProc = document.getElementById("indicadoresProc"+'-'+id);
     var planAccionProc = document.getElementById("planAccionProc"+'-'+id);
-    if (objetivosProc.value == "" || indicadoresProc.value == "" || planAccionProc.value == "") {
+    if (objetivosProc.value == "" || indicadoresProc.value == "") {
         Swal.fire('Todos los campos son Obligatorios!', '', 'info')
     } 
     else
@@ -420,15 +352,6 @@ function modProcesoCoach(elem) {
         confirmButtonText: 'Si, Realizar!'
     }).then((result) => {
         if (result.isConfirmed) {
-            /* Swal.fire({
-                icon: 'success',
-                timer: 2000,
-                title: 'Modificado!',
-                text: 'El proceso ha sido actualizado.',
-                showConfirmButton: false,
-            })
-            $('#exampleModal').modal('hide');
-            $(".modal-backdrop").remove(); */
             formModProceso.submit();
         }
     })
@@ -451,9 +374,6 @@ function modSesiones(elem) {
     if (!fechaSesion || !apptime) {
         Swal.fire('Los campos fecha y hora de la sesión son obligatorios!', '', 'info')
     }
-    else if (apptime < '08:30:00' || apptime > '19:00:00'){
-        Swal.fire('El horario de la sesión debe estar en el rango 08:30 a 19:00 hrs.', '', 'info')
-    }
     else
     {
     var formSesiones = document.forms["formSesiones-"+id];
@@ -467,15 +387,6 @@ function modSesiones(elem) {
         confirmButtonText: 'Si, Realizar!'
     }).then((result) => {
         if (result.isConfirmed) {
-            /* Swal.fire({
-                icon: 'success',
-                timer: 2000,
-                title: 'Modificado!',
-                text: 'El proceso ha sido actualizado.',
-                showConfirmButton: false,
-            })
-            $('#exampleModal').modal('hide');
-            $(".modal-backdrop").remove(); */
             formSesiones.submit();
         }
     })

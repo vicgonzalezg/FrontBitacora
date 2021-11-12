@@ -1859,11 +1859,11 @@ def modSesionAvance(request, id):
                     # mensaje para avisar al front que se actualizo respuesta avances.
                     messages.success(
                         request, 'Estado de avances actualizado con éxito.')
-                    return redirect('infoProCoachee', IDs)
+                    return redirect('infoProCoachee', idp)
                 else:
                     messages.error(
                         request, 'Hubo un problema al modificar el Estado de Avances.')
-                    return redirect('infoProCoachee', IDs)
+                    return redirect('infoProCoachee', idp)
 
             return redirect('infoProCoachee')
         else:

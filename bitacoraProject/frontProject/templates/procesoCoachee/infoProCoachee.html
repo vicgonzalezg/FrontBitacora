@@ -241,14 +241,16 @@
 
                                             <div class="col-md-12">
                                                 <textarea rows="4" name="respuestaAvancesSesion"
-                                                id="respuestaAvancesSesion-{{ sesion.ID }}" class="form-control">{{sesion.RESPUESTA}}</textarea>
+                                                id="respuestaAvancesSesion-{{ sesion.ID }}" 
+                                                {% if sesion.ESTADOSESION_ID == 1 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %} 
+                                                class="form-control">{{sesion.RESPUESTA}}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
                                         <!--sector donde se almacenan los documentos y links-->
-                                        <div class="form-group col-md-8">
+                                        <div class="form-group col-md-6">
                                             <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                             <div class="form-group col-md-12">
                                                 <table id="example" class="table thead-dark border border-dark">
@@ -256,8 +258,8 @@
                                                         <tr class="cabecera">
                                                             <th scope="col"></th>
                                                             <th scope="col">Nombre</th>
-                                                            <th scope="col">Tamaño</th>
-                                                            <th scope="col">Fecha</th>
+                                                            <!-- <th scope="col">Tamaño</th>
+                                                            <th scope="col">Fecha</th> -->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -265,41 +267,73 @@
                                                             <th scope="row"><i class="far fa-file-word"></i>
                                                             </th>
                                                             <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
                                                         </tr>
                                                         <tr class="bg-light">
                                                             <th scope="row"><i class="far fa-file-powerpoint"></i>
                                                             </th>
                                                             <th scope="row"><a href="#">Presentación.pptx</a>
                                                             </th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
                                                         </tr>
                                                         <tr class="bg-light">
                                                             <th scope="row"><i class="far fa-file-pdf"></i></th>
                                                             <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                            <th scope="row">523.0</th>
-                                                            <th scope="row">16-09-16</th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
 
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="col-md-12 control-label">Links:</label>
-                                            <div class="col-md-12 float-end">
-                                                <div class="">
-                                                    <textarea rows="7" class="form-control" readonly></textarea>
-                                                </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="col-md-6 control-label" name="nombre">Links:</label>
+                                            <div class="form-group col-md-12">
+                                                <table id="example" class="table thead-dark border border-dark">
+                                                    <thead class="thead-dark">
+                                                        <tr class="cabecera">
+                                                            <th scope="col"></th>
+                                                            <th scope="col">Dirección</th>
+                                                            <!-- <th scope="col">Tamaño</th>
+                                                            <th scope="col">Fecha</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-rss"></i>
+                                                            </th>
+                                                            <th scope="row"><a href="#">https://www.youporn.com</a></th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-send"></i>
+                                                            </th>
+                                                            <th scope="row"><a href="#">https://www.duoc.cl</a>
+                                                            </th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
+                                                        </tr>
+                                                        <tr class="bg-light">
+                                                            <th scope="row"><i class="far fa-file-share-alt"></i></th>
+                                                            <th scope="row"><a href="#">https://tengosueño.cl</a></th>
+                                                            <!-- <th scope="row">523.0</th>
+                                                            <th scope="row">16-09-16</th> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
+
                                         </div>
                                     </div>
                                     <br>
                                     <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                     <div class="container">
                                         <button type="submit" onclick="modSesionesCoachee(this);" data-id="{{sesion.ID}}"
+                                            {% if sesion.ESTADOSESION_ID == 1 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}
                                             class="btn btn-primary float-end col-md-2">Grabar</button>
                                     </div>
                                     <br>

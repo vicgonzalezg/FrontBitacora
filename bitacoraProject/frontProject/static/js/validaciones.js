@@ -392,3 +392,50 @@ function modSesiones(elem) {
     })
 }
 }
+
+/* ######################################################################################### */
+/*                                        Sesiones Coachee                                   */
+
+//Modificar Respuesta de Avances Coachee
+function modSesionesCoachee(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var respuestaAvances = document.getElementById("respuestaAvancesSesion"+'-'+id).value
+   
+    var formSesionesCoachee = document.forms["formSesionesCoachee-"+id];
+    Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            formSesionesCoachee.submit();
+        }
+    })
+}
+
+//Modificar Plan de Accion Coachee
+function modPlanAccion(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var planAccionProc = document.getElementById("planAccionProc"+'-'+id).value
+   
+    var formSesionesCoachee = document.forms["formModProcesoCoachee-"+id];
+    Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            formSesionesCoachee.submit();
+        }
+    })
+}

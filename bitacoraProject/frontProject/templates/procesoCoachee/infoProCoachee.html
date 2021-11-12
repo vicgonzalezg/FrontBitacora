@@ -14,8 +14,8 @@
     {{procesos.NOMBREEMPRESA}}</H2>
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
-    <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
-        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
+    <form class="form-horizontal" id="formModProcesoCoachee-{{ procesos.ID }}"
+        action="{% url 'modPlanAccion' procesos.ID %}" method="POST">{% csrf_token %}
         <div class="container">
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->
@@ -165,7 +165,8 @@
                         <div class="content">
                             <div class="panel-body">
                                 <!--Registro de Fecha/hora y estado de cada sesión-->
-                                <form class="form-horizontal" method="POST">{% csrf_token %}
+                                <form class="form-horizontal"action="{% url 'modSesionAvance' sesion.ID %}"
+                                id="formSesionesCoachee-{{ sesion.ID }}" method="POST">{% csrf_token %}
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <div class="row">
@@ -207,7 +208,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label" name="descSesion">Descripción
+                                            <label class="col-md-12 control-label" name="descSesion">Descripción
                                                 sesión:</label>
 
                                             <div class="col-md-12">
@@ -236,10 +237,11 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="col-md-6 control-label" name="avancesSesion">Estado de asignaciones:</label>
+                                            <label class="col-md-6 control-label" name="respuestaSesion">Estado de asignaciones:</label>
 
                                             <div class="col-md-12">
-                                                <textarea rows="4" name="avancesSesion" class="form-control"></textarea>
+                                                <textarea rows="4" name="respuestaAvancesSesion"
+                                                id="respuestaAvancesSesion-{{ sesion.ID }}" class="form-control">{{sesion.RESPUESTA}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -295,8 +297,9 @@
                                         </div>
                                     </div>
                                     <br>
+                                    <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                     <div class="container">
-                                        <button type="submit" onclick="" data-id="{{procesos.ID}}"
+                                        <button type="submit" onclick="modSesionesCoachee(this);" data-id="{{sesion.ID}}"
                                             class="btn btn-primary float-end col-md-2">Grabar</button>
                                     </div>
                                     <br>

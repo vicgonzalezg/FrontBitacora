@@ -212,15 +212,24 @@
                                         </div>
                                         <br>
                                         <div class="row">
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
-
+    
                                                 <div class="col-md-12">
-                                                    <textarea rows="4" name="avancesSesion"
-                                                        class="form-control" readonly>{{sesion.AVANCES}}</textarea>
+                                                    <textarea rows="4" name="avancesSesion" class="form-control"
+                                                        id="avancesSesion-{{ sesion.ID }}"
+                                                        readonly>{{sesion.AVANCES}}</textarea>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="avancesSesion">Estado de asignaciones:</label>
+    
+                                                <div class="col-md-12">
+                                                    <textarea rows="4" name="respuestaAvancesSesion" class="form-control"
+                                                    readonly>{{sesion.RESPUESTA}}</textarea>
+                                                </div>
+                                            </div>
+                                    </div>
                                         <br>
                                         <div class="row">
                                             <!--sector donde se almacenan los documentos y links-->

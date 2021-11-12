@@ -32,5 +32,6 @@ urlpatterns = [
     path('menuCoachee/', views.menuCoachee, name='menuCoachee'),
     path('infoProCoachee/<int:id>/', views.infoProCoachee, name='infoProCoachee'),
     path('modPlanAccion/<int:id>/', views.modPlanAccion, name='modPlanAccion'),
+    path('modSesionAvance/<int:id>/', views.modSesionAvance, name='modSesionAvance'),
     path('imprimirProceso/<int:id>/', views.imprimirProceso, name='imprimirProceso'),
 ]

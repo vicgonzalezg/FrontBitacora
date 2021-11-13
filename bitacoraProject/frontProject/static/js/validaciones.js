@@ -443,6 +443,19 @@ function modPlanAccion(elem) {
 /* ######################################################################################### */
 /*                               Recuperacion de Contraseña                                  */
 //Cambio de Contraseña 
+function recuperarClave() {
+    event.preventDefault();
+    var email = document.getElementById("email").value
+
+    if (!(validateEmail(email))) {
+        Swal.fire('Favor revisar correo electrónico!', '', 'warning')
+    }else{
+        var formRecuperarClave = document.forms["recuperarClave"];
+        formRecuperarClave.submit();
+    }
+
+}   
+//Cambio de Contraseña 
 function cambioclave() {
     event.preventDefault();
     var clave1 = document.getElementById("clave1").value

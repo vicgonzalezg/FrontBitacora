@@ -78,15 +78,15 @@ def recuperarClave(request):
     if request.method == 'POST':
         url = 'http://127.0.0.1:8001/recuperaciones-contrasenas'
         email = request.POST.get('email')
-        #print(email)
+        print(email)
         urlCambioPass = 'http://127.0.0.1:8000/cambioclave'
         jsonRecuperaContra ={
             "CORREO":email,
             "URL":urlCambioPass
         }
-        #print(jsonRecuperaContra)
+        print(jsonRecuperaContra)
         response = requests.post(url, json=jsonRecuperaContra)
-        #print(response.status_code)
+        print(response.status_code)
         if response.status_code == 200:
             messages.success(request, 'Se enviara un correo con las instrucciones.')
         else:

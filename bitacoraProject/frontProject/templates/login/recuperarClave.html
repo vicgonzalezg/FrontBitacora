@@ -27,14 +27,14 @@
                     <h3 class="pb-md-3">Bienvenido a nuestra Bitácora de Coaching</h3>
                 </div>
                 <!-- Inicio Recuperar Contraseña -->
-                <form method="POST" action="#" class="py-3 form-login needs-validation" novalidate>{% csrf_token %}
+                <form method="POST" action="" id="recuperarClave" class="py-3 form-login needs-validation" novalidate>{% csrf_token %}
                     <!-- Mensaje -->
                     <div class="text-center">
                         <h6 class="pb-md-3">Especifique su email para enviarle las instrucciones de recuperación de contraseña.</h6>
                     </div>
                     <!-- Input de email y validación -->
                     <div class="mb-4 has-validation">
-                        <input type="email" class="form-control rounded" name="email" placeholder="email@thinkgo.cl"
+                        <input type="email" class="form-control rounded" name="email" id="email" placeholder="email@thinkgo.cl"
                             id="validationUsername" required>
                         <div class="invalid-feedback">
                             Debe ingresar un email.
@@ -43,7 +43,7 @@
                                        
                     <!-- Boton Recuperar Clave -->
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Recuperar Contraseña</button>
+                        <button type="submit" onclick="recuperarClave();" class="btn btn-primary">Recuperar Contraseña</button>
                     </div>
                     <!-- Link para volver al login -->
                     <div class="my-3 text-center">
@@ -62,6 +62,7 @@
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/login.js' %}"></script>
 <script src="{% static 'js/sweetalert2@11.js' %}"></script>
+<script src="{% static 'js/validaciones.js' %}"></script>
 {% if messages %}
 {% for message in messages %}
     <script>

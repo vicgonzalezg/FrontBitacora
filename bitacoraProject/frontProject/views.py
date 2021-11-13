@@ -16,6 +16,7 @@ from weasyprint import HTML, CSS
 from bitacoraProject import settings
 from bitacoraProject.wsgi import *
 import base64
+import time
 
 # definimos el login
 def login(request):
@@ -106,8 +107,8 @@ def cambioclave(request, pk):
         response = requests.put(url, json=jsonCambiaContra)
         #print(response.status_code)
         if response.status_code == 200:
-            messages.success(request, 'Contraseña cambiada con éxito.')
-            return redirect('/')
+            messages.success(request, 'Contraseña cambiada con éxito. Seras redirigido al Login.')
+            #return redirect('/')
         else:
             messages.error(request, 'Hubo un problema al cambiar la contraseña. Favor intentar nuevamente.')
 

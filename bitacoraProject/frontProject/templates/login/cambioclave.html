@@ -21,7 +21,7 @@
                     <img src="{% static 'imagenes/cambioclavelogo.jpg' %}" class="img-clave" alt="logo">
                 </div>
                 <div class="col-md-12 text-center clave py-1">
-                    <h2 class="py-1 pb-1 text-secondary">Ingrese nueva clave</h2>
+                    <h2 class="py-1 pb-1 text-secondary">Ingrese una nueva contraseña</h2>
                     <form action="" id="cambioclave" method="post">{% csrf_token %}
                         <div class="form-row py-2">
                             <div class="mb-4 has-validation d-flex justify-content-center">
@@ -75,8 +75,12 @@
         Swal.fire({
                     title: '{{ message }}',
                     icon: '{{ message.tags }}',
-                    heightAuto: false
-                })
+                    heightAuto: false,
+                    timer: 5000,
+                    timerProgressBar: true
+                }).then((result) => {
+                        window.location.href = "/"
+                    });
     </script>
 {% endfor %}
 {% endif %}

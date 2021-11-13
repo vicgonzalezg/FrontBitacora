@@ -1,0 +1,75 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.row {
+    background: white;
+    border-radius: 30px;
+    box-shadow: 12px 12px 22px;
+}
+
+.login .clave {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+.inp {
+    height: 50px;
+    width: 50%;
+    border: none;
+    outline: none;
+    border-radius: 60px;
+    box-shadow: 1px 2px 30px -11px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 1px 2px 30px -11px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 1px 2px 30px -11px rgba(0, 0, 0, 0.75);
+}
+
+@media screen and (max-width: 768px) {
+    .img-clave {
+        width: 70%;
+    }
+    .inp {
+        height: 50px;
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .img-clave {
+        width: 70%;
+    }
+    .inp {
+        height: 50px;
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .img-clave {
+        width: 70%;
+    }
+    .inp {
+        height: 50px;
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .img-clave {
+        width: 60%;
+    }
+    .inp {
+        height: 50px;
+        width: 80%;
+    }
+}
+
+.invalid{
+    color: red;
+}
+
+.valid{
+    color: green;
+}

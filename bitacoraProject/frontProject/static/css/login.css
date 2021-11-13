@@ -16,10 +16,13 @@ html,body {
 h3,label {
     color: white;
 }
+h6,label {
+  color: white;
+}
 /* Incorporar la imagen al lado izquierdo */
 .img-login {
-    background-image: url(../imagenes/banner-coaching.jpg);
-    background-repeat: no-repeat;
+    background-image: url(../imagenes/img-assessment2.jpg);
+    background-repeat: round;
     background-size: cover;
 }
 /* Fondo de la parte derecha del login */

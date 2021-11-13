@@ -439,3 +439,36 @@ function modPlanAccion(elem) {
         }
     })
 }
+
+/* ######################################################################################### */
+/*                               Recuperacion de Contraseña                                  */
+//Cambio de Contraseña 
+function cambioclave() {
+    event.preventDefault();
+    var clave1 = document.getElementById("clave1").value
+    var clave2 = document.getElementById("clave2").value
+    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.,_#])([A-Za-z\d$@$!%*?&.,_#]|[^ ]){8,20}$/;
+
+    //validar espacios en contraseña
+    console.log(regex.test(clave1))
+    if (!regex.test(clave1) || !regex.test(clave2)) {
+        Swal.fire('La contraseña no cumple con los requisitos minimos.', '', 'info')
+    }
+    else
+    {
+    var formCambioClave = document.forms["cambioclave"];
+    /* Swal.fire({
+        title: '¿Estas seguro de realizar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No!',
+        confirmButtonText: 'Si, Realizar!'
+    }).then((result) => {
+        if (result.isConfirmed) { */
+            formCambioClave.submit();
+    /*     }
+    }) */
+}
+}

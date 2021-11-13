@@ -72,6 +72,47 @@ def login(request):
             return render(request, 'login/login.html')
     return render(request, 'login/login.html')
 
+#Recuperar Contraseña
+def recuperarClave(request):
+    if request.method == 'POST':
+        url = 'http://127.0.0.1:8001/recuperaciones-contrasenas'
+        email = request.POST.get('email')
+        #print(email)
+        urlCambioPass = 'http://127.0.0.1:8000/cambioclave'
+        jsonRecuperaContra ={
+            "CORREO":email,
+            "URL":urlCambioPass
+        }
+        #print(jsonRecuperaContra)
+        response = requests.post(url, json=jsonRecuperaContra)
+        #print(response.status_code)
+        if response.status_code == 200:
+            messages.success(request, 'Se enviara un correo con las instrucciones.')
+        else:
+            messages.success(request, 'Hay un problema. Favor intentar nuevamente.')
+
+    return  render(request, 'login/recuperarClave.html')
+
+# Cambio de Contraseña
+def cambioclave(request, pk):
+    #print(pk)
+    if request.method == 'POST':
+        pk=pk
+        url = 'http://127.0.0.1:8001/recuperaciones-contrasenas/'+ pk +'/'
+        clave = request.POST.get('clave1')
+        jsonCambiaContra ={
+            "CONTRASENA":clave
+        }
+        response = requests.put(url, json=jsonCambiaContra)
+        #print(response.status_code)
+        if response.status_code == 200:
+            messages.success(request, 'Contraseña cambiada con éxito.')
+            return redirect('/')
+        else:
+            messages.error(request, 'Hubo un problema al cambiar la contraseña. Favor intentar nuevamente.')
+
+    return render(request, 'login/cambioclave.html')
+
 # Cierre de sesión
 def logout(request):
     try:
@@ -82,7 +123,6 @@ def logout(request):
     except Exception as e:
         messages.warning(request, 'Ingrese sus credenciales para acceder')
         return redirect('/')
-
 
 def get_cashflows(request):
 

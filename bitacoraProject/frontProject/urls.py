@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.login),
     path('logout/', views.logout, name='logout'),
+    path('recuperarClave/', views.recuperarClave, name='recuperarClave'),
+    path('cambioclave/<str:pk>', views.cambioclave, name='cambioclave'),
     #path('menu/', views.menu),
     path('menuAdmin/', views.menuAdmin, name='menuAdmin'),
     path('procesosAdmin/', views.procesosAdmin, name='procesosAdmin'),

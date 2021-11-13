@@ -14,14 +14,14 @@
     <title>Cambiar Contraseña</title>
 </head>
 <body>
-    <section class="login py-5 bg-light">
+    <section class="login py-3 bg-light">
         <div class="container">
             <div class="row g-0">
                 <div class="col-md-12 d-flex justify-content-center py-3">
                     <img src="{% static 'imagenes/cambioclavelogo.jpg' %}" class="img-clave" alt="logo">
                 </div>
                 <div class="col-md-12 text-center clave py-1">
-                    <h2 class="py-1 pb-1 text-secondary">Ingrese una nueva contraseña</h2>
+                    <h2 class="py-1 pb-2 text-secondary">Ingrese una nueva contraseña</h2>
                     <form action="" id="cambioclave" method="post">{% csrf_token %}
                         <div class="form-row py-2">
                             <div class="mb-4 has-validation d-flex justify-content-center">
@@ -51,7 +51,7 @@
                                 </ul>
                               </div>
                             <!-- Boton Recuperar Clave -->
-                            <div class="d-grid d-flex justify-content-center pb-5">
+                            <div class="d-grid d-flex justify-content-center pb-3">
                                 <button type="submit" onclick="cambioclave();" class="btn btn-primary inp px-3">Cambiar Contraseña</button>
                             </div>    
                         </div>
@@ -76,7 +76,7 @@
                     title: '{{ message }}',
                     icon: '{{ message.tags }}',
                     heightAuto: false,
-                    timer: 5000,
+                    timer: 6000,
                     timerProgressBar: true
                 }).then((result) => {
                         window.location.href = "/"

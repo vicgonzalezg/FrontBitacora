@@ -65,9 +65,9 @@ $(document.registration).ready(function() {
         }
       }
     
-    }).focusout(function() {
+    })/* .focusout(function() {
         $('#pswd_info').hide();
       }).focus(function() {
         $('#pswd_info').show();
-    });
+    }); */
     });

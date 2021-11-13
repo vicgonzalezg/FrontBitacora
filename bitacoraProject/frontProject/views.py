@@ -96,29 +96,25 @@ def recuperarClave(request):
 
 # Cambio de Contraseña
 def cambioclave(request, pk):
-    try:
-        if len(pk) == 136:
-        #print(pk)
-            if request.method == 'POST':
-                pk=pk
-                url = 'http://127.0.0.1:8001/recuperaciones-contrasenas/'+ pk +'/'
-                clave = request.POST.get('clave1')
-                jsonCambiaContra ={
-                    "CONTRASENA":clave
-                }
-                response = requests.put(url, json=jsonCambiaContra)
-                #print(response.status_code)
-                if response.status_code == 200:
-                    messages.success(request, 'Contraseña cambiada con éxito. Seras redirigido al Login.')
-                    #return redirect('/')
-                else:
-                    messages.error(request, response.text.replace('"', ''))
+    #print(pk)
+    if request.method == 'POST':
+        pk=pk
+        url = 'http://127.0.0.1:8001/recuperaciones-contrasenas/'+ pk +'/'
+        clave = request.POST.get('clave1')
+        jsonCambiaContra ={
+            "CONTRASENA":clave
+        }
+        response = requests.put(url, json=jsonCambiaContra)
+        #print(response.status_code)
+        if response.status_code == 200:
+            messages.success(request, 'Contraseña cambiada con éxito. Seras redirigido al Login.')
+            #return redirect('/')
+        else:
+            messages.error(request, response.text.replace('"', ''))
 
-            return render(request, 'login/cambioclave.html')
-        return redirect('/')
-    except Exception as e:
-        #messages.warning(request, 'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    return render(request, 'login/cambioclave.html')
+
+
 
 # Cierre de sesión
 def logout(request):

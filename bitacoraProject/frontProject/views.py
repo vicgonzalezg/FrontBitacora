@@ -1,3 +1,4 @@
+import operator
 from frontProject.models import Usuario
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, response
@@ -6,6 +7,7 @@ from . import services
 # Create your views here.
 from django.core import serializers
 import json
+import operator
 import requests
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -410,52 +412,24 @@ def menuCoachee(request):
             #listado = proceso.update(usuario)
             #if len(proceso) > 0:
             for p in proceso:
-                for e in estado:
-                    if p['ESTADOPROCESO_ID'] == e['ID']:
-                        estadoDescripcion = e['DESCRIPCION']
                 for u in usuario:
                     if p['COACHEE_ID'] == u['ID']:
                         nombreEmpresa = p['NOMBREEMPRESA']
                         nombreCoachee = u['NOMBRE']
                         apellidoCoachee = u['APELLIDO']
-                        correoCoachee = u['CORREO']
-                        telefonoCoachee = u['FONO']
-                        fechaCreacion = p['FECHACREACION']
-                        cantsesiones = p['CANTSESIONES']
-                        objetivo = p['OBJETIVOS']
-                        indicadores = p['INDICADORES']
-                        planAccion = p['PLANACCION']
-                        nombreJefe = u['NOMBREJEFE']
-                        emailJefe = u['EMAILJEFE']
-                        fonoJefe = u['FONOJEFE']
                         idProceso = p['ID']
                 for uc in usuario:
                     if p['COACH_ID'] == uc['ID']:
                         nombreCoach = uc['NOMBRE']
                         apellidoCoach = uc['APELLIDO']
-                for s in sesiones:
-                    if p['ID'] == s['PROCESO_ID']:
-                        fechasesion = s['FECHASESION']
 
                         json = [{
                             "NOMBREEMPRESA": nombreEmpresa,
                             "NOMBRE": nombreCoachee,
                             "APELLIDO": apellidoCoachee,
-                            "CORREO": correoCoachee,
-                            "FONO": telefonoCoachee,
-                            "FECHACREACION": fechaCreacion,
-                            "CANTSESIONES": cantsesiones,
-                            "OBJETIVOS": objetivo,
-                            "INDICADORES": indicadores,
-                            "PLANACCION": planAccion,
-                            "NOMBREJEFE": nombreJefe,
-                            "EMAILJEFE": emailJefe,
-                            "FONOJEFE": fonoJefe,
-                            "DESCRIPCION": estadoDescripcion,
                             "NOMBRECOACH": nombreCoach,
                             "APELLIDOCOACH": apellidoCoach,
                             "IDSESION": canSesiones,
-                            "FECHASESION": fechasesion,
                             "ID": idProceso
 
                         }]
@@ -477,16 +451,32 @@ def menuCoachee(request):
                                         nombreEmpresa = pCal['NOMBREEMPRESA']
                                         nombreCoachee = u['NOMBRE']
                                         apellidoCoachee = u['APELLIDO']
+                                        sesionId = sCal['ID']
 
                                         sesionesCalendario2 = [{
                                             "NOMBREEMPRESA": nombreEmpresa,
                                             "NOMBRE": nombreCoachee,
                                             "APELLIDO": apellidoCoachee,
                                             "FECHASESION": fechaSesion,
-                                            "ESTADOSESION_ID":estadoSesion
+                                            "ESTADOSESION_ID":estadoSesion,
+                                            "ID": sesionId
                                         }]
 
                                         sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
+            listadoBar = []
+            for sBar in sesiones:
+                for pBar in proceso:
+                    if pBar['ID'] == sBar['PROCESO_ID']:
+                        estadoSesion = sBar['ESTADOSESION_ID']
+                        idSesion = sBar['ID']
+                        sesionBarList = [{
+                            "ID":idSesion,
+                            "ESTADOSESION_ID":estadoSesion
+                        }]
+
+                        listadoBar = sesionBarList + listadoBar
+                        listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
+
             page = request.GET.get('page', 1)
 
             try:
@@ -495,12 +485,13 @@ def menuCoachee(request):
 
             except:
                 raise Http404
-            #print(listados)
+            print(listadoBarOrdenado)
             data = {
                 'usuario': perfil,
                 'entity': listado,
                 'paginator': paginator,
-                'sesiones': sesionesCalendario3
+                'sesiones': sesionesCalendario3,
+                'listaBar': listadoBarOrdenado
             }
             #else:
             #    data = {

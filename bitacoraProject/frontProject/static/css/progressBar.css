@@ -5,9 +5,43 @@
 .progressbar {
   counter-reset: step;
 }
+
 .navbuttons::-webkit-scrollbar {
-  display: none;
+  margin-top: 50px;
+  width: 5px;
+  height: 5px;
 }
+.navbuttons::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.navbuttons::-webkit-scrollbar-thumb {
+  background: #002b49;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.navbuttons::-webkit-scrollbar-thumb:hover {
+  background:rgba(0,0,15,0.7);
+}
+.navbuttons::-webkit-scrollbar-thumb:active {
+  background: rgba(0,0,15,1);
+}
+.navbuttons::-webkit-scrollbar-track {
+  background: #ffffff;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.navbuttons::-webkit-scrollbar-track:hover {
+  background: #ffffff;
+}
+.navbuttons::-webkit-scrollbar-track:active {
+  background: #ffffff;
+}
+.navbuttons::-webkit-scrollbar-corner {
+  background: transparent;
+}
+body { SCROLLBAR-FACE-COLOR:red; SCROLLBAR-HIGHLIGHT-COLOR: brown; SCROLLBAR-SHADOW-COLOR: #6699CC; SCROLLBAR-3DLIGHT-COLOR: #FFFFFF; SCROLLBAR-ARROW-COLOR: #FFFFFF; SCROLLBAR-TRACK-COLOR: #E3E3E3; SCROLLBAR-DARKSHADOW-COLOR: #000000; }
+
 .navbuttons {
   display: inline-block;
   overflow: auto;

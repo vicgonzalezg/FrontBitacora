@@ -27,5 +27,6 @@ h6,label {
 }
 /* Fondo de la parte derecha del login */
 .form-login{
-    background-color: #002b49
+    background-color: #002b49;
+    height: 100%;
 }

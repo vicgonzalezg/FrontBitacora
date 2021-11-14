@@ -15,8 +15,8 @@
 </head>
 
 <body>
-    <div class="container-fluid h-100 form-login">
-        <div class="row justify-content-center h-100">
+    <div class="container-fluid ">
+        <div class="row justify-content-center form-login">
             <div class="img-login d-none d-lg-block col-10 col-sm-10 col-md-10 col-lg-8 col-xl-8">
             </div>
             <div class="p-2 col-10 col-sm-10 col-md-10 col-lg-4 col-xl-4">
@@ -27,7 +27,7 @@
                     <h3 class="pb-md-3">Bienvenido a nuestra Bitácora de Coaching</h3>
                 </div>
                 <!-- Inicio Recuperar Contraseña -->
-                <form method="POST" action="" id="recuperarClave" class="py-3 form-login needs-validation" novalidate>{% csrf_token %}
+                <form method="POST" action="" id="recuperarClave" class="py-3 needs-validation" novalidate>{% csrf_token %}
                     <!-- Mensaje -->
                     <div class="text-center">
                         <h6 class="pb-md-3">Especifique su email para enviarle las instrucciones de recuperación de contraseña.</h6>

@@ -17,7 +17,7 @@
             <h3 class="text-center">Sesiones del día</h3>
 
             {% for sesiones in entity %} 
-            <a href="{% url 'infoProcCoach' sesiones.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+            <a href="{% url 'infoProCoach' sesiones.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Proceso Empresa: {{ sesiones.NOMBREEMPRESA }}</h5>
                 </div>

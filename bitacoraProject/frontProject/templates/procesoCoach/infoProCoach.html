@@ -15,7 +15,7 @@
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
     <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
-        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
+        action="{% url 'infoProCoach' procesos.ID %}" method="POST">{% csrf_token %}
         <div class="container">
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->

@@ -27,7 +27,7 @@ urlpatterns = [
     path('menuCoach/', views.menuCoach, name='menuCoach'),
     path('listProCoach/', views.listProCoach, name='listProCoach'),
     path('procAsig/', views.procAsig, name='procAsig'),
-    path('infoProcCoach/<int:id>/', views.infoProcCoach, name='infoProcCoach'),
+    path('infoProCoach/<int:id>/', views.infoProCoach, name='infoProCoach'),
     path('infoSesionCoach/<int:id>/', views.infoSesionCoach, name='infoSesionCoach'),
 
     #Perteneciente al proceso de Coachee

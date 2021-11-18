@@ -1481,15 +1481,20 @@ def infoProcCoach(request, id):
                 urlUsuarios = 'http://127.0.0.1:8001/usuarios'
                 urlEstado = 'http://127.0.0.1:8001/estados-procesos'
                 urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+                #gestor archivo y enlaces
+                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
+                urlEnlace = 'http://127.0.0.1:8001/enlaces'
                 proceso = requests.get(urlProcesos, headers=headers).json()
                 usuario = requests.get(urlUsuarios, headers=headers).json()
                 estado = requests.get(urlEstado, headers=headers).json()
+                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
+                enlace = requests.get(urlEnlace, headers=headers).json()
                 urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
                 sesiones = requests.get(urlSesiones, headers=headers).json()
                 estadoSesion = requests.get(
                     urlEstadoSesion, headers=headers).json()
                 listados = []
-
+                gestorEnlace = []
                 #listado = proceso.update(usuario)
                 for p in proceso:
                     for e in estado:
@@ -1539,7 +1544,18 @@ def infoProcCoach(request, id):
                             }]
 
                             listados = json + listados
-
+                for s in sesiones:
+                    for g in gestorArchivo:
+                        if s['ID'] == g['SESION_ID']:
+                            linkGestor = g['LINK']
+                    for en in enlace:
+                        if s['ID'] == en['SESION_ID']:
+                            linkEnlace = en['LINK']  
+                            jsonGE = [{
+                                "LINKGE": linkGestor,
+                                "LINKEN": linkEnlace
+                            }]
+                            gestorEnlace = jsonGE + gestorEnlace
                 sesiones = sesiones
                 estado = estado
                 estadoSesion = estadoSesion
@@ -1550,7 +1566,8 @@ def infoProcCoach(request, id):
                     'entity': listados,
                     'sesiones': sesiones,
                     'estados': estado,
-                    'estadosSesion': estadoSesion
+                    'estadosSesion': estadoSesion,
+                    'gestores':gestorEnlace
                 }
 
                 return render(request, 'procesoCoach/infoProcCoach.html', data)
@@ -1621,7 +1638,7 @@ def infoSesionCoach(request, id):
 
 # Procesos asignados al Coachee
 def infoProCoachee(request, id):
-    try:
+    #try:
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
         if perfil['perfil'] == 3:
@@ -1632,13 +1649,19 @@ def infoProCoachee(request, id):
                 urlUsuarios = 'http://127.0.0.1:8001/usuarios'
                 urlEstado = 'http://127.0.0.1:8001/estados-procesos'
                 urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+                #gestor archivo y enlaces
+                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
+                urlEnlace = 'http://127.0.0.1:8001/enlaces'
                 proceso = requests.get(urlProcesos, headers=headers).json()
                 usuario = requests.get(urlUsuarios, headers=headers).json()
                 estado = requests.get(urlEstado, headers=headers).json()
                 sesiones = requests.get(urlSesiones, headers=headers).json()
+                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
+                enlace = requests.get(urlEnlace, headers=headers).json()
                 estadoSesion = requests.get(
                     urlEstadoSesion, headers=headers).json()
                 listados = []
+                gestorEnlace = []
                 #print(sesiones)
                 #listado = proceso.update(usuario)
                 for p in proceso:
@@ -1690,7 +1713,18 @@ def infoProCoachee(request, id):
                             }]
 
                             listados = json + listados
-
+                    for s in sesiones:
+                        for g in gestorArchivo:
+                            if s['ID'] == g['SESION_ID']:
+                                linkGestor = g['LINK']
+                        for en in enlace:
+                            if s['ID'] == en['SESION_ID']:
+                                linkEnlace = en['LINK']  
+                                jsonGE = [{
+                                    "LINKGE": linkGestor,
+                                    "LINKEN": linkEnlace
+                                }]
+                                gestorEnlace = jsonGE + gestorEnlace
                 sesiones = sesiones
                 estado = estado
                 estadoSesion = estadoSesion
@@ -1699,7 +1733,8 @@ def infoProCoachee(request, id):
                     'entity': listados,
                     'sesiones': sesiones,
                     'estados': estado,
-                    'estadosSesion': estadoSesion
+                    'estadosSesion': estadoSesion,
+                    'gestores':gestorEnlace
                 }
 
                 return render(request, 'procesoCoachee/infoProCoachee.html', data)
@@ -1710,9 +1745,9 @@ def infoProCoachee(request, id):
                 plantilla = 'menuCoach'
             return redirect(plantilla)
 
-    except Exception as e:
-       messages.warning(request,'Ingrese sus credenciales para acceder')
-       return redirect('/')
+    # except Exception as e:
+    #    messages.warning(request,'Ingrese sus credenciales para acceder')
+    #    return redirect('/')
 
 # Imprimi Reporte
 def imprimirProceso(request, id):

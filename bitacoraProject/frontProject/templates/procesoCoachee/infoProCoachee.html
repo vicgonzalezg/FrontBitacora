@@ -261,21 +261,15 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-word"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-powerpoint"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">Presentación.pptx</a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-pdf"></i></th>
-                                                            <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                        </tr>
+                                                        {% for gestor in gestores %}
+                                                            {% if gestor.IDLINKGE == sesion.ID %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row"><i class="far fa-file-word"></i>
+                                                                    </th>
+                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">{{gestor.LINKGE}}</a></th>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -291,21 +285,15 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-send"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">https://www.sistemabitacoracoaching.tk</a></th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-send"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">https://www.duoc.cl</a>
-                                                            </th>
-                                                        </tr>
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-send"></i></th>
-                                                            <th scope="row"><a href="#">https://www.thinkgo.cl</a></th>
-                                                        </tr>
+                                                        {% for gestor in gestores %}
+                                                            {% if gestor.IDLINKEN == sesion.ID %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row"><i class="far fa-file-send"></i>
+                                                                    </th>
+                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -336,6 +324,9 @@
     <br>
     <!--Boton para almacena la informacion del proceso-->
     <a onclick="window.close ()" class="btn btn-secondary float-start col-md-2">Cerrar</a>
+    <span class="col-md-1"></span>
+        <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
+                class="btn btn-primary float-end col-md-2">Reporte</a>
     <br>
     <br>
     <br>

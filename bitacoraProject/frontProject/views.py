@@ -292,20 +292,27 @@ def menuCoach(request):
             urlEstado = 'http://127.0.0.1:8001/estados-sesiones'
             urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + str(id)
             urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
+            urlEstadoProceso = 'http://127.0.0.1:8001/estados-procesos'
             #obtiene los datos desde la api enviando token de seguridad
             sesionesDia = requests.get(urlSesionesDia, headers=headers).json()
             usuario = requests.get(urlUsuarios, headers=headers).json()
             estado = requests.get(urlEstado, headers=headers).json()
             procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+            estadoProc = requests.get(urlEstadoProceso, headers=headers).json()
             sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
             #variable que almacenara el listado de procesos y sus datos
             listados = []
+            listadoBar = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
             #consulta de sesiones por proceso, estado y usuarios
             for s in sesionesDia:
                 for p in procesosCal:
                     if p['ID'] == s['PROCESO_ID']:
+                        for ep in estadoProc:
+                            if ep['ID'] == p['ESTADOPROCESO_ID']:
+                                estadoProceso = ep['DESCRIPCION']
+                                estadoProce = p['ESTADOPROCESO_ID']
                         for e in estado:
                             if s['ESTADOSESION_ID'] == e['ID']:
                                 estadoDescripcion = e['DESCRIPCION']
@@ -327,7 +334,9 @@ def menuCoach(request):
                                     "DESCRIPCION": estadoDescripcion,
                                     "NOMBRECOACH": nombreCoach,
                                     "APELLIDOCOACH": apellidoCoach,
-                                    "ID": idProceso
+                                    "ID": idProceso,
+                                    "ESTADOPROC": estadoProce,
+                                    "DESCRIPCIONPROCE": estadoProceso
                                 }]
                                 #se almacena una array de objetos
                                 listados = json + listados
@@ -360,12 +369,29 @@ def menuCoach(request):
                                         #se almacena una array de objetos
                                         sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
             
+            #consulta de sesiones por proceso
+            for sBar in sesionesCalendario:
+                for pBar in procesosCal:
+                    if pBar['ID'] == sBar['PROCESO_ID']:
+                        estadoSesion = sBar['ESTADOSESION_ID']
+                        idSesion = sBar['ID']
+                        idProceso = pBar['ID']
+                        #se almacenan los datos en una variable
+                        sesionBarList = [{
+                            "IDP":idProceso,
+                            "ID":idSesion,
+                            "ESTADOSESION_ID":estadoSesion
+                        }]
+                        #se almacena una array de objetos
+                        listadoBar = sesionBarList + listadoBar
+                        #se ordena array por id de sesion de menor a mayor
+                        listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
             #se obtiene la primera pagina del paginador
             page = request.GET.get('page', 1)
 
             try:
                 #se le dan los atributos al paginador, listado de 4 por pagina
-                paginator = Paginator(listados, 4)
+                paginator = Paginator(listados, 2)
                 #se almacenan los resultados por por pagina
                 listado = paginator.page(page)
             #si ocurre un error mostrara pagina no encontrada.
@@ -376,7 +402,8 @@ def menuCoach(request):
                 'usuario': perfil,
                 'entity': listado,
                 'paginator': paginator,
-                'sesiones': sesionesCalendario3
+                'sesiones': sesionesCalendario3,
+                'sesionBar': listadoBarOrdenado
             }
             #renderiza la vista y envia los datos
             return render(request, 'menu/menuCoach.html', data)
@@ -1575,6 +1602,8 @@ def infoProCoach(request, id):
                 urlUsuarios = 'http://127.0.0.1:8001/usuarios'
                 urlEstado = 'http://127.0.0.1:8001/estados-procesos'
                 urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
+                urlEnlace = 'http://127.0.0.1:8001/enlaces'
 
                 #obtiene los datos desde la api enviando token de seguridad
                 proceso = requests.get(urlProcesos, headers=headers).json()
@@ -1583,9 +1612,14 @@ def infoProCoach(request, id):
                 urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
                 sesiones = requests.get(urlSesiones, headers=headers).json()
                 estadoSesion = requests.get(urlEstadoSesion, headers=headers).json()
+                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
+                enlace = requests.get(urlEnlace, headers=headers).json()
 
                 #variable que almacenara el listado de procesos y sus datos
                 listados = []
+
+                #variable que almacenara el listado de archivos
+                gestorEnlace = []
 
                 #consulta de procesos por estadoproceso y usuarios
                 for p in proceso:
@@ -1639,6 +1673,22 @@ def infoProCoach(request, id):
                             #se almacena una array de objetos
                             listados = json + listados
 
+                #consulta para obtener la id de los archivos y links asociados a la sesion
+                for s in sesiones:
+                    for g in gestorArchivo:
+                        if s['ID'] == g['SESION_ID']:
+                            linkGestor = g['LINK']
+                    for en in enlace:
+                        if s['ID'] == en['SESION_ID']:
+                            linkEnlace = en['LINK']  
+                            jsonGE = [{
+                                "LINKGE": linkGestor,
+                                "LINKEN": linkEnlace
+                            }]
+
+                            #se almacena una array de objetos
+                            gestorEnlace = jsonGE + gestorEnlace
+
                 # TO DO esto creo que esta demas
                 sesiones = sesiones
                 estado = estado
@@ -1650,7 +1700,8 @@ def infoProCoach(request, id):
                     'entity': listados,
                     'sesiones': sesiones,
                     'estados': estado,
-                    'estadosSesion': estadoSesion
+                    'estadosSesion': estadoSesion,
+                    'gestores': gestorEnlace
                 }
 
                 #renderiza la vista y envia los datos
@@ -1754,6 +1805,8 @@ def infoProCoachee(request, id):
                 urlUsuarios = 'http://127.0.0.1:8001/usuarios'
                 urlEstado = 'http://127.0.0.1:8001/estados-procesos'
                 urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
+                urlEnlace = 'http://127.0.0.1:8001/enlaces'
 
                 #obtiene los datos desde la api enviando token de seguridad
                 proceso = requests.get(urlProcesos, headers=headers).json()
@@ -1761,9 +1814,13 @@ def infoProCoachee(request, id):
                 estado = requests.get(urlEstado, headers=headers).json()
                 sesiones = requests.get(urlSesiones, headers=headers).json()
                 estadoSesion = requests.get(urlEstadoSesion, headers=headers).json()
+                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
+                enlace = requests.get(urlEnlace, headers=headers).json()
 
                 #variable que almacenara el listado de procesos y sus datos
                 listados = []
+                #variable que almacenara los archivos de las sesiones
+                gestorEnlace = []
 
                 #consulta de procesos por estadoproceso y usuarios
                 for p in proceso:
@@ -1817,6 +1874,26 @@ def infoProCoachee(request, id):
                             #se almacena una array de objetos
                             listados = json + listados
 
+                #consulta para obtener la id de los archivos y links asociados a la sesion
+                for s in sesiones:
+                    for g in gestorArchivo:
+                        if s['ID'] == g['SESION_ID']:
+                            idLinkGestor = g['SESION_ID']
+                            linkGestor = g['LINK']
+                    for en in enlace:
+                        if s['ID'] == en['SESION_ID']:
+                            idlinkEnlace = en['SESION_ID']
+                            linkEnlace = en['LINK']   
+                            jsonGE = [{
+                                "IDLINKGE": idlinkEnlace,
+                                "LINKGE": linkGestor,
+                                "IDLINKEN": idlinkEnlace,
+                                "LINKEN": linkEnlace
+                            }]
+
+                            #se almacena una array de objetos
+                            gestorEnlace = jsonGE + gestorEnlace
+
                 # TO DO esto creo que esta demas
                 sesiones = sesiones
                 estado = estado
@@ -1828,7 +1905,8 @@ def infoProCoachee(request, id):
                     'entity': listados,
                     'sesiones': sesiones,
                     'estados': estado,
-                    'estadosSesion': estadoSesion
+                    'estadosSesion': estadoSesion,
+                    'gestores':gestorEnlace
                 }
 
                 #renderiza la vista de informacion de procesos coachee y envia los datos a esta
@@ -1844,8 +1922,8 @@ def infoProCoachee(request, id):
 
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
     except Exception as e:
-       messages.warning(request,'Ingrese sus credenciales para acceder')
-       return redirect('/')
+        messages.warning(request,'Ingrese sus credenciales para acceder')
+        return redirect('/')
 
 # ----------------------------------Imprimi Reporte----------------------------------
 def imprimirProceso(request, id):
@@ -1855,120 +1933,122 @@ def imprimirProceso(request, id):
         perfil = request.session['Perfil_Usuario']
 
         #se consulta si el perfil de usuario corresponde al coach o administrador
-        if perfil['perfil'] == 2 or perfil['perfil'] == 1:
+        #if perfil['perfil'] == 2 or perfil['perfil'] == 1:
 
-            #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
-                str(id)
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+        #variable que almacena la url de la api
+        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
+            str(id)
+        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
+        urlEstado = 'http://127.0.0.1:8001/estados-procesos'
+        urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
 
-            #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
-            sesiones = requests.get(urlSesiones, headers=headers).json()
+        #obtiene los datos desde la api enviando token de seguridad
+        proceso = requests.get(urlProcesos, headers=headers).json()
+        usuario = requests.get(urlUsuarios, headers=headers).json()
+        estado = requests.get(urlEstado, headers=headers).json()
+        sesiones = requests.get(urlSesiones, headers=headers).json()
 
-            #variable que almacenara el listado de procesos y sus datos
-            listados = []
+        #variable que almacenara el listado de procesos y sus datos
+        listados = []
 
-            #consulta de procesos por estadoproceso y usuarios
-            for p in proceso:
-                for e in estado:
-                    if p['ESTADOPROCESO_ID'] == e['ID']:
-                        estadoDescripcion = e['DESCRIPCION']
-                for u in usuario:
-                    if p['COACHEE_ID'] == u['ID']:
-                        nombreEmpresa = p['NOMBREEMPRESA']
-                        nombreCoachee = u['NOMBRE']
-                        apellidoCoachee = u['APELLIDO']
-                        correoCoachee = u['CORREO']
-                        telefonoCoachee = u['FONO']
-                        fechaCreacion = p['FECHACREACION']
-                        fechaTermino = p['FECHATERMINO']
-                        cantsesiones = p['CANTSESIONES']
-                        objetivo = p['OBJETIVOS']
-                        indicadores = p['INDICADORES']
-                        planAccion = p['PLANACCION']
-                        nombreJefe = u['NOMBREJEFE']
-                        emailJefe = u['EMAILJEFE']
-                        fonoJefe = u['FONOJEFE']
-                        idProceso = p['ID']
-                for uc in usuario:
-                    if p['COACH_ID'] == uc['ID']:
-                        nombreCoach = uc['NOMBRE']
-                        apellidoCoach = uc['APELLIDO']
-                        correoCoach = uc['CORREO']
-                        fonoCoach = uc['FONO']
+        #consulta de procesos por estadoproceso y usuarios
+        for p in proceso:
+            for e in estado:
+                if p['ESTADOPROCESO_ID'] == e['ID']:
+                    estadoDescripcion = e['DESCRIPCION']
+            for u in usuario:
+                if p['COACHEE_ID'] == u['ID']:
+                    nombreEmpresa = p['NOMBREEMPRESA']
+                    nombreCoachee = u['NOMBRE']
+                    apellidoCoachee = u['APELLIDO']
+                    correoCoachee = u['CORREO']
+                    telefonoCoachee = u['FONO']
+                    fechaCreacion = p['FECHACREACION']
+                    fechaTermino = p['FECHATERMINO']
+                    cantsesiones = p['CANTSESIONES']
+                    objetivo = p['OBJETIVOS']
+                    indicadores = p['INDICADORES']
+                    planAccion = p['PLANACCION']
+                    nombreJefe = u['NOMBREJEFE']
+                    emailJefe = u['EMAILJEFE']
+                    fonoJefe = u['FONOJEFE']
+                    idProceso = p['ID']
+            for uc in usuario:
+                if p['COACH_ID'] == uc['ID']:
+                    nombreCoach = uc['NOMBRE']
+                    apellidoCoach = uc['APELLIDO']
+                    correoCoach = uc['CORREO']
+                    fonoCoach = uc['FONO']
 
-                        #se almacenan los datos en una variable
-                        json = [{
-                            "NOMBREEMPRESA": nombreEmpresa,
-                            "NOMBRE": nombreCoachee,
-                            "APELLIDO": apellidoCoachee,
-                            "CORREO": correoCoachee,
-                            "FONO": telefonoCoachee,
-                            "FECHACREACION": fechaCreacion,
-                            "FECHATERMINO": fechaTermino,
-                            "CANTSESIONES": cantsesiones,
-                            "OBJETIVOS": objetivo,
-                            "INDICADORES": indicadores,
-                            "PLANACCION": planAccion,
-                            "NOMBREJEFE": nombreJefe,
-                            "EMAILJEFE": emailJefe,
-                            "FONOJEFE": fonoJefe,
-                            "DESCRIPCION": estadoDescripcion,
-                            "NOMBRECOACH": nombreCoach,
-                            "APELLIDOCOACH": apellidoCoach,
-                            "CORREOCOACH": correoCoach,
-                            "FONOCOACH": fonoCoach,
-                            "ID": idProceso
-                        }]
+                    #se almacenan los datos en una variable
+                    json = [{
+                        "NOMBREEMPRESA": nombreEmpresa,
+                        "NOMBRE": nombreCoachee,
+                        "APELLIDO": apellidoCoachee,
+                        "CORREO": correoCoachee,
+                        "FONO": telefonoCoachee,
+                        "FECHACREACION": fechaCreacion,
+                        "FECHATERMINO": fechaTermino,
+                        "CANTSESIONES": cantsesiones,
+                        "OBJETIVOS": objetivo,
+                        "INDICADORES": indicadores,
+                        "PLANACCION": planAccion,
+                        "NOMBREJEFE": nombreJefe,
+                        "EMAILJEFE": emailJefe,
+                        "FONOJEFE": fonoJefe,
+                        "DESCRIPCION": estadoDescripcion,
+                        "NOMBRECOACH": nombreCoach,
+                        "APELLIDOCOACH": apellidoCoach,
+                        "CORREOCOACH": correoCoach,
+                        "FONOCOACH": fonoCoach,
+                        "ID": idProceso
+                    }]
 
-                        #se almacena una array de objetos
-                        listados = json + listados
+                    #se almacena una array de objetos
+                    listados = json + listados
 
-            #se obtine diseño de pdf
-            template = get_template("base/reporte.html")
+        #se obtine diseño de pdf
+        template = get_template("base/reporte.html")
 
-            #se almacenan las variables con los datos en un objeto para enviarlo a la vista
-            # TO DO esto no se usa
-            data = {
-                'usuario': perfil,
-                'entity': listados,
-                'sesiones': sesiones
-            }
-            #se almacena datos que iran al pdf
-            context = {
-                'entity': listados,
-                'sesiones': sesiones
-            }
+        #se almacena datos que iran al pdf
+        context = {
+            'entity': listados,
+            'sesiones': sesiones
+        }
 
-            # se cargan datos dentro del diseño del pdf y se agregan los estilos a este
-            html_template = template.render(context)
-            css_url = os.path.join(settings.BASE_DIR, 'frontProject/static/css/bootstrap.css')
+        # se cargan datos dentro del diseño del pdf y se agregan los estilos a este
+        html_template = template.render(context)
+        css_url = os.path.join(settings.BASE_DIR, 'frontProject/static/css/bootstrap.css')
 
-            #se obtiene el pdf
-            pdf_file = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
+        #se obtiene el pdf
+        pdf_file = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
 
-            # TO DO falta esto del pdf
-            response = HttpResponse(pdf_file, content_type='application/pdf;')
-            response['Content-Disposition'] = 'inline; filename=reporte_proceso.pdf'
+        #al httpresponse se le entrega el pdf y se le indica que tipo de archivo
+        response = HttpResponse(pdf_file, content_type='application/pdf;')
 
-            encoded = base64.b64encode(pdf_file)
-            response['Content-Transfer-Encoding'] = 'binary'
-            response['Content-Disposition'] = 'attachment; filename= ReporteEmpresa_' + \
-                nombreEmpresa + '.pdf'
-            return response
+        #aca se le asi
+        #response['Content-Disposition'] = 'inline; filename=reporte_proceso.pdf'
+
+        #transforma la informacion en binaria
+        encoded = base64.b64encode(pdf_file)
+
+        #tipo de transferencia
+        response['Content-Transfer-Encoding'] = 'binary'
+
+        #se le asigna el nombre al pdf
+        response['Content-Disposition'] = 'attachment; filename= ReporteEmpresa_' + \
+            nombreEmpresa + '.pdf'
+
+        #retorna el pdf
+        return response
 
         #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
-        else:
-            if perfil['perfil'] == 1:
-                plantilla = 'menuAdmin'
-            elif perfil['perfil'] == 3:
-                plantilla = 'menuCoachee'
-            return redirect(plantilla)
+        # else:
+        #     if perfil['perfil'] == 1:
+        #         plantilla = 'menuAdmin'
+        #     elif perfil['perfil'] == 3:
+        #         plantilla = 'menuCoachee'
+        #     return redirect(plantilla)
 
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
     except Exception as e:

@@ -1555,7 +1555,7 @@ def procAsig(request):
 
 #---------------------------------- Obtener y modificar de los procesos coach----------------------------------
 def infoProCoach(request, id):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
@@ -1569,7 +1569,6 @@ def infoProCoach(request, id):
                 planAccion = request.POST.get('planAccionProc')
                 estadoProceso = request.POST.get('estadoProceso')
                 idProceso = id
-
                 #se almacenan los datos en una variable
                 modProcCoach = {
                     "ID": idProceso,
@@ -1619,7 +1618,8 @@ def infoProCoach(request, id):
                 listados = []
 
                 #variable que almacenara el listado de archivos
-                gestorEnlace = []
+                gestorArchivoJson = []
+                gestorEnlaceJson = []
 
                 #consulta de procesos por estadoproceso y usuarios
                 for p in proceso:
@@ -1678,16 +1678,28 @@ def infoProCoach(request, id):
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
                             linkGestor = g['LINK']
+
+                            jsonLG = [{
+                                    "IDLINKGE": g['SESION_ID'],
+                                    "LINKGE": linkGestor
+                                }]
+                            
+                            gestorArchivoJson = jsonLG + gestorArchivoJson
+                print(gestorArchivoJson)
+                
+                for s in sesiones:
                     for en in enlace:
                         if s['ID'] == en['SESION_ID']:
                             linkEnlace = en['LINK']  
-                            jsonGE = [{
-                                "LINKGE": linkGestor,
-                                "LINKEN": linkEnlace
-                            }]
+                            
+                            jsonLE = [{
+                                    "IDLINKEN": en['SESION_ID'],
+                                    "LINKEN": linkEnlace
+                                }]
 
                             #se almacena una array de objetos
-                            gestorEnlace = jsonGE + gestorEnlace
+                            gestorEnlaceJson = jsonLE + gestorEnlaceJson
+                print(gestorEnlaceJson)
 
                 # TO DO esto creo que esta demas
                 sesiones = sesiones
@@ -1701,7 +1713,8 @@ def infoProCoach(request, id):
                     'sesiones': sesiones,
                     'estados': estado,
                     'estadosSesion': estadoSesion,
-                    'gestores': gestorEnlace
+                    'gestoresEnlaces': gestorEnlaceJson,
+                    'gestoresArchivos': gestorArchivoJson
                 }
 
                 #renderiza la vista y envia los datos
@@ -1716,13 +1729,13 @@ def infoProCoach(request, id):
             return redirect(plantilla)
 
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+ #   except Exception as e:
+  #      messages.warning(request,'Ingrese sus credenciales para acceder')
+   #     return redirect('/')
 
 # ----------------------------------Modificar sesiones Coach----------------------------------
 def infoSesionCoach(request, id):
-    try:
+#    try:
         #se obtine json con token y datos del perfil del usuario
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
@@ -1740,6 +1753,8 @@ def infoSesionCoach(request, id):
                 AVANCES = request.POST.get('avancesSesion')
                 ASIGNACION = request.POST.get('asigSesion')
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
+                archivo = request.POST.get('archivo')
+                link = request.POST.get('link')
 
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
@@ -1753,14 +1768,44 @@ def infoSesionCoach(request, id):
                     "ESTADOSESION_ID": ESTADOSESION_ID
                 }
 
+                gestorEnlace = {
+                    "LINK": link,
+                    "SESION_ID": id
+                }
+
+                gestorArchivo = {
+                    "LINK": archivo,
+                    "SESION_ID": id,
+                    "TIPOARCHIVO_ID": 1
+                }
+
+                print(archivo, gestorArchivo ) 
                 #metodo para modificar sesion
                 urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
                 response = requests.put(urlSesiones, headers=headers, json=modificarSesionesJson)
 
+                #metodo para modificar sesion
+                urlArchivos = 'http://127.0.0.1:8001/gestor-archivo'
+                responseArchivo = requests.post(urlArchivos, headers=headers, json=gestorArchivo)
+
+                #metodo para modificar sesion
+                urlEnlaces = 'http://127.0.0.1:8001/enlaces'
+                responseEnlaces = requests.post(urlEnlaces, headers=headers, json=gestorEnlace)
+                
+                #print('archivo', gestorArchivo, archivo )
                 #consulta respuesta de la api
                 if response.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa
                     messages.success(request, 'Sesión actualizada con éxito.')
+                    return redirect('infoProCoach', idP)
+                    #consulta respuesta de la api
+                elif responseArchivo.status_code == 200:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Archivos almacenados con éxito.')
+                    return redirect('infoProCoach', idP)
+                elif responseEnlaces.status_code == 200:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Enlaces almacenado con éxito.')
                     return redirect('infoProCoach', idP)
                 #mensaje que muestra la vista si la actualización sufre algun problema
                 else:
@@ -1781,9 +1826,9 @@ def infoSesionCoach(request, id):
             return redirect(plantilla)
     
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+#    except Exception as e:
+#        messages.warning(request,'Ingrese sus credenciales para acceder')
+#        return redirect('/')
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 

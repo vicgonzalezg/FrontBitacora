@@ -287,12 +287,12 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for gestor in gestores %}
+                                                    {% for gestor in gestoresArchivos %}
                                                         {% if gestor.IDLINKGE == sesion.ID %}
                                                             <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-word"></i>
+                                                                <th scope="row"><i class="far fa-file-archive"></i>
                                                                 </th>
-                                                                <th scope="row"><a href="#">{{gestor.LINKGE}}</a></th>
+                                                                <th scope="row"><a href="#">Archivo: {{ forloop.counter }}</a></th>
                                                             </tr>
                                                         {% endif %}
                                                     {% endfor %}
@@ -303,7 +303,7 @@
                                             <br>
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <input type="file" multiple {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                    <input type="file" name="archivo" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                             <br>
@@ -320,7 +320,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for gestor in gestores %}
+                                                    {% for gestor in gestoresEnlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID %}
                                                             <tr class="bg-light">
                                                                 <th scope="row"><i class="far fa-file-send"></i>

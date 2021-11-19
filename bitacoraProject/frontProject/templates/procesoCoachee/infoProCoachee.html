@@ -264,9 +264,9 @@
                                                         {% for gestor in gestores %}
                                                             {% if gestor.IDLINKGE == sesion.ID %}
                                                                 <tr class="bg-light">
-                                                                    <th scope="row"><i class="far fa-file-word"></i>
+                                                                    <th scope="row"><i class="far fa-file-archive"></i>
                                                                     </th>
-                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">{{gestor.LINKGE}}</a></th>
+                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">Archivo: {{ forloop.counter }}</a></th>
                                                                 </tr>
                                                             {% endif %}
                                                         {% endfor %}
@@ -288,9 +288,9 @@
                                                         {% for gestor in gestores %}
                                                             {% if gestor.IDLINKEN == sesion.ID %}
                                                                 <tr class="bg-light">
-                                                                    <th scope="row"><i class="far fa-file-send"></i>
+                                                                    <th scope="row"><i class="far fa-paper-plane"></i>
                                                                     </th>
-                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>
+                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
                                                                 </tr>
                                                             {% endif %}
                                                         {% endfor %}
@@ -324,9 +324,6 @@
     <br>
     <!--Boton para almacena la informacion del proceso-->
     <a onclick="window.close ()" class="btn btn-secondary float-start col-md-2">Cerrar</a>
-    <span class="col-md-1"></span>
-        <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
-                class="btn btn-primary float-end col-md-2">Reporte</a>
     <br>
     <br>
     <br>

@@ -15,7 +15,7 @@
 <!--Formulario del proceso y sus sesiones -->
 <div class="container bg-light">
     <form class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
-        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">{% csrf_token %}
+        action="{% url 'infoProCoach' procesos.ID %}" method="POST">{% csrf_token %}
         <div class="container">
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->
@@ -287,22 +287,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for gestor in gestores %}
-                                                    <tr class="bg-light">
-                                                        <th scope="row"><i class="far fa-file-word"></i>
-                                                        </th>
-                                                        <th scope="row"><a href="#">{{gestor.LINKGE}}</a></th>
-                                                    </tr>
+                                                    {% for gestor in gestoresArchivos %}
+                                                        {% if gestor.IDLINKGE == sesion.ID %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><i class="far fa-file-archive"></i>
+                                                                </th>
+                                                                <th scope="row"><a href="#">Archivo: {{ forloop.counter }}</a></th>
+                                                            </tr>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </tbody>
-
                                             </table>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <br>
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <input type="file" multiple {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                    <input type="file" name="archivo" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                             <br>
@@ -319,12 +320,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for gestor in gestores %}
-                                                    <tr class="bg-light">
-                                                        <th scope="row"><i class="far fa-file-send"></i>
-                                                        </th>
-                                                        <th scope="row"><a href="#">{{gestor.LINKEN}}</a></th>
-                                                    </tr>
+                                                    {% for gestor in gestoresEnlaces %}
+                                                        {% if gestor.IDLINKEN == sesion.ID %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><i class="far fa-file-send"></i>
+                                                                </th>
+                                                                <th scope="row"><a href="{{gestor.LINKEN}}">{{gestor.LINKEN}}</a></th>
+                                                            </tr>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </tbody>
                                             </table>

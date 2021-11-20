@@ -262,11 +262,13 @@
                                                     </thead>
                                                     <tbody>
                                                         {% for gestor in gestores %}
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-word"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">{{gestor.LINKGE}}</a></th>
-                                                        </tr>
+                                                            {% if gestor.IDLINKGE == sesion.ID %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row"><i class="far fa-file-archive"></i>
+                                                                    </th>
+                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">Archivo: {{ forloop.counter }}</a></th>
+                                                                </tr>
+                                                            {% endif %}
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>
@@ -284,11 +286,13 @@
                                                     </thead>
                                                     <tbody>
                                                         {% for gestor in gestores %}
-                                                        <tr class="bg-light">
-                                                            <th scope="row"><i class="far fa-file-send"></i>
-                                                            </th>
-                                                            <th scope="row"><a href="#">{{gestor.LINKEN}}</a></th>
-                                                        </tr>
+                                                            {% if gestor.IDLINKEN == sesion.ID %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row"><i class="far fa-paper-plane"></i>
+                                                                    </th>
+                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
+                                                                </tr>
+                                                            {% endif %}
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>

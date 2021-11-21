@@ -108,7 +108,7 @@ class UsuarioPublicoAPICall:
             "CORREO":email,
             "URL":urlCambioPass
         }
-        response = ApiCall.post('recuperaciones-contrasenas',data)
+        response = ApiCall.post('recuperaciones-contrasenas',data,None)
         return response
     
     def validacionRecuperacionContrasena(request,pk):       

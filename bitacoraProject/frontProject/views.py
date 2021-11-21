@@ -41,7 +41,7 @@ def login(request):
 #--------------------------------------------Recuperar Contraseña--------------------------------------------
 def recuperarClave(request):
     if request.method == 'POST':
-        response=UsuarioPublicoAPICall.recuperacionPass(request)
+        response=UsuarioPublicoAPICall.recuperacionContrasena(request)
         if response.status_code == 200:
             messages.success(request, 'Se enviara un correo con las instrucciones.')
         else:
@@ -236,6 +236,7 @@ def menuCoach(request):
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             listadoBar = []
+            listadoBarOrdenado = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
             #consulta de sesiones por proceso, estado y usuarios
@@ -354,7 +355,7 @@ def menuCoach(request):
 
 #--------------------------------------------menu coachee--------------------------------------------
 def menuCoachee(request):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al de coachee
@@ -374,6 +375,7 @@ def menuCoachee(request):
             sesionesCalendario3=[]
             #variable que almacenara los datos de sesiones que se utilizaran para lista de sesiones
             listadoBar = []
+            listadoBarOrdenado = []
             #fijamos cantidad de sesiones como 0
             canSesiones = 0
             #consulta de procesos por usuarios
@@ -475,9 +477,9 @@ def menuCoachee(request):
                 plantilla = 'menuCoach'
             return redirect(plantilla)
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request, 'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+    #    messages.warning(request, 'Ingrese sus credenciales para acceder')
+    #    return redirect('/')
 
 
 #------------------------------Perteneciente al administrador-----------------------------------------------------
@@ -944,7 +946,7 @@ def finProceso(request, id):
             }
 
             #metodo que modificara el estado del proceso 
-            response = ProcesosAPICall.put(request,finProcesoJson)
+            response = ProcesosAPICall.put(request,finProcesoJson,id)
            
             #consulta respuesta de la api
             if response.status_code == 200:

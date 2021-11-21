@@ -45,7 +45,7 @@ def recuperarClave(request):
         if response.status_code == 200:
             messages.success(request, 'Se enviara un correo con las instrucciones.')
         else:
-            messages.success(request, response.text.replace('"', ''))
+            messages.error(request, response.text.replace('"', ''))
 
     return  render(request, 'login/recuperarClave.html')
 

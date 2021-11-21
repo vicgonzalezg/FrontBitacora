@@ -45,6 +45,11 @@ class ApiCall:
         print(data)
         r=requests.put(API_ROUTE+url+'/'+str(pk)+'/',json=data,headers=header)
         return r
+    
+    def put_one(url,pk,data):
+        print(data)
+        r=requests.put(API_ROUTE+url+'/'+str(pk)+'/',json=data)
+        return r
 
     def delete(url,data,pk,header):
         r=requests.delete(API_ROUTE+url+'/'+str(pk),json=data,headers=header)
@@ -116,7 +121,7 @@ class UsuarioPublicoAPICall:
         data ={
             "CONTRASENA":clave
         }
-        response = ApiCall.put('recuperaciones-contrasenas',pk,data)
+        response = ApiCall.put_one('recuperaciones-contrasenas',pk,data)
         return response
 
 class UsuariosAPICall:

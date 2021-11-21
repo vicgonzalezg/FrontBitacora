@@ -1,61 +1,26 @@
 #se importan librerias
-from frontProject.models import Usuario
+import re
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
-from django.core import serializers
 from django.template.loader import get_template
-from bitacoraProject import settings
 from bitacoraProject.wsgi import *
 from django.contrib import messages
 from weasyprint import HTML, CSS
 from datetime import datetime
 import requests
-from . import services
+from .services import *
 import json
 import base64
-
+from bitacoraProject.settings import BASE_DIR
 # --------------------------------------------definimos el login--------------------------------------------
 def login(request):
     if request.method == 'POST':
         #obtenemos credenciales desde formulario html
-        username = request.POST.get('user')
-        password = request.POST.get('pass')
-        # r=services.LoginServices().generate_request(username,password)
-        r = requests.post('http://127.0.0.1:8001/login',
-                          data={'USUARIO': username, 'CONTRASENA': password})
+        r= UsuarioPublicoAPICall.login(request)
         #consultamos por respuesta servidor
         if r.status_code == 200:
-            #obtenemos los datos desde la api
-            result = json.loads(r.content)
-            #nombre que se muestra al ingresar
-            nombre_usuario = result['USUARIO']['NOMBRE']
-            perfil_usuario = result['USUARIO']['PERFIL_ID']
-            #datos del perfil del usuario
-            nombre = result['USUARIO']['NOMBRE']
-            apellido = result['USUARIO']['APELLIDO']
-            correo = result['USUARIO']['CORREO']
-            fono_usuario = result['USUARIO']['FONO']
-            id_usuario = result['USUARIO']['ID']
-            #asignamos los datos a la variable que usaremos en las funciones
-            datos_usuario = {'nombre': nombre_usuario,
-                             'perfil': perfil_usuario,
-                             'id': id_usuario,
-                             'fono': fono_usuario,
-                             'nombreUsuario': nombre,
-                             'apellidoUsuario': apellido,
-                             'correo': correo}
-            #se obtiene token de seguridad que entrega la api
-            token = result['TOKEN']
-            #se obtiene json con token de seguridad para entregarlo a las vistas
-            headers = {
-                'content-type': "application/json",
-                'authorization': "Bearer " + token
-            }
-            #se almacen los datos en las cookie para enviar los datos a las vistas
-            request.session['Headers'] = headers
-            request.session['Perfil_Usuario'] = datos_usuario
-
+            perfil_usuario=sesionUsuario(request,r)
             #se consulta por el perfil de usuario
             plantilla = ''
             if perfil_usuario == 1:
@@ -76,17 +41,7 @@ def login(request):
 #--------------------------------------------Recuperar Contraseña--------------------------------------------
 def recuperarClave(request):
     if request.method == 'POST':
-        url = 'http://127.0.0.1:8001/recuperaciones-contrasenas'
-        email = request.POST.get('email')
-        print(email)
-        urlCambioPass = 'http://127.0.0.1:8000/cambioclave'
-        jsonRecuperaContra ={
-            "CORREO":email,
-            "URL":urlCambioPass
-        }
-        print(jsonRecuperaContra)
-        response = requests.post(url, json=jsonRecuperaContra)
-        print(response.status_code)
+        response=UsuarioPublicoAPICall.recuperacionPass(request)
         if response.status_code == 200:
             messages.success(request, 'Se enviara un correo con las instrucciones.')
         else:
@@ -98,20 +53,11 @@ def recuperarClave(request):
 def cambioclave(request, pk):
 
     if request.method == 'POST':
-        pk=pk
-        url = 'http://127.0.0.1:8001/recuperaciones-contrasenas/'+ pk +'/'
-        clave = request.POST.get('clave1')
-        jsonCambiaContra ={
-            "CONTRASENA":clave
-        }
-        response = requests.put(url, json=jsonCambiaContra)
-        #print(response.status_code)
+        response=UsuarioPublicoAPICall.validacionRecuperacionContrasena(request,pk)
         if response.status_code == 200:
             messages.success(request, 'Contraseña cambiada con éxito. Seras redirigido al Login.')
-            #return redirect('/')
         else:
             messages.error(request, response.text.replace('"', ''))
-
     return render(request, 'login/cambioclave.html')
 
 
@@ -128,7 +74,8 @@ def logout(request):
         messages.warning(request, 'Ha ocurrido un error inesperado')
         return redirect('/')
 
-def get_cashflows(request):
+    """
+    def get_cashflows(request):
 
     response_data = {}
     cashflow_set = Usuario.objects.all()
@@ -141,17 +88,16 @@ def get_cashflows(request):
         serializers.serialize("json", response_data),
         content_type="application/json"
     )
+    """
 
 # --------------------------------------------Perfil de usuarios--------------------------------------------
 def perfil(request):
     try:
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-        url = 'http://127.0.0.1:8001/usuarios'
-        usuario = requests.get(url).json()
+
+        usuario=UsuariosAPICall.get(request,None)
 
         data = {
-            'usuario': perfil,
+            'usuario': perfilUsuario(request),
             'entity': usuario,
         }
         return render(request, 'Perfil/perfil.html', data)
@@ -164,22 +110,15 @@ def perfil(request):
 def menuAdmin(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el prefin de usuario corresponde al de administrador
         if perfil['perfil'] == 1:
-            #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
-            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
-            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
-            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+            proceso = ProcesosAPICall.get(request,'ordering=-ID&limit=5')
+            usuario = UsuariosAPICall.get(request, None)
+            estado = EstadosProcesosAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,None)
+            procesosCal = ProcesosAPICall.get(request,'ESTADOPROCESO_ID!=4')
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
@@ -229,6 +168,7 @@ def menuAdmin(request):
             #consulta de sesiones por proceso y usuarios
             for sCal in sesionesCalendario:
                 #Descarta las sesiones Finalizadas y sin fecha 
+                print(sCal)
                 if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
                     for pCal in procesosCal:
                         #Descarta los procesos finalizados.
@@ -277,29 +217,22 @@ def menuAdmin(request):
 def menuCoach(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-        #se consulta si el perfil de usuario corresponde al de coach
+        perfil  = perfilUsuario(request)
         if perfil['perfil'] == 2:
             #se almacena id del usuario para usarlo de filtro para los procesos
             id = perfil['id']
             #se obtiene el dia actual para usarlo como filtro para la fecha de sesiones
             day = datetime.today().strftime('%Y-%m-%d')
             #variable que almacena la url de la api
-            urlSesionesDia = 'http://127.0.0.1:8001/sesiones?ordering=-ID&limit=5&FECHASESION=' + \
-                str(day)
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-sesiones'
-            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + str(id)
-            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
-            urlEstadoProceso = 'http://127.0.0.1:8001/estados-procesos'
+            sesionesDia = 'ordering=-ID&limit=5&FECHASESION=' + str(day)
+            procesoCal='ordering=-ID&COACH_ID=' + str(id)
             #obtiene los datos desde la api enviando token de seguridad
-            sesionesDia = requests.get(urlSesionesDia, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
-            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
-            estadoProc = requests.get(urlEstadoProceso, headers=headers).json()
-            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
+            sesionesDia = SesionesAPICall.get(request, sesionesDia)
+            usuario = UsuariosAPICall.get(request, None)
+            estado = EstadosSesionesAPICall.get(request, None)
+            procesosCal = ProcesosAPICall.get(request,procesoCal)
+            estadoProc = EstadosProcesosAPICall.get(request, None)
+            sesionesCalendario = SesionesAPICall.get(request,None)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             listadoBar = []
@@ -423,23 +356,18 @@ def menuCoach(request):
 def menuCoachee(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al de coachee
         if perfil['perfil'] == 3:
             #se almacena id del usuario para usarlo de filtro para los procesos
             id = perfil['id']
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACHEE_ID=' + \
-                str(id)
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-            urlsesion = 'http://127.0.0.1:8001/sesiones'
+            procesoDelCoachee ='ordering=-ID&COACHEE_ID=' + str(id)
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
-            sesiones = requests.get(urlsesion, headers=headers).json()
+            proceso     =   ProcesosAPICall.get(request,procesoDelCoachee)
+            usuario     =   UsuariosAPICall.get(request, None)
+            estado      =   EstadosProcesosAPICall.get(request,None)
+            sesiones    =   SesionesAPICall.get(request,None)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
@@ -559,22 +487,19 @@ def menuCoachee(request):
 def procesosAdmin(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&limit=5'
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstados = 'http://127.0.0.1:8001/estados-procesos'
-            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
-            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
+            queryProcesos = 'ordering=-ID&limit=5'
+            procesosCal = 'ESTADOPROCESO_ID!=4'
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstados, headers=headers).json()
-            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
-            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+            proceso = ProcesosAPICall.get(request, queryProcesos)
+            print(proceso)
+            usuario = UsuariosAPICall.get(request, None)
+            estado = EstadosProcesosAPICall.get(request, None)
+            sesionesCalendario = SesionesAPICall.get(request,None)
+            procesosCal = ProcesosAPICall.get(request, procesosCal)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
@@ -671,18 +596,15 @@ def procesosAdmin(request):
 def nuevoProceso(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlProcesosCal = 'http://127.0.0.1:8001/procesos?ESTADOPROCESO_ID!=4'
-            urlSesionesCalendario = 'http://127.0.0.1:8001/sesiones'
+            procesoCal = 'ESTADOPROCESO_ID!=4'
             #obtiene los datos desde la api enviando token de seguridad
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            sesionesCalendario = requests.get(urlSesionesCalendario, headers=headers).json()
-            procesosCal = requests.get(urlProcesosCal, headers=headers).json()
+            usuario = UsuariosAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,None)
+            procesosCal = ProcesosAPICall.get(request, procesoCal)
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
             #consulta por el tipo de metodo y si el perfil corresponde al del administrador
@@ -693,7 +615,6 @@ def nuevoProceso(request):
                 OBJETIVOS = None
                 INDICADORES = None
                 PLANACCION = None
-                ADMINISTRADOR_ID = '1'
                 COACH_ID = request.POST.get('coachProces')
                 COACHEE_ID = request.POST.get('coacheeProces')
 
@@ -704,13 +625,11 @@ def nuevoProceso(request):
                     "OBJETIVOS": OBJETIVOS,
                     "INDICADORES": INDICADORES,
                     "PLANACCION": PLANACCION,
-                    "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
                     "COACH_ID": COACH_ID,
                     "COACHEE_ID": COACHEE_ID
                 }
                 # Metodo para crear procesos en API
-                url = 'http://127.0.0.1:8001/procesos'
-                response = requests.post(url, headers=headers, json=json)
+                response = ProcesosAPICall.post(request,json)
                 #se consulta la respuesta de la api
                 if response.status_code == 201:
                     # mensaje para avisar al front que se creo el proceso.
@@ -775,18 +694,15 @@ def nuevoProceso(request):
 def buscaProceso(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID'
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
+            orderProcesos = 'ordering=-ID'
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstadosProcesos, headers=headers).json()
+            proceso = ProcesosAPICall.get(request,orderProcesos)
+            usuario = UsuariosAPICall.get(request,None)
+            estado = EstadosProcesosAPICall.get(request, None)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #consulta de procesos por estadoproceso y usuarios
@@ -863,8 +779,7 @@ def buscaProceso(request):
 def modProceso(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #consulta por el tipo de metodo
@@ -874,21 +789,17 @@ def modProceso(request, id):
                 NOMBREEMPRESA = request.POST.get('nombreEmpresa')
                 CANTSESIONES = request.POST.get('cantidadSesiones')
                 FECHACREACION = request.POST.get('fechaCreacion')
-                # TO DO esto se tiene que cambiar
-                ADMINISTRADOR_ID = 1
 
                 # Creo Json para enviar los datos a la api
                 modificarProcesoJson = {
                     "ID": ID,
                     "NOMBREEMPRESA": NOMBREEMPRESA.title(),
                     "CANTSESIONES": CANTSESIONES,
-                    "FECHACREACION": FECHACREACION,
-                    "ADMINISTRADOR_ID": ADMINISTRADOR_ID,
+                    "FECHACREACION": FECHACREACION
                 }
 
                 # Metodo para modificar procesos en API
-                modProceso = 'http://127.0.0.1:8001/procesos/' + str(id) + '/'
-                response = requests.put(modProceso, json=modificarProcesoJson, headers=headers)
+                response = ProcesosAPICall.put(request, modificarProcesoJson,id)
                 #consulta respuesta de la api
                 if response.status_code == 200:
                     # mensaje para avisar al front que se modifico el proceso.
@@ -923,18 +834,14 @@ def visInfoProceso(request, id):
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
-                str(id)
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstadosProcesos = 'http://127.0.0.1:8001/estados-procesos'
-            urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
-            urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
+            queryProcesos = 'ordering=-ID&ID=' + str(id)
+            querySesiones = 'PROCESO_ID='+str(id)
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstadosProcesos, headers=headers).json()
-            sesiones = requests.get(urlSesiones, headers=headers).json()
-            estadoSesion = requests.get(urlEstadoSesion, headers=headers).json()
+            proceso = ProcesosAPICall.get(request, queryProcesos)
+            usuario = UsuariosAPICall.get(request, None)
+            estado = EstadosProcesosAPICall.get(request,None)
+            sesiones = SesionesAPICall.get(request, querySesiones)
+            estadoSesion = EstadosSesionesAPICall.get(request, None)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #consulta de procesos por estadoproceso y usuarios
@@ -1021,12 +928,10 @@ def visInfoProceso(request, id):
 def finProceso(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos/'+str(id)+'/'
             #variable que almacena el dia actual
             day = datetime.today().strftime('%Y-%m-%d')
 
@@ -1039,7 +944,7 @@ def finProceso(request, id):
             }
 
             #metodo que modificara el estado del proceso 
-            response = requests.put(urlProcesos, json=finProcesoJson, headers=headers)
+            response = ProcesosAPICall.put(request,finProcesoJson)
            
             #consulta respuesta de la api
             if response.status_code == 200:
@@ -1078,17 +983,15 @@ def finProceso(request, id):
 def usuariosAdmin(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
-            urlCoach = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=2'
-            urlCoachee = 'http://127.0.0.1:8001/usuarios?ordering=-ID&limit=5&PERFIL_ID=3'
-
+            usuariosCoach   = 'ordering=-ID&limit=5&PERFIL_ID=2'
+            usuariosCoachee = 'ordering=-ID&limit=5&PERFIL_ID=3'
             #obtiene los datos desde la api enviando token de seguridad
-            list_coachs = requests.get(urlCoach, headers=headers).json()
-            list_coachees = requests.get(urlCoachee, headers=headers).json()
+            list_coachs = UsuariosAPICall.get(request, usuariosCoach)
+            list_coachees = UsuariosAPICall.get(request, usuariosCoachee)
 
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
             data = {
@@ -1118,13 +1021,12 @@ def usuariosAdmin(request):
 def nuevoUsuario(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-
+        perfil = perfilUsuario(request)
+        data = {'usuario': perfil}
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             # Crear usuario
-            if request.method == 'POST' and perfil['perfil'] == 1:
+            if request.method == 'POST':
                 # Obtener datos del Front
                 APELLIDO = request.POST.get('apellido')
                 CORREO = request.POST.get('email')
@@ -1176,13 +1078,10 @@ def nuevoUsuario(request):
                 }
 
                 # Metodo para crear usuario en API
-                urlCrearUsuarios = 'http://127.0.0.1:8001/usuarios'
-                response = requests.post(urlCrearUsuarios, headers=headers, json=crearUsuariosJson)
+                response = UsuariosAPICall.post(request, crearUsuariosJson)
 
                 #se almacenan las variables con los datos en un objeto para enviarlo a la vista
-                data = {
-                    'usuario': perfil
-                }
+                
                 #se consulta la respuesta de la api
                 if response.status_code == 201:
                     # mensaje para mostrar por vista que se creo el usuario.
@@ -1214,17 +1113,15 @@ def nuevoUsuario(request):
 def listUsuarios(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             
             #variable que almacena la url de la api
-            urlListarUsuarios = 'http://127.0.0.1:8001/usuarios'
 
             #obtiene los datos desde la api enviando token de seguridad
-            usuarios = requests.get(urlListarUsuarios, headers=headers).json()
+            usuarios = UsuariosAPICall.get(request,None)
 
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
             data = {
@@ -1253,8 +1150,7 @@ def listUsuarios(request):
 def modUsuarios(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
@@ -1315,9 +1211,7 @@ def modUsuarios(request, id):
                 }
 
                 # Metodo para modificar usuario en API
-                urlModUsuarios = 'http://127.0.0.1:8001/usuarios/' + \
-                    str(id) + '/'
-                response = requests.put(urlModUsuarios, headers=headers, json=modificaUsuarioJson)
+                response = UsuariosAPICall.put(request, modificaUsuarioJson, id)
                 
                 #consulta respuesta de la api
                 if response.status_code == 200:
@@ -1353,21 +1247,15 @@ def modUsuarios(request, id):
 def listProCoach(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al coach
         if perfil['perfil'] == 2:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&COACH_ID=' + \
-                str(perfil['id'])
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-            
+            order = 'ordering=-ID&COACH_ID=' + str(perfil['id'])            
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
+            proceso = ProcesosAPICall.get(request, order)
+            usuario = UsuariosAPICall.get(request,None)
+            estado = EstadosProcesosAPICall.get(request, None)
 
             #variable que almacenara el listado de procesos y sus datos
             listados = []
@@ -1449,21 +1337,15 @@ def listProCoach(request):
 def procAsig(request):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al coach
         if perfil['perfil'] == 2:
             #variable que almacena la url de la api
-            urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ESTADOPROCESO_ID=1&COACH_ID=' + \
-                str(perfil['id'])
-            urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-            urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-
+            queryProcesos = '?ordering=-ID&ESTADOPROCESO_ID=1&COACH_ID=' + str(perfil['id'])
             #obtiene los datos desde la api enviando token de seguridad
-            proceso = requests.get(urlProcesos, headers=headers).json()
-            usuario = requests.get(urlUsuarios, headers=headers).json()
-            estado = requests.get(urlEstado, headers=headers).json()
+            proceso = ProcesosAPICall.get(request, queryProcesos)
+            usuario = UsuariosAPICall.get(request, None)
+            estado = EstadosProcesosAPICall.get(request, None)
 
             #variable que almacenara el listado de procesos y sus datos
             listados = []
@@ -1557,8 +1439,7 @@ def procAsig(request):
 def infoProCoach(request, id):
     #try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al coach
         if perfil['perfil'] == 2:
@@ -1579,8 +1460,7 @@ def infoProCoach(request, id):
                 }
 
                 # Metodo para modificar proceso Coach en API
-                urlModProcesos = 'http://127.0.0.1:8001/procesos/' + str(id) + '/'
-                response = requests.put(urlModProcesos, headers=headers, json=modProcCoach)
+                response = ProcesosAPICall.put(request, modProcCoach, id)
 
                 #consulta respuesta de la api
                 if response.status_code == 200:
@@ -1596,23 +1476,17 @@ def infoProCoach(request, id):
             #consulta metodo
             if request.method == 'GET':
                 #variable que almacena la url de la api
-                urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
-                    str(id)
-                urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-                urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-                urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
-                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
-                urlEnlace = 'http://127.0.0.1:8001/enlaces'
+                queryProcesos = 'ordering=-ID&ID=' + str(id)
+                querySesiones = 'PROCESO_ID='+str(id)
 
                 #obtiene los datos desde la api enviando token de seguridad
-                proceso = requests.get(urlProcesos, headers=headers).json()
-                usuario = requests.get(urlUsuarios, headers=headers).json()
-                estado = requests.get(urlEstado, headers=headers).json()
-                urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
-                sesiones = requests.get(urlSesiones, headers=headers).json()
-                estadoSesion = requests.get(urlEstadoSesion, headers=headers).json()
-                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
-                enlace = requests.get(urlEnlace, headers=headers).json()
+                proceso = ProcesosAPICall.get(request,queryProcesos)
+                usuario = UsuariosAPICall.get(request, None)
+                estado = EstadosProcesosAPICall.get(request, None)
+                sesiones = SesionesAPICall.get(request, querySesiones)
+                estadoSesion = EstadosSesionesAPICall.get(request, None)
+                gestorArchivo = ArchivosAPICall.get(request,None)
+                enlace = EnlacesAPICall.get(request, None)
 
                 #variable que almacenara el listado de procesos y sus datos
                 listados = []
@@ -1781,16 +1655,13 @@ def infoSesionCoach(request, id):
 
                 print(archivo, gestorArchivo ) 
                 #metodo para modificar sesion
-                urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
-                response = requests.put(urlSesiones, headers=headers, json=modificarSesionesJson)
+                response = SesionesAPICall.put(request,modificarSesionesJson,id)
 
                 #metodo para modificar sesion
-                urlArchivos = 'http://127.0.0.1:8001/gestor-archivo'
-                responseArchivo = requests.post(urlArchivos, headers=headers, json=gestorArchivo)
+                responseArchivo = ArchivosAPICall.post(request,gestorArchivo)
 
                 #metodo para modificar sesion
-                urlEnlaces = 'http://127.0.0.1:8001/enlaces'
-                responseEnlaces = requests.post(urlEnlaces, headers=headers, json=gestorEnlace)
+                responseEnlaces = EnlacesAPICall.post(request,gestorEnlace)
                 
                 #print('archivo', gestorArchivo, archivo )
                 #consulta respuesta de la api
@@ -1844,23 +1715,17 @@ def infoProCoachee(request, id):
             #consulta metodo a utilizar
             if request.method == 'GET':
                 #variable que almacena la url de la api
-                urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
-                    str(id)
-                urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
-                urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-                urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-                urlEstadoSesion = 'http://127.0.0.1:8001/estados-sesiones'
-                urlGestorArchivo = 'http://127.0.0.1:8001/gestor-archivo'
-                urlEnlace = 'http://127.0.0.1:8001/enlaces'
+                queryProcesos = 'ordering=-ID&ID=' + str(id)
+                querySesiones = 'PROCESO_ID='+str(id)
 
                 #obtiene los datos desde la api enviando token de seguridad
-                proceso = requests.get(urlProcesos, headers=headers).json()
-                usuario = requests.get(urlUsuarios, headers=headers).json()
-                estado = requests.get(urlEstado, headers=headers).json()
-                sesiones = requests.get(urlSesiones, headers=headers).json()
-                estadoSesion = requests.get(urlEstadoSesion, headers=headers).json()
-                gestorArchivo = requests.get(urlGestorArchivo, headers=headers).json()
-                enlace = requests.get(urlEnlace, headers=headers).json()
+                proceso         = ProcesosAPICall.get(request,queryProcesos)
+                usuario         = UsuariosAPICall.get(request, None)
+                estado          = EstadosProcesosAPICall.get(request, None)
+                sesiones        = SesionesAPICall.get(request, querySesiones)
+                estadoSesion    = EstadosSesionesAPICall.get(request, None)
+                gestorArchivo   = ArchivosAPICall.get(request, None)
+                enlace          = requests.get(request,None)
 
                 #variable que almacenara el listado de procesos y sus datos
                 listados = []
@@ -1974,24 +1839,20 @@ def infoProCoachee(request, id):
 def imprimirProceso(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        #perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al coach o administrador
         #if perfil['perfil'] == 2 or perfil['perfil'] == 1:
 
         #variable que almacena la url de la api
-        urlProcesos = 'http://127.0.0.1:8001/procesos?ordering=-ID&ID=' + \
-            str(id)
-        urlUsuarios = 'http://127.0.0.1:8001/usuarios'
-        urlEstado = 'http://127.0.0.1:8001/estados-procesos'
-        urlSesiones = 'http://127.0.0.1:8001/sesiones?PROCESO_ID='+str(id)
+        queryProcesos = 'ordering=-ID&ID=' + str(id)
+        querySesiones = 'PROCESO_ID='+str(id)
 
         #obtiene los datos desde la api enviando token de seguridad
-        proceso = requests.get(urlProcesos, headers=headers).json()
-        usuario = requests.get(urlUsuarios, headers=headers).json()
-        estado = requests.get(urlEstado, headers=headers).json()
-        sesiones = requests.get(urlSesiones, headers=headers).json()
+        proceso     = ProcesosAPICall.get(request, queryProcesos)
+        usuario     = UsuariosAPICall.get(request, None)
+        estado      = EstadosProcesosAPICall.get(request, None)
+        sesiones    = SesionesAPICall.get(request, querySesiones)
 
         #variable que almacenara el listado de procesos y sus datos
         listados = []
@@ -2063,7 +1924,7 @@ def imprimirProceso(request, id):
 
         # se cargan datos dentro del diseño del pdf y se agregan los estilos a este
         html_template = template.render(context)
-        css_url = os.path.join(settings.BASE_DIR, 'frontProject/static/css/bootstrap.css')
+        css_url = os.path.join(BASE_DIR, 'frontProject/static/css/bootstrap.css')
 
         #se obtiene el pdf
         pdf_file = HTML(string=html_template).write_pdf(stylesheets=[CSS(css_url)])
@@ -2105,8 +1966,7 @@ def imprimirProceso(request, id):
 def modPlanAccion(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al coachee
         if perfil['perfil'] == 3:
@@ -2122,9 +1982,7 @@ def modPlanAccion(request, id):
                     "PLANACCION": PLANDEACCION
                 }
                 #metodo para actualizar plan de accion
-                modPlanAccion = 'http://127.0.0.1:8001/procesos/' + \
-                    str(id) + '/'
-                response = requests.put(modPlanAccion, json=modificarPlanJson, headers=headers)
+                response = SesionesAPICall.put(request, modificarPlanJson,id)
 
                 #consulta respuesta de la api
                 if response.status_code == 200:
@@ -2157,9 +2015,7 @@ def modPlanAccion(request, id):
 def modSesionAvance(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
-
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al coachee
         if perfil['perfil'] == 3:
             #se obtiene metodo a utilizar
@@ -2177,9 +2033,7 @@ def modSesionAvance(request, id):
                     "RESPUESTA": RESPUESTA
                 }
                 #metodo para actualizar
-                modRespAvances = 'http://127.0.0.1:8001/sesiones/' + \
-                    str(id) + '/'
-                response = requests.put(modRespAvances, json=modificarRespAvancesJson, headers=headers)
+                response = SesionesAPICall.put(request,modificarRespAvancesJson,IDs)
                 
                 #consulta respuesta de la api
                 if response.status_code == 200:

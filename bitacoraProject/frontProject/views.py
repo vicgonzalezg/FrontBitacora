@@ -275,7 +275,7 @@ def menuAdmin(request):
 
 #-------------------------------------------- menu coach --------------------------------------------
 def menuCoach(request):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
@@ -303,6 +303,7 @@ def menuCoach(request):
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             listadoBar = []
+            listadoBarOrdenado = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
             #consulta de sesiones por proceso, estado y usuarios
@@ -415,9 +416,9 @@ def menuCoach(request):
                 plantilla = 'menuCoachee'
             return redirect(plantilla)
     #si ingresa a la url de menuCoach sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request, 'Ingrese sus credenciales para acceder')
-        return redirect('/')
+ #   except Exception as e:
+  #      messages.warning(request, 'Ingrese sus credenciales para acceder')
+   #     return redirect('/')
 
 #--------------------------------------------menu coachee--------------------------------------------
 def menuCoachee(request):
@@ -1811,7 +1812,7 @@ def infoSesionCoach(request, id):
                     return redirect('infoProCoach', idP)
                 #mensaje que muestra la vista si la actualización sufre algun problema
                 else:
-                    # TO DO nose que es esto :V
+                    # se reemplazan comillas dobles que trae el mensaje desde la api
                     messages.error(
                         request, response.text.replace('"', ''))
                     return redirect('infoProCoach', idP)

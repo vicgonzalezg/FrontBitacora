@@ -32,12 +32,13 @@
                     <ul class="progressbar navbuttons col-md-12">
                     
                         {% for proceso in sesionBar %}
+                        <span class="d-none">{{ forloop.parentloop }}</span>
                             {% if proceso.IDP == sesiones.ID%}
                                 {% if proceso.ESTADOSESION_ID != 4 %}
-                                <li class="">sesión {{ proceso.ID }}</li>
+                                <li class="">sesión {{ forloop.counter }}</li>
                                 {% endif %}
                                 {% if proceso.ESTADOSESION_ID == 4 %}
-                                <li class="activeBar">sesión {{ proceso.ID }}</li>
+                                <li class="activeBar">sesión {{ forloop.counter }}</li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

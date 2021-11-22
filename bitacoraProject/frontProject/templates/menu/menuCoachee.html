@@ -26,6 +26,7 @@
           <div class="containerProgressBar nav col-md-12">
             <ul class="progressbar navbuttons col-md-12">
                 {% for proceso in listaBar %}
+                <span class="d-none">{{ forloop.parentloop }}</span>
                 {% if proceso.ESTADOSESION_ID != 4 %}
                 <li class="">sesión {{ forloop.counter }}</li>
                 {% endif %}

@@ -1984,7 +1984,7 @@ def modPlanAccion(request, id):
                     "PLANACCION": PLANDEACCION
                 }
                 #metodo para actualizar plan de accion
-                response = SesionesAPICall.put(request, modificarPlanJson,id)
+                response = ProcesosAPICall.put(request, modificarPlanJson,id)
 
                 #consulta respuesta de la api
                 if response.status_code == 200:

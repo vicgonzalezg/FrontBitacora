@@ -1756,9 +1756,12 @@ def infoSesionCoach(request, id):
                 AVANCES = request.POST.get('avancesSesion')
                 ASIGNACION = request.POST.get('asigSesion')
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
-                archivo = request.POST.get('archivo')
+                archivo = request.FILES.get('archivo')
                 link = request.POST.get('link')
-
+                #archivo_read = archivo.read()
+                #base64_encoded_archivo = base64.b64encode(archivo_read)
+                #base64_archivo = base64_encoded_archivo.decode('utf-8')
+                #print(base64_archivo)
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
                     "ID": id,
@@ -1782,14 +1785,13 @@ def infoSesionCoach(request, id):
                     "TIPOARCHIVO_ID": 1
                 }
 
-                print(archivo, gestorArchivo ) 
                 #metodo para modificar sesion
                 urlSesiones = 'http://127.0.0.1:8001/sesiones/'+str(id)+'/'
                 response = requests.put(urlSesiones, headers=headers, json=modificarSesionesJson)
 
                 #metodo para modificar sesion
                 urlArchivos = 'http://127.0.0.1:8001/gestor-archivo'
-                responseArchivo = requests.post(urlArchivos, headers=headers, json=gestorArchivo)
+                responseArchivo = requests.put(urlArchivos, headers=headers, json=gestorArchivo)
 
                 #metodo para modificar sesion
                 urlEnlaces = 'http://127.0.0.1:8001/enlaces'

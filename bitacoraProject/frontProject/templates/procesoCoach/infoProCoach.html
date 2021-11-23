@@ -188,7 +188,7 @@
                     <div class="content">
                         <div class="panel-body">
                             <!--Registro de Fecha/hora y estado de cada sesión-->
-                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}"
+                            <form class="form-horizontal" enctype="application/x-www-form-urlencoded" action="{% url 'infoSesionCoach' sesion.ID %}"
                                 id="formSesiones-{{ sesion.ID }}" method="POST">{% csrf_token %}
                                 <div class="row">
                                     <div class="form-group col-md-6">

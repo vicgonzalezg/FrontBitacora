@@ -371,6 +371,7 @@ def menuCoach(request):
                                         sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
             
             #consulta de sesiones por proceso
+            contador = 1
             for sBar in sesionesCalendario:
                 for pBar in procesosCal:
                     if pBar['ID'] == sBar['PROCESO_ID']:
@@ -381,12 +382,16 @@ def menuCoach(request):
                         sesionBarList = [{
                             "IDP":idProceso,
                             "ID":idSesion,
-                            "ESTADOSESION_ID":estadoSesion
+                            "ESTADOSESION_ID":estadoSesion,
+                            "COUNT": contador
                         }]
+                        contador += 1
                         #se almacena una array de objetos
                         listadoBar = sesionBarList + listadoBar
                         #se ordena array por id de sesion de menor a mayor
                         listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
+                        if pBar['CANTSESIONES'] < contador:
+                            contador = 1
             #se obtiene la primera pagina del paginador
             page = request.GET.get('page', 1)
 
@@ -422,7 +427,7 @@ def menuCoach(request):
 
 #--------------------------------------------menu coachee--------------------------------------------
 def menuCoachee(request):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         headers = request.session['Headers']
         perfil = request.session['Perfil_Usuario']
@@ -504,21 +509,27 @@ def menuCoachee(request):
                                         sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
 
             #consulta de sesiones por proceso
+            contador = 1
             for sBar in sesiones:
                 for pBar in proceso:
                     if pBar['ID'] == sBar['PROCESO_ID']:
                         estadoSesion = sBar['ESTADOSESION_ID']
                         idSesion = sBar['ID']
+                        idProceso = pBar['ID']
                         #se almacenan los datos en una variable
                         sesionBarList = [{
+                            "IDP":idProceso,
                             "ID":idSesion,
-                            "ESTADOSESION_ID":estadoSesion
+                            "ESTADOSESION_ID":estadoSesion,
+                            "COUNT": contador
                         }]
+                        contador += 1
                         #se almacena una array de objetos
                         listadoBar = sesionBarList + listadoBar
                         #se ordena array por id de sesion de menor a mayor
                         listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
-
+                        if pBar['CANTSESIONES'] < contador:
+                            contador = 1
             #se obtiene la primera pagina del paginador
             page = request.GET.get('page', 1)
 
@@ -548,9 +559,9 @@ def menuCoachee(request):
                 plantilla = 'menuCoach'
             return redirect(plantilla)
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request, 'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+     #   messages.warning(request, 'Ingrese sus credenciales para acceder')
+      #  return redirect('/')
 
 
 #------------------------------Perteneciente al administrador-----------------------------------------------------
@@ -1831,6 +1842,67 @@ def infoSesionCoach(request, id):
 #    except Exception as e:
 #        messages.warning(request,'Ingrese sus credenciales para acceder')
 #        return redirect('/')
+
+
+# def infoSesionCoachDocument(request, id):
+#     #se obtine json con token y datos del perfil del usuario
+#         headers = request.session['Headers']
+#         perfil = request.session['Perfil_Usuario']
+#         #se consulta si el perfil de usuario corresponde al coach
+#         if perfil['perfil'] == 2:
+#             #se obtiene dato desde la vista
+#             idP = request.POST.get('proceso')
+#             #consulta metodo a utilizar
+#             if request.method == 'POST':
+#                 #idP =  request.POST.get('proceso')
+#                 archivo = request.POST.get('archivo')
+#                 link = request.POST.get('link')
+
+#                 gestorEnlace = {
+#                     "LINK": link,
+#                     "SESION_ID": id
+#                 }
+
+#                 gestorArchivo = {
+#                     "LINK": archivo,
+#                     "SESION_ID": id,
+#                     "TIPOARCHIVO_ID": 1
+#                 }
+
+#                 #metodo para modificar sesion
+#                 urlArchivos = 'http://127.0.0.1:8001/gestor-archivo'
+#                 responseArchivo = requests.post(urlArchivos, headers=headers, json=gestorArchivo)
+
+#                 #metodo para modificar sesion
+#                 urlEnlaces = 'http://127.0.0.1:8001/enlaces'
+#                 responseEnlaces = requests.post(urlEnlaces, headers=headers, json=gestorEnlace)
+                
+#                 #consulta respuesta de la api
+#                 if responseArchivo.status_code == 200:
+#                     #mensaje que muestra la vista si la actualización es exitosa
+#                     messages.success(request, 'Archivos almacenados con éxito.')
+#                     return redirect('infoProCoach', idP)
+#                 elif responseEnlaces.status_code == 200:
+#                     #mensaje que muestra la vista si la actualización es exitosa
+#                     messages.success(request, 'Enlaces almacenado con éxito.')
+#                     return redirect('infoProCoach', idP)
+#                 #mensaje que muestra la vista si la actualización sufre algun problema
+#                 else:
+#                     # se reemplazan comillas dobles que trae el mensaje desde la api
+#                     messages.error(
+#                         request, responseArchivo.text.replace('"', ''))
+#                     return redirect('infoProCoach', idP)
+
+#             #redirecciona la vista terminado el metodo 
+#             return redirect('listProCoach')
+
+#         #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
+#         else:
+#             if perfil['perfil'] == 1:
+#                 plantilla = 'menuAdmin'
+#             elif perfil['perfil'] == 3:
+#                 plantilla = 'menuCoachee'
+#             return redirect(plantilla)
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#
 

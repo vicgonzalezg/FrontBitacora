@@ -109,6 +109,7 @@
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
                                 <textarea rows="7" class="form-control" name="planAccionProc"
+                                {% if procesos.ESTADOPROCESO_ID == 1 or procesos.ESTADOPROCESO_ID == 6 %} readonly {% endif %} 
                                     id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
@@ -143,6 +144,7 @@
                     <div class="container">
                         <div class="col-md-12">
                             <button type="submit" onclick="modPlanAccion(this)" data-id="{{procesos.ID}}"
+                            {% if procesos.ESTADOPROCESO_ID == 1 or procesos.ESTADOPROCESO_ID == 6 %} readonly {% endif %} 
                                 class="btn btn-primary float-start col-md-2">Grabar</button>
                         </div>
                     </div>
@@ -253,7 +255,7 @@
                                         <div class="form-group col-md-6">
                                             <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                             <div class="form-group col-md-12">
-                                                <table id="example" class="table thead-dark border border-dark">
+                                                <table id="example1" class="table thead-dark border border-dark">
                                                     <thead class="thead-dark">
                                                         <tr class="cabecera">
                                                             <th scope="col"></th>
@@ -266,7 +268,7 @@
                                                                 <tr class="bg-light">
                                                                     <th scope="row"><i class="far fa-file-archive"></i>
                                                                     </th>
-                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">Archivo: {{ forloop.counter }}</a></th>
+                                                                    <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
                                                                 </tr>
                                                             {% endif %}
                                                         {% endfor %}

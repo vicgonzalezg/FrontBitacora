@@ -1,16 +1,16 @@
 <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
-    <div class="col-md-12 align-items-center ps-5">
-      <h3 class="text-center fw-bold">Calendario</h3>
-      <div id="yourId" class="jalendar">
-        <!-- bucles de sesiones para que los liste y se obtengan de cada uno los datos necesarios para el calendario -->
-        {% for sesion in sesiones %}
-            <div class="added-event" data-type="task" data-date="{{sesion.FECHASESION}}" data-title="Empresa: {{ sesion.NOMBREEMPRESA }}
-                - Coachee: {{ sesion.NOMBRE }} {{ sesion.APELLIDO }} - Sesión {{ forloop.counter }}">
-            </div>
-        {% endfor %}
-      </div>
+  <div class="col-md-12 align-items-center">
+    <h3 class="text-center fw-bold">Calendario</h3>
+    <div id="yourId" class="jalendar">
+      <!-- bucles de sesiones para que los liste y se obtengan de cada uno los datos necesarios para el calendario -->
+      {% for sesion in sesiones %}
+          <div class="added-event" data-type="task" data-date="{{sesion.FECHASESION}}" data-title="Empresa: {{ sesion.NOMBREEMPRESA }}
+            - Coachee: {{ sesion.NOMBRE }} {{ sesion.APELLIDO }} - Sesión {{ forloop.counter }}">
+          </div>
+      {% endfor %}
     </div>
   </div>
+</div>
 
 <!-- atributos del calendario -->
 <script>

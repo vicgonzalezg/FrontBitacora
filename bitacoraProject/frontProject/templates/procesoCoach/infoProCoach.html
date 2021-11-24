@@ -275,6 +275,11 @@
                                         </div>
                                 </div>
                                 <br>
+                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
+                            </form>
+                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}">
+                            
                                 <div class="row">
                                     <!--sector donde se almacenan los documentos y links-->
                                     <div class="form-group col-md-6">
@@ -342,14 +347,13 @@
                                                 <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
                                                     name="link"
                                                     {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}></textarea>
-                                                <i type="button" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
+                                                <i type="button" data-id="{{sesion.ID}}" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
-                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
-                            </form>
+                           </form>
+                           <br>
                             <div class="form-group container col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"
                                     data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}

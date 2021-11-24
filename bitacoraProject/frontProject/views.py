@@ -226,13 +226,14 @@ def menuCoach(request):
             #variable que almacena la url de la api
             sesionesDia = 'ordering=-ID&limit=5&FECHASESION=' + str(day)
             procesoCal='ordering=-ID&COACH_ID=' + str(id)
+            querySesionesCal='ordering=ID'
             #obtiene los datos desde la api enviando token de seguridad
             sesionesDia = SesionesAPICall.get(request, sesionesDia)
             usuario = UsuariosAPICall.get(request, None)
             estado = EstadosSesionesAPICall.get(request, None)
             procesosCal = ProcesosAPICall.get(request,procesoCal)
             estadoProc = EstadosProcesosAPICall.get(request, None)
-            sesionesCalendario = SesionesAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             listadoBar = []
@@ -304,7 +305,30 @@ def menuCoach(request):
                                         sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3
             
             #consulta de sesiones por proceso
+            listadoBar1=[]
+            listadoBarOrdenado1=[]
             contador = 1
+            for sePro in procesosCal:
+                querySe = 'ordering=ID&PROCESO_ID='+str(sePro['ID'])
+                sesiones2 = SesionesAPICall.get(request,querySe)
+                for s in sesiones2:
+                    sesionBarList = [{
+                            "IDP":sePro['ID'],
+                            "IDS":s['ID'],
+                            "ESTADOSESION_ID":s['ESTADOSESION_ID'],
+                            "COUNT": contador
+                        }]
+
+                    contador += 1
+
+                    listadoBar1 = sesionBarList + listadoBar1
+                    listadoBarOrdenado1 = sorted(listadoBar1, key=lambda k: k['IDS'])
+                    if contador > sePro['CANTSESIONES']:
+                        contador = 1
+
+            #print(listadoBarOrdenado1)
+                #print(sesiones2)
+            """ 
             for sBar in sesionesCalendario:
                 for pBar in procesosCal:
                     if pBar['ID'] == sBar['PROCESO_ID']:
@@ -323,8 +347,9 @@ def menuCoach(request):
                         listadoBar = sesionBarList + listadoBar
                         #se ordena array por id de sesion de menor a mayor
                         listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
+                        #print(listadoBarOrdenado)
                         if pBar['CANTSESIONES'] < contador:
-                            contador = 1
+                            contador = 1 """
             #se obtiene la primera pagina del paginador
             page = request.GET.get('page', 1)
 
@@ -342,7 +367,7 @@ def menuCoach(request):
                 'entity': listado,
                 'paginator': paginator,
                 'sesiones': sesionesCalendario3,
-                'sesionBar': listadoBarOrdenado
+                'sesionBar': listadoBarOrdenado1
             }
             #renderiza la vista y envia los datos
             return render(request, 'menu/menuCoach.html', data)
@@ -369,11 +394,12 @@ def menuCoachee(request):
             id = perfil['id']
             #variable que almacena la url de la api
             procesoDelCoachee ='ordering=-ID&COACHEE_ID=' + str(id)
+            querySesiones = 'ordering=ID'
             #obtiene los datos desde la api enviando token de seguridad
             proceso     =   ProcesosAPICall.get(request,procesoDelCoachee)
             usuario     =   UsuariosAPICall.get(request, None)
             estado      =   EstadosProcesosAPICall.get(request,None)
-            sesiones    =   SesionesAPICall.get(request,None)
+            sesiones    =   SesionesAPICall.get(request,querySesiones)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
@@ -457,6 +483,7 @@ def menuCoachee(request):
                         listadoBar = sesionBarList + listadoBar
                         #se ordena array por id de sesion de menor a mayor
                         listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
+                        print(listadoBarOrdenado)
                         if pBar['CANTSESIONES'] < contador:
                             contador = 1
             #se obtiene la primera pagina del paginador
@@ -1490,7 +1517,7 @@ def infoProCoach(request, id):
             if request.method == 'GET':
                 #variable que almacena la url de la api
                 queryProcesos = 'ordering=-ID&ID=' + str(id)
-                querySesiones = 'PROCESO_ID='+str(id)
+                querySesiones = 'ordering=ID&PROCESO_ID='+str(id)
 
                 #obtiene los datos desde la api enviando token de seguridad
                 proceso = ProcesosAPICall.get(request,queryProcesos)
@@ -1624,8 +1651,7 @@ def infoProCoach(request, id):
 def infoSesionCoach(request, id):
 #    try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         
         #se consulta si el perfil de usuario corresponde al coach
         if perfil['perfil'] == 2:

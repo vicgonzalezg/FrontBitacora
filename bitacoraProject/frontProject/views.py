@@ -1780,8 +1780,7 @@ def infoSesionCoach(request, id):
 def infoProCoachee(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
 
         #se consulta si el perfil de usuario corresponde al coachee
         if perfil['perfil'] == 3:
@@ -1798,7 +1797,7 @@ def infoProCoachee(request, id):
                 sesiones        = SesionesAPICall.get(request, querySesiones)
                 estadoSesion    = EstadosSesionesAPICall.get(request, None)
                 gestorArchivo   = ArchivosAPICall.get(request, None)
-                enlace          = requests.get(request,None)
+                enlace          = EnlacesAPICall.get(request,None)
 
                 #variable que almacenara el listado de procesos y sus datos
                 listados = []

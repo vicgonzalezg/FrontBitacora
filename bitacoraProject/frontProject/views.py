@@ -114,10 +114,11 @@ def menuAdmin(request):
         #se consulta si el prefin de usuario corresponde al de administrador
         if perfil['perfil'] == 1:
             #obtiene los datos desde la api enviando token de seguridad
+            querySesionesCal='ordering=-ID'
             proceso = ProcesosAPICall.get(request,'ordering=-ID&limit=5')
             usuario = UsuariosAPICall.get(request, None)
             estado = EstadosProcesosAPICall.get(request,None)
-            sesionesCalendario = SesionesAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
             procesosCal = ProcesosAPICall.get(request,'ESTADOPROCESO_ID!=4')
             #variable que almacenara el listado de procesos y sus datos
             listados = []
@@ -166,6 +167,7 @@ def menuAdmin(request):
                         listados = json + listados
             
             #consulta de sesiones por proceso y usuarios
+            listadoBarOrdenado = []
             for sCal in sesionesCalendario:
                 #Descarta las sesiones Finalizadas y sin fecha 
                 print(sCal)
@@ -183,8 +185,10 @@ def menuAdmin(request):
                                         nombreEmpresa = pCal['NOMBREEMPRESA']
                                         nombreCoachee = u['NOMBRE']
                                         apellidoCoachee = u['APELLIDO']
+                                   
                                         #se almacenan los datos en una variable
                                         sesionesCalendario2 = [{
+                                            
                                             "NOMBREEMPRESA": nombreEmpresa,
                                             "NOMBRE": nombreCoachee,
                                             "APELLIDO": apellidoCoachee,
@@ -192,8 +196,10 @@ def menuAdmin(request):
                                             "ESTADOSESION_ID":estadoSesion
                                         }]
                                         #se almacena una array de objetos
-                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3   
+                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3  
+                                        
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
+            print(sesionesCalendario3)
             data = {
                 'usuario': perfil,
                 'entity': listados,
@@ -226,7 +232,7 @@ def menuCoach(request):
             #variable que almacena la url de la api
             sesionesDia = 'ordering=-ID&limit=5&FECHASESION=' + str(day)
             procesoCal='ordering=-ID&COACH_ID=' + str(id)
-            querySesionesCal='ordering=ID'
+            querySesionesCal='ordering=-ID'
             #obtiene los datos desde la api enviando token de seguridad
             sesionesDia = SesionesAPICall.get(request, sesionesDia)
             usuario = UsuariosAPICall.get(request, None)
@@ -533,12 +539,13 @@ def procesosAdmin(request):
             #variable que almacena la url de la api
             queryProcesos = 'ordering=-ID&limit=5'
             procesosCal = 'ESTADOPROCESO_ID!=4'
+            querySesionesCal='ordering=-ID'
             #obtiene los datos desde la api enviando token de seguridad
             proceso = ProcesosAPICall.get(request, queryProcesos)
             print(proceso)
             usuario = UsuariosAPICall.get(request, None)
             estado = EstadosProcesosAPICall.get(request, None)
-            sesionesCalendario = SesionesAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
             procesosCal = ProcesosAPICall.get(request, procesosCal)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
@@ -641,9 +648,10 @@ def nuevoProceso(request):
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
             procesoCal = 'ESTADOPROCESO_ID!=4'
+            querySesionesCal='ordering=-ID'
             #obtiene los datos desde la api enviando token de seguridad
             usuario = UsuariosAPICall.get(request,None)
-            sesionesCalendario = SesionesAPICall.get(request,None)
+            sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
             procesosCal = ProcesosAPICall.get(request, procesoCal)
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
@@ -869,21 +877,24 @@ def modProceso(request, id):
 def visInfoProceso(request, id):
     try:
         #se obtine json con token y datos del perfil del usuario
-        headers = request.session['Headers']
-        perfil = request.session['Perfil_Usuario']
+        perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al administrador
         if perfil['perfil'] == 1:
             #variable que almacena la url de la api
             queryProcesos = 'ordering=-ID&ID=' + str(id)
-            querySesiones = 'PROCESO_ID='+str(id)
+            querySesiones = 'ordering=ID&PROCESO_ID='+str(id)
             #obtiene los datos desde la api enviando token de seguridad
             proceso = ProcesosAPICall.get(request, queryProcesos)
             usuario = UsuariosAPICall.get(request, None)
             estado = EstadosProcesosAPICall.get(request,None)
             sesiones = SesionesAPICall.get(request, querySesiones)
             estadoSesion = EstadosSesionesAPICall.get(request, None)
+            gestorArchivo = ArchivosAPICall.get(request,None)
+            enlace = EnlacesAPICall.get(request, None)
+            
             #variable que almacenara el listado de procesos y sus datos
             listados = []
+            gestorEnlace = []
             #consulta de procesos por estadoproceso y usuarios
             for p in proceso:
                 for e in estado:
@@ -935,16 +946,34 @@ def visInfoProceso(request, id):
 
                         #se almacena una array de objetos
                         listados = json + listados
-            # TO DO esto me parece que esta demas
-            sesiones = sesiones
-            estadoSesion = estadoSesion
+            #consulta para obtener la id de los archivos y links asociados a la sesion
+                for s in sesiones:
+                    for g in gestorArchivo:
+                        if s['ID'] == g['SESION_ID']:
+                            idLinkGestor = g['SESION_ID']
+                            linkGestor = g['LINK']
+                    for en in enlace:
+                        if s['ID'] == en['SESION_ID']:
+                            idlinkEnlace = en['SESION_ID']
+                            linkEnlace = en['LINK']   
+                            jsonGE = [{
+                                "IDLINKGE": idLinkGestor,
+                                "LINKGE": linkGestor,
+                                "IDLINKEN": idlinkEnlace,
+                                "LINKEN": linkEnlace
+                            }]
+
+                            #se almacena una array de objetos
+                            gestorEnlace = jsonGE + gestorEnlace
 
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
+            print(sesiones)
             data = {
                 'usuario': perfil,
                 'entity': listados,
                 'sesiones': sesiones,
-                'estadosSesion': estadoSesion
+                'estadosSesion': estadoSesion,
+                'gestores':gestorEnlace
             }
 
             #renderiza la vista y envia los datos

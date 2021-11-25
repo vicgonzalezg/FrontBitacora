@@ -34,17 +34,6 @@
                 </li>
             {% endif %}
         </ul>
-    </div>
-    <div>            
-        {% if entity.has_previous %}
-            <span class="page-item"><a  class="page-link" href="?page={{ entity.previous_page_number }}">Anterior</a></span>
-        {% endif %}
-        {% if entity.has_next %}
-            <span class="page-item"><a class="page-link" href="?page={{ entity.next_page_number }}">Siguiente</a></span>
-        {% endif %}
-        <br>
-        <br>
-    </div>
-    
+    </div>    
     {% endif %}
     </div>

@@ -5,7 +5,7 @@
       <!-- bucles de sesiones para que los liste y se obtengan de cada uno los datos necesarios para el calendario -->
       {% for sesion in sesiones %}
           <div class="added-event" data-type="task" data-date="{{sesion.FECHASESION}}" data-title="Empresa: {{ sesion.NOMBREEMPRESA }}
-            - Coachee: {{ sesion.NOMBRE }} {{ sesion.APELLIDO }} - Sesión {{ forloop.counter }}">
+            - Coachee: {{ sesion.NOMBRE }} {{ sesion.APELLIDO }} - Sesión {{ sesion.CONTADOR }}">
           </div>
       {% endfor %}
     </div>

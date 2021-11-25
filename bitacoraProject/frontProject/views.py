@@ -114,22 +114,24 @@ def menuAdmin(request):
         #se consulta si el prefin de usuario corresponde al de administrador
         if perfil['perfil'] == 1:
             #obtiene los datos desde la api enviando token de seguridad
-            querySesionesCal='ordering=-ID'
-            proceso = ProcesosAPICall.get(request,'ordering=-ID&limit=5')
-            usuario = UsuariosAPICall.get(request, None)
-            estado = EstadosProcesosAPICall.get(request,None)
-            sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
-            procesosCal = ProcesosAPICall.get(request,'ESTADOPROCESO_ID!=4')
+            queryProcesos       ='ordering=-ID&limit=5'
+            queryProcesosCal    = 'ACTIVO=1'
+            procesos = ProcesosAPICall.get(request,queryProcesos)
+            usuarios = UsuariosAPICall.get(request, None)
+            estados = EstadosProcesosAPICall.get(request,None)
+            procesosCal = ProcesosAPICall.get(request,queryProcesosCal)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
+            listadoProcesosOrdenados=[]
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
-            sesionesCalendario3=[]
+            listadoSesionesCalendario=[]
+            
             #consulta de procesos por estado y usuarios
-            for p in proceso:
-                for e in estado:
+            for p in procesos:
+                for e in estados:
                     if p['ESTADOPROCESO_ID'] == e['ID']:
                         estadoDescripcion = e['DESCRIPCION']
-                for u in usuario:
+                for u in usuarios:
                     if p['COACHEE_ID'] == u['ID']:
                         nombreEmpresa = p['NOMBREEMPRESA']
                         nombreCoachee = u['NOMBRE']
@@ -165,45 +167,48 @@ def menuAdmin(request):
                         }]
                         #se almacena una array de objetos
                         listados = json + listados
+                        listadoProcesosOrdenados = sorted(listados, key=lambda k: k['ID'], reverse=True)
             
-            #consulta de sesiones por proceso y usuarios
-            listadoBarOrdenado = []
-            for sCal in sesionesCalendario:
-                #Descarta las sesiones Finalizadas y sin fecha 
-                print(sCal)
-                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                    for pCal in procesosCal:
-                        #Descarta los procesos finalizados.
-                        if pCal['ESTADOPROCESO_ID'] != 6:
-                            for u in usuario:
-                                #consulta por el usuario
-                                if pCal['COACHEE_ID'] == u['ID']:
-                                    #consulta por la id del proceso para traer las sesiones correspondientes
-                                    if pCal['ID'] == sCal['PROCESO_ID']:
-                                        fechaSesion = sCal['FECHASESION']
-                                        estadoSesion = sCal['ESTADOSESION_ID']
-                                        nombreEmpresa = pCal['NOMBREEMPRESA']
-                                        nombreCoachee = u['NOMBRE']
-                                        apellidoCoachee = u['APELLIDO']
-                                   
-                                        #se almacenan los datos en una variable
-                                        sesionesCalendario2 = [{
-                                            
-                                            "NOMBREEMPRESA": nombreEmpresa,
-                                            "NOMBRE": nombreCoachee,
-                                            "APELLIDO": apellidoCoachee,
-                                            "FECHASESION": fechaSesion,
-                                            "ESTADOSESION_ID":estadoSesion
-                                        }]
-                                        #se almacena una array de objetos
-                                        sesionesCalendario3 = sesionesCalendario2 + sesionesCalendario3  
-                                        
+            #consulta de sesiones agendadas por proceso y usuarios para el calendario
+            contador=1 
+            for pCal in procesosCal:
+                querySesionesCal    ='ordering=ID&PROCESO_ID='+str(pCal['ID'])
+                sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
+                for sCal in sesionesCalendario:
+                    for u in usuarios:
+                        #consulta por el usuario
+                        if pCal['COACHEE_ID'] == u['ID']:
+                            #consulta por la id del proceso para traer las sesiones correspondientes
+                            if pCal['ID'] == sCal['PROCESO_ID']:
+                                fechaSesion = sCal['FECHASESION']
+                                estadoSesion = sCal['ESTADOSESION_ID']
+                                nombreEmpresa = pCal['NOMBREEMPRESA']
+                                nombreCoachee = u['NOMBRE']
+                                apellidoCoachee = u['APELLIDO']
+                                #se almacenan los datos en una variable
+                                if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
+                                    sesionCalendario = [{
+                                        "NOMBREEMPRESA": nombreEmpresa,
+                                        "NOMBRE": nombreCoachee,
+                                        "APELLIDO": apellidoCoachee,
+                                        "FECHASESION": fechaSesion,
+                                        "ESTADOSESION_ID":estadoSesion,
+                                        "CONTADOR": contador
+                                    }]
+                                    #se almacena una array de objetos 
+                                    listadoSesionesCalendario = sesionCalendario + listadoSesionesCalendario 
+                                    contador+=1
+                                else:
+                                    contador+=1
+                                #Se restablece contador en base a la cantidad de sesiones por proceso.
+                                if contador > pCal['CANTSESIONES']:
+                                    contador = 1
+            
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
-            print(sesionesCalendario3)
             data = {
                 'usuario': perfil,
-                'entity': listados,
-                'sesiones': sesionesCalendario3
+                'entity': listadoProcesosOrdenados,
+                'sesiones': listadoSesionesCalendario
             }
             #renderiza la vista y envia los datos
             return render(request, 'menu/menuAdmin.html', data)
@@ -221,7 +226,7 @@ def menuAdmin(request):
 
 #-------------------------------------------- menu coach --------------------------------------------
 def menuCoach(request):
-    #try:
+    try:
         #se obtine json con token y datos del perfil del usuario
         perfil  = perfilUsuario(request)
         if perfil['perfil'] == 2:
@@ -230,66 +235,67 @@ def menuCoach(request):
             #se obtiene el dia actual para usarlo como filtro para la fecha de sesiones
             day = datetime.today().strftime('%Y-%m-%d')
             #variable que almacena la url de la api
-            sesionesDia = 'ordering=-ID&limit=5&FECHASESION=' + str(day)
-            procesoCal='ordering=-ID&COACH_ID=' + str(id)
+            querysesionesDelDia = 'ordering=-ID&FECHASESION=' + str(day)
+            queryprocesoDelDia='ordering=-ID&COACH_ID=' + str(id)
             querySesionesCal='ordering=-ID'
             #obtiene los datos desde la api enviando token de seguridad
-            sesionesDia = SesionesAPICall.get(request, sesionesDia)
-            usuario = UsuariosAPICall.get(request, None)
-            estado = EstadosSesionesAPICall.get(request, None)
-            procesosCal = ProcesosAPICall.get(request,procesoCal)
+            sesionesDelDia = SesionesAPICall.get(request, querysesionesDelDia)
+            procesosDelDia = ProcesosAPICall.get(request,queryprocesoDelDia)
+            usuarios = UsuariosAPICall.get(request, None)
+            estadoDelDia = EstadosSesionesAPICall.get(request, None)
             estadoProc = EstadosProcesosAPICall.get(request, None)
             sesionesCalendario = SesionesAPICall.get(request,querySesionesCal)
             #variable que almacenara el listado de procesos y sus datos
             listados = []
-            listadoBar = []
-            listadoBarOrdenado = []
             #variable que almacenara los datos de sesiones que se utilizaran para el calendario
             sesionesCalendario3=[]
             #consulta de sesiones por proceso, estado y usuarios
-            for s in sesionesDia:
-                for p in procesosCal:
+            for p in procesosDelDia:
+                for s in sesionesDelDia:
                     if p['ID'] == s['PROCESO_ID']:
-                        for ep in estadoProc:
-                            if ep['ID'] == p['ESTADOPROCESO_ID']:
-                                estadoProceso = ep['DESCRIPCION']
-                                estadoProce = p['ESTADOPROCESO_ID']
-                        for e in estado:
-                            if s['ESTADOSESION_ID'] == e['ID']:
-                                estadoDescripcion = e['DESCRIPCION']
-                        for u in usuario:
-                            if p['COACHEE_ID'] == u['ID']:
-                                nombreEmpresa = p['NOMBREEMPRESA']
-                                nombreCoachee = u['NOMBRE']
-                                apellidoCoachee = u['APELLIDO']
-                                idProceso = p['ID']
-                        for uc in usuario:
-                            if p['COACH_ID'] == uc['ID']:
-                                nombreCoach = uc['NOMBRE']
-                                apellidoCoach = uc['APELLIDO']
-                                #se almacenan los datos en una variable
-                                json = [{
-                                    "NOMBREEMPRESA": nombreEmpresa,
-                                    "NOMBRE": nombreCoachee,
-                                    "APELLIDO": apellidoCoachee,
-                                    "DESCRIPCION": estadoDescripcion,
-                                    "NOMBRECOACH": nombreCoach,
-                                    "APELLIDOCOACH": apellidoCoach,
-                                    "ID": idProceso,
-                                    "ESTADOPROC": estadoProce,
-                                    "DESCRIPCIONPROCE": estadoProceso
-                                }]
-                                #se almacena una array de objetos
-                                listados = json + listados
-            
+                        if s['FECHASESION'] is not None:
+                            for ep in estadoProc:
+                                if ep['ID'] == p['ESTADOPROCESO_ID']:
+                                    estadoProceso = ep['DESCRIPCION']
+                                    estadoProce = p['ESTADOPROCESO_ID']
+                            for e in estadoDelDia:
+                                if s['ESTADOSESION_ID'] == e['ID']:
+                                    estadoDescripcion = e['DESCRIPCION']
+                            for u in usuarios:
+                                if p['COACHEE_ID'] == u['ID']:
+                                    nombreEmpresa = p['NOMBREEMPRESA']
+                                    nombreCoachee = u['NOMBRE']
+                                    apellidoCoachee = u['APELLIDO']
+                                    idProceso = p['ID']
+                            for uc in usuarios:
+                                if p['COACH_ID'] == uc['ID']:
+                                    nombreCoach = uc['NOMBRE']
+                                    apellidoCoach = uc['APELLIDO']
+                                    #se almacenan los datos en una variable
+                                    json = [{
+                                        "NOMBREEMPRESA": nombreEmpresa,
+                                        "NOMBRE": nombreCoachee,
+                                        "APELLIDO": apellidoCoachee,
+                                        "DESCRIPCION": estadoDescripcion,
+                                        "NOMBRECOACH": nombreCoach,
+                                        "APELLIDOCOACH": apellidoCoach,
+                                        "ID": idProceso,
+                                        "ESTADOPROC": estadoProce,
+                                        "DESCRIPCIONPROCE": estadoProceso
+                                    }]
+                                    #se almacena una array de objetos
+                                    listados = json + listados
+                                    #print(listados)                    
+                        break
+                   
             #consulta de sesiones por proceso y usuarios
             for sCal in sesionesCalendario:
                 #Descarta las sesiones Finalizadas y sin fecha 
                 if sCal['ESTADOSESION_ID'] != 4 and sCal['FECHASESION'] is not None:
-                    for pCal in procesosCal:
+                    for pCal in procesosDelDia:
                         #Descarta los procesos Finalizados
                         if pCal['ESTADOPROCESO_ID'] != 6:
-                            for u in usuario:
+                            for u in usuarios:
                                 #consulta por el usuario
                                 if pCal['COACHEE_ID'] == u['ID']:
                                     #consulta por la id del proceso para traer las sesiones correspondientes
@@ -314,7 +320,7 @@ def menuCoach(request):
             listadoBar1=[]
             listadoBarOrdenado1=[]
             contador = 1
-            for sePro in procesosCal:
+            for sePro in procesosDelDia:
                 querySe = 'ordering=ID&PROCESO_ID='+str(sePro['ID'])
                 sesiones2 = SesionesAPICall.get(request,querySe)
                 for s in sesiones2:
@@ -324,7 +330,6 @@ def menuCoach(request):
                             "ESTADOSESION_ID":s['ESTADOSESION_ID'],
                             "COUNT": contador
                         }]
-
                     contador += 1
 
                     listadoBar1 = sesionBarList + listadoBar1
@@ -332,30 +337,6 @@ def menuCoach(request):
                     if contador > sePro['CANTSESIONES']:
                         contador = 1
 
-            #print(listadoBarOrdenado1)
-                #print(sesiones2)
-            """ 
-            for sBar in sesionesCalendario:
-                for pBar in procesosCal:
-                    if pBar['ID'] == sBar['PROCESO_ID']:
-                        estadoSesion = sBar['ESTADOSESION_ID']
-                        idSesion = sBar['ID']
-                        idProceso = pBar['ID']
-                        #se almacenan los datos en una variable
-                        sesionBarList = [{
-                            "IDP":idProceso,
-                            "ID":idSesion,
-                            "ESTADOSESION_ID":estadoSesion,
-                            "COUNT": contador
-                        }]
-                        contador += 1
-                        #se almacena una array de objetos
-                        listadoBar = sesionBarList + listadoBar
-                        #se ordena array por id de sesion de menor a mayor
-                        listadoBarOrdenado = sorted(listadoBar, key=lambda k: k['ID'])
-                        #print(listadoBarOrdenado)
-                        if pBar['CANTSESIONES'] < contador:
-                            contador = 1 """
             #se obtiene la primera pagina del paginador
             page = request.GET.get('page', 1)
 
@@ -385,9 +366,9 @@ def menuCoach(request):
                 plantilla = 'menuCoachee'
             return redirect(plantilla)
     #si ingresa a la url de menuCoach sin token de seguridad redirecciona al login
- #   except Exception as e:
-  #      messages.warning(request, 'Ingrese sus credenciales para acceder')
-   #     return redirect('/')
+    except Exception as e:
+        messages.warning(request, 'Ingrese sus credenciales para acceder')
+        return redirect('/')
 
 #--------------------------------------------menu coachee--------------------------------------------
 def menuCoachee(request):
@@ -658,13 +639,13 @@ def nuevoProceso(request):
             #consulta por el tipo de metodo y si el perfil corresponde al del administrador
             if request.method == 'POST' and perfil['perfil'] == 1:
                 # Obtener datos del Front
-                NOMBREEMPRESA = request.POST.get('nombreEmpre')
-                CANTSESIONES = request.POST.get('cantiSesiones')
-                OBJETIVOS = None
-                INDICADORES = None
-                PLANACCION = None
-                COACH_ID = request.POST.get('coachProces')
-                COACHEE_ID = request.POST.get('coacheeProces')
+                NOMBREEMPRESA   = request.POST.get('nombreEmpre')
+                CANTSESIONES    = request.POST.get('cantiSesiones')
+                OBJETIVOS       = None
+                INDICADORES     = None
+                PLANACCION      = None
+                COACH_ID        = request.POST.get('coachProces')
+                COACHEE_ID      = request.POST.get('coacheeProces')
 
                 # Creo Json para enviar los datos a la api
                 json = {
@@ -1843,7 +1824,7 @@ def infoProCoachee(request, id):
             if request.method == 'GET':
                 #variable que almacena la url de la api
                 queryProcesos = 'ordering=-ID&ID=' + str(id)
-                querySesiones = 'PROCESO_ID='+str(id)
+                querySesiones = 'ordering=ID&PROCESO_ID='+str(id)
 
                 #obtiene los datos desde la api enviando token de seguridad
                 proceso         = ProcesosAPICall.get(request,queryProcesos)

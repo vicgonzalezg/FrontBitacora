@@ -100,7 +100,7 @@ def perfilUsuario(request):
 class UsuarioPublicoAPICall:
 
     def login(request):
-        username = request.POST.get('user')
+        username = request.POST.get('email')
         password = request.POST.get('pass')
         data={'USUARIO': username, 'CONTRASENA': password}
         response = ApiCall.post('login',data,None)

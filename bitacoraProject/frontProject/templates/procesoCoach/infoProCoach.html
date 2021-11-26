@@ -200,7 +200,7 @@
                                                     <input type="date"  name="fechaSesion"
                                                         id="fechaSesion-{{ sesion.ID }}" value="{{sesion.FECHASESION}}"
                                                         class="form-control" min="2021-10-01" 
-                                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %} >
+                                                        {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %} >
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
@@ -210,7 +210,7 @@
                                                     <input class="col-md-12 p-1" name="horaSesion"
                                                         id="apptime-{{ sesion.ID }}" type="time" name="appt-time"
                                                         min="09:00:00" max="18:00:00" value="{{sesion.HORASESION}}"
-                                                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                        {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                                         <div class="col-md-12">
                                             <select class="form-select" name="estadoSesion1"
                                                 aria-label="Default select example"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 {% for estSesion in estadosSesion %}
                                                 <option name="estadoSesion" id="estadoSesion-{{ sesion.ID }}"
                                                     value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %} hidden {% endif %} 
@@ -240,7 +240,7 @@
                                         <div class="col-md-12">
                                             <textarea rows="4" name="descSesion" class="form-control"
                                                 id="descSesion--{{ sesion.ID }}"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.DESCRIPCION}}</textarea>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.DESCRIPCION}}</textarea>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -250,7 +250,7 @@
                                         <div class="col-md-12">
                                             <textarea rows="4" name="asigSesion" class="form-control"
                                                 id="asigSesion-{{ sesion.ID }}"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.ASIGNACION}}</textarea>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.ASIGNACION}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@
                                             <div class="col-md-12">
                                                 <textarea rows="4" name="avancesSesion" class="form-control"
                                                     id="avancesSesion-{{ sesion.ID }}"
-                                                    {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.AVANCES}}</textarea>
+                                                    {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.AVANCES}}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
@@ -311,7 +311,7 @@
                                         <div class="form-group col-md-12">
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <input type="file" class="col-md-9" name="archivo" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                    <input type="file" class="col-md-9" name="archivo" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                     <i type="button" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                                 </div>
                                             </div>
@@ -346,7 +346,7 @@
                                             <div class="row">
                                                 <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
                                                     name="link"
-                                                    {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}></textarea>
+                                                    {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
                                                 <i type="button" data-id="{{sesion.ID}}" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                             </div>
                                         </div>
@@ -356,7 +356,7 @@
                            <br>
                             <div class="form-group container col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"
-                                    data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}
+                                    data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}
                                     >Guardar Sesión {{ forloop.counter }}</button>
                                 <br>
                                 <br>

@@ -109,7 +109,7 @@
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
                                 <textarea rows="7" class="form-control" name="planAccionProc"
-                                {% if procesos.ESTADOPROCESO_ID == 1 or procesos.ESTADOPROCESO_ID == 6 %} readonly {% endif %} 
+                                {% if procesos.IDESTADOPROCESO == 1 or procesos.IDESTADOPROCESO == 6 %} readonly {% endif %} 
                                     id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
@@ -144,7 +144,7 @@
                     <div class="container">
                         <div class="col-md-12">
                             <button type="submit" onclick="modPlanAccion(this)" data-id="{{procesos.ID}}"
-                            {% if procesos.ESTADOPROCESO_ID == 1 or procesos.ESTADOPROCESO_ID == 6 %} readonly {% endif %} 
+                            {% if procesos.IDESTADOPROCESO == 1 or procesos.IDESTADOPROCESO == 6 %} disabled {% endif %} 
                                 class="btn btn-primary float-start col-md-2">Grabar</button>
                         </div>
                     </div>

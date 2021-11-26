@@ -26,13 +26,12 @@
         <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
         <div class="containerProgressBar nav col-md-12">
           <ul class="progressbar navbuttons col-md-12">
-            {% for proceso in listaBar %}
-                {% if proceso.ESTADOSESION_ID != 4 %}
-                <li class="">sesión {{ proceso.COUNT }}</li>
-                {% endif %}
-                {% if proceso.ESTADOSESION_ID == 4 %}
-                <li class="activeBar">sesión {{ proceso.COUNT }}</li>
-                {% endif %}
+            {% for sesiones in listaBar %}
+              {% if sesiones.IDP == proceso.ID%}
+                  <li {% if sesiones.ESTADOSESION_ID != 4 %} class="" 
+                          {% elif sesiones.ESTADOSESION_ID == 4 %}
+                          class="activeBar" {% endif %}>sesión {{sesiones.COUNT}}</li>
+              {% endif %}
             {% endfor %}
           </ul>
         </div>

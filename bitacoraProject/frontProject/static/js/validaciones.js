@@ -19,6 +19,16 @@ function validateTelefono(telefono) {
     var phoneno = /^[0-9]+$/;
     return phoneno.test(String(telefono))
 }
+/* ------------------------------ LOGIN ----------------------------------------*/
+//validar email login y recuperar contraseña
+function loginUsuarios() {
+    event.preventDefault();
+    var email = document.getElementById("email").value
+
+    if (!(validateEmail(email))) {
+        Swal.fire('Favor revisar correo electrónico!', '', 'warning')
+    }
+}  
 /* ------------------------------ USUARIOS -------------------------------------*/
 //Crear usuarios Administradores
 function crearAdmin() {

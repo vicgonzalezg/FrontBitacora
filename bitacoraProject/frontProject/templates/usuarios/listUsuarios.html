@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menú Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
@@ -422,6 +422,7 @@
 $(document).ready(function (){
     var table = $('#example').DataTable({
        dom: 'lrtip',
+       "ordering": false,
        "lengthMenu": [10,20,30,40,50],
        "lengthChange": true,
        "autoWidth": false,

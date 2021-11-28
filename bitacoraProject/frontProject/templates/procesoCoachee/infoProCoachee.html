@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Coachee{% endblock %}
+{% block title %}Menú Coachee{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
@@ -109,6 +109,7 @@
                             <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
                             <div class="col-md-12">
                                 <textarea rows="7" class="form-control" name="planAccionProc"
+                                {% if procesos.IDESTADOPROCESO == 1 or procesos.IDESTADOPROCESO == 6 %} readonly {% endif %} 
                                     id="planAccionProc-{{ procesos.ID }}">{{procesos.PLANACCION}}</textarea>
                             </div>
                         </div>
@@ -143,6 +144,7 @@
                     <div class="container">
                         <div class="col-md-12">
                             <button type="submit" onclick="modPlanAccion(this)" data-id="{{procesos.ID}}"
+                            {% if procesos.IDESTADOPROCESO == 1 or procesos.IDESTADOPROCESO == 6 %} disabled {% endif %} 
                                 class="btn btn-primary float-start col-md-2">Grabar</button>
                         </div>
                     </div>
@@ -253,23 +255,27 @@
                                         <div class="form-group col-md-6">
                                             <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                             <div class="form-group col-md-12">
-                                                <table id="example" class="table thead-dark border border-dark">
+                                                <table id="example1" class="table thead-dark border border-dark">
                                                     <thead class="thead-dark">
                                                         <tr class="cabecera">
-                                                            <th scope="col"></th>
                                                             <th scope="col">Nombre</th>
+                                                            <th scope="col"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {% for gestor in gestores %}
-                                                            {% if gestor.IDLINKGE == sesion.ID %}
-                                                                <tr class="bg-light">
-                                                                    <th scope="row"><i class="far fa-file-archive"></i>
-                                                                    </th>
-                                                                    <th scope="row"><a href="{{gestor.LINKGE}}">Archivo: {{ forloop.counter }}</a></th>
-                                                                </tr>
-                                                            {% endif %}
-                                                        {% endfor %}
+                                                        {% if gestor.IDLINKGE == sesion.ID %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
+                                                                <th scope="row"><i class="far fa-file-archive"></i>
+                                                                </th>
+                                                            </tr>
+                                                        {% endif %}
+                                                        {% empty %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row">No hay archivos que mostrar para esta sesión</th>
+                                                            </tr>
+                                                    {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -280,20 +286,24 @@
                                                 <table id="example2" class="table thead-dark border border-dark">
                                                     <thead class="thead-dark">
                                                         <tr class="cabecera">
-                                                            <th scope="col"></th>
                                                             <th scope="col">Dirección</th>
+                                                            <th scope="col"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {% for gestor in gestores %}
-                                                            {% if gestor.IDLINKEN == sesion.ID %}
-                                                                <tr class="bg-light">
-                                                                    <th scope="row"><i class="far fa-paper-plane"></i>
-                                                                    </th>
-                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
-                                                                </tr>
-                                                            {% endif %}
-                                                        {% endfor %}
+                                                        {% if gestor.IDLINKEN == sesion.ID %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
+                                                                <th scope="row"><i class="far fa-paper-plane"></i>
+                                                                </th>
+                                                            </tr>
+                                                        {% endif %}
+                                                        {% empty %}
+                                                            <tr class="bg-light">
+                                                                <th scope="row">No hay links que mostrar para esta sesión</th>
+                                                            </tr>
+                                                    {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>

@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Coach{% endblock %}
+{% block title %}Menú Coach{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
@@ -22,13 +22,13 @@
                 <div class="panel-body mt-2">
                     <div class="row">
                         <div class="form-group col-md-12 p-1">
-                            <div class="col-md-12">
-                                <div class="row">
+                            <br>
+                            <div class="col-md-12 form-group">
+                                <div class="">
                                     <span class="col-md-6"></span>
-                                    <div class="col-md-6 row container">
-                                        <span class="col-md-1"></span>
-                                        <label class="col-md-4 p-2" style="font-weight: bold;">Estado Proceso:</label>
-                                        <select class="col-md-7 form-select" name="estadoProceso" aria-label="Default select example"
+                                    <div class="col-md-6 row float-end">
+                                        <p class="col-sm-12 col-md-4" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</p>
+                                        <select class="col-sm-12 col-md-6 form-select" name="estadoProceso" aria-label="Default select example"
                                         {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                             {% for estado in estados %}
                                             <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
@@ -187,7 +187,7 @@
                     <div class="content">
                         <div class="panel-body">
                             <!--Registro de Fecha/hora y estado de cada sesión-->
-                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}"
+                            <form class="form-horizontal" enctype="application/x-www-form-urlencoded" action="{% url 'infoSesionCoach' sesion.ID %}"
                                 id="formSesiones-{{ sesion.ID }}" method="POST">{% csrf_token %}
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -199,7 +199,7 @@
                                                     <input type="date"  name="fechaSesion"
                                                         id="fechaSesion-{{ sesion.ID }}" value="{{sesion.FECHASESION}}"
                                                         class="form-control" min="2021-10-01" 
-                                                        {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %} >
+                                                        {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %} >
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
@@ -208,8 +208,8 @@
                                                 <div id="hora" class="col-md-12">
                                                     <input class="col-md-12 p-1" name="horaSesion"
                                                         id="apptime-{{ sesion.ID }}" type="time" name="appt-time"
-                                                        min="09:00:00" max="18:00:00" value="{{sesion.HORASESION}}"
-                                                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                        value="{{sesion.HORASESION}}"
+                                                        {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 </div>
                                             </div>
                                         </div>
@@ -220,7 +220,7 @@
                                         <div class="col-md-12">
                                             <select class="form-select" name="estadoSesion1"
                                                 aria-label="Default select example"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 {% for estSesion in estadosSesion %}
                                                 <option name="estadoSesion" id="estadoSesion-{{ sesion.ID }}"
                                                     value="{{estSesion.ID}}" {% if estSesion.ID < sesion.ESTADOSESION_ID %} hidden {% endif %} 
@@ -239,7 +239,7 @@
                                         <div class="col-md-12">
                                             <textarea rows="4" name="descSesion" class="form-control"
                                                 id="descSesion--{{ sesion.ID }}"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.DESCRIPCION}}</textarea>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.DESCRIPCION}}</textarea>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -249,7 +249,7 @@
                                         <div class="col-md-12">
                                             <textarea rows="4" name="asigSesion" class="form-control"
                                                 id="asigSesion-{{ sesion.ID }}"
-                                                {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.ASIGNACION}}</textarea>
+                                                {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.ASIGNACION}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@
                                             <div class="col-md-12">
                                                 <textarea rows="4" name="avancesSesion" class="form-control"
                                                     id="avancesSesion-{{ sesion.ID }}"
-                                                    {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{sesion.AVANCES}}</textarea>
+                                                    {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}>{{sesion.AVANCES}}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
@@ -274,6 +274,11 @@
                                         </div>
                                 </div>
                                 <br>
+                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
+                            </form>
+                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}">
+                            
                                 <div class="row">
                                     <!--sector donde se almacenan los documentos y links-->
                                     <div class="form-group col-md-6">
@@ -282,28 +287,31 @@
                                             <table id="tableDoc" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
-                                                        <th scope="col"></th>
                                                         <th scope="col">Nombre</th>
+                                                        <th scope="col"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {% for gestor in gestoresArchivos %}
                                                         {% if gestor.IDLINKGE == sesion.ID %}
                                                             <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-archive"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="#">Archivo: {{ forloop.counter }}</a></th>
+                                                                <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
+                                                                <th scope="row"><i class="far fa-trash-alt float-end mt-1" style="color: red;"></i></th>
                                                             </tr>
                                                         {% endif %}
+                                                    {% empty %}
+                                                    <tr class="bg-light">
+                                                        <th scope="row">Aun no ha añadido archivos</th>
+                                                    </tr>
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <br>
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <input type="file" name="archivo" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                                    <input type="file" class="col-md-9" name="archivo" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
+                                                    <i type="button" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                                 </div>
                                             </div>
                                             <br>
@@ -315,36 +323,39 @@
                                             <table id="tableLink" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
-                                                        <th scope="col"></th>
                                                         <th scope="col">Dirección</th>
+                                                        <th scope="col"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {% for gestor in gestoresEnlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID %}
                                                             <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-send"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="{{gestor.LINKEN}}">{{gestor.LINKEN}}</a></th>
+                                                                <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">LINK: {{ forloop.counter }}</a></th>
+                                                                <th scope="row"><i class="far fa-trash-alt float-end mt-1" style="color: red;"></i></th>
                                                             </tr>
                                                         {% endif %}
+                                                        {% empty %}
+                                                    <tr class="bg-light">
+                                                        <th scope="row">No hay links para esta sesión</th>
+                                                    </tr>
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            <div class="">
-                                                <textarea style="overflow:auto;resize:none" rows="1" class="form-control" id="link-{{ sesion.ID }}"
+                                            <div class="row">
+                                                <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
                                                     name="link"
-                                                    {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}></textarea>
+                                                    {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
+                                                <i type="button" data-id="{{sesion.ID}}" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
-                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
-                            </form>
-                            <div class="form-group container col-md-12">
+                           </form>
+                           <br>
+                            <div class="form-group container col-sm-12 col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"
-                                    data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}
+                                    data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}
                                     >Guardar Sesión {{ forloop.counter }}</button>
                                 <br>
                                 <br>
@@ -415,6 +426,7 @@
     $(document).ready(function () {
         var table = $('#example').DataTable({
             dom: 'lrtip',
+            "ordering": false,
             "lengthMenu": [5],
             "lengthChange": false,
             "autoWidth": false,

@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menú Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
@@ -233,51 +233,59 @@
                                         <br>
                                         <div class="row">
                                             <!--sector donde se almacenan los documentos y links-->
-                                            <div class="form-group col-md-8">
+                                            <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                                 <div class="form-group col-md-12">
-                                                    <table id="" class="table thead-dark border border-dark">
+                                                    <table id="example1" class="table thead-dark border border-dark">
                                                         <thead class="thead-dark">
                                                             <tr class="cabecera">
-                                                                <th scope="col"></th>
                                                                 <th scope="col">Nombre</th>
-                                                                <th scope="col">Tamaño</th>
-                                                                <th scope="col">Fecha</th>
+                                                                <th scope="col"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-word"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="#">Documentos.docx</a></th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-powerpoint"></i>
-                                                                </th>
-                                                                <th scope="row"><a href="#">Presentación.pptx</a>
-                                                                </th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
-                                                            <tr class="bg-light">
-                                                                <th scope="row"><i class="far fa-file-pdf"></i></th>
-                                                                <th scope="row"><a href="#">Manual.pdf</a></th>
-                                                                <th scope="row">523.0</th>
-                                                                <th scope="row">16-09-16</th>
-                                                            </tr>
+                                                            {% for gestor in gestores %}
+                                                                {% if gestor.IDLINKGE == sesion.ID %}
+                                                                    <tr class="bg-light">
+                                                                        <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
+                                                                        <th scope="row"><i class="far fa-file-archive"></i>
+                                                                        </th>
+                                                                    </tr>
+                                                                {% endif %}
+                                                                {% empty %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row">Sin archivos para mostrar en esta sesión</th>
+                                                                </tr>
+                                                            {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                <label class="col-md-12 control-label">Links:</label>
-                                                <div class="col-md-12 float-end">
-                                                    <div class="">
-                                                        <textarea rows="7" class="form-control" readonly></textarea>
-                                                    </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="col-md-6 control-label" name="nombre">Links:</label>
+                                                <div class="form-group col-md-12">
+                                                    <table id="example2" class="table thead-dark border border-dark">
+                                                        <thead class="thead-dark">
+                                                            <tr class="cabecera">
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for gestor in gestores %}
+                                                                {% if gestor.IDLINKEN == sesion.ID %}
+                                                                    <tr class="bg-light">
+                                                                        <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
+                                                                        <th scope="row"><i class="far fa-paper-plane"></i></th>
+                                                                    </tr>
+                                                                {% endif %}
+                                                                {% empty %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row">Sin links para mostrar en esta sesión</th>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>

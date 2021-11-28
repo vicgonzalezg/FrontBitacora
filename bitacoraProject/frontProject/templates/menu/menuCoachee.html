@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Coachee{% endblock %}
+{% block title %}Menú Coachee{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/progressBar.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/jalendar.min.css' %}" type="text/css" />
@@ -16,32 +16,33 @@
     <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
       <h3 class="text-center">Procesos</h3>
       {% for proceso in entity %}
-        <a href="{% url 'infoProCoachee' proceso.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action"
-          style="border-radius: 5px; margin-block-end: 10px;" aria-current="true" target="_blank">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
-          </div>
-          <p class="mb-1">Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
-          <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
-          <div class="containerProgressBar nav col-md-12">
-            <ul class="progressbar navbuttons col-md-12">
-                {% for proceso in listaBar %}
-                {% if proceso.ESTADOSESION_ID != 4 %}
-                <li class="">sesión {{ forloop.counter }}</li>
-                {% endif %}
-                {% if proceso.ESTADOSESION_ID == 4 %}
-                <li class="activeBar">sesión {{ forloop.counter }}</li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-          </div>
-        </a>     
+      <a href="{% url 'infoProCoachee' proceso.ID %}"
+        class="rounded-3 border-dark list-group-item list-group-item-action"
+        style="border-radius: 5px; margin-block-end: 10px;" aria-current="true" target="_blank">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+        </div>
+        <p class="mb-1">Coach: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
+        <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+        <div class="containerProgressBar nav col-md-12">
+          <ul class="progressbar navbuttons col-md-12">
+            {% for sesiones in listaBar %}
+              {% if sesiones.IDP == proceso.ID%}
+                  <li {% if sesiones.ESTADOSESION_ID != 4 %} class="" 
+                          {% elif sesiones.ESTADOSESION_ID == 4 %}
+                          class="activeBar" {% endif %}>sesión {{sesiones.COUNT}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </a>
       {% empty %}
-        <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-          <div class="d-flex w-100 justify-content-center">
-              <h5 class="mb-1 text-center">No hay sesiones para el día de hoy</h5>
-          </div>
-        </a>
+      <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action"
+        style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+        <div class="d-flex w-100 justify-content-center">
+          <h5 class="mb-1 text-center">No hay sesiones para el día de hoy</h5>
+        </div>
+      </a>
       {% endfor %}
 
       <!-- Paginación -->

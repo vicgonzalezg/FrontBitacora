@@ -23,13 +23,12 @@
                     <div class="row">
                         <div class="form-group col-md-12 p-1">
                             <br>
-                            <div class="col-md-12">
-                                <div class="row">
+                            <div class="col-md-12 form-group">
+                                <div class="">
                                     <span class="col-md-6"></span>
-                                    <div class="col-md-6 form-group">
-                                        <span class="col-md-1"></span>
-                                        <label class="col-md-4 p-2" style="font-weight: bold;">Estado Proceso:</label>
-                                        <select class="col-md-7 form-select" name="estadoProceso" aria-label="Default select example"
+                                    <div class="col-md-6 row float-end">
+                                        <p class="col-sm-12 col-md-4" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</p>
+                                        <select class="col-sm-12 col-md-6 form-select" name="estadoProceso" aria-label="Default select example"
                                         {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                             {% for estado in estados %}
                                             <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
@@ -209,7 +208,7 @@
                                                 <div id="hora" class="col-md-12">
                                                     <input class="col-md-12 p-1" name="horaSesion"
                                                         id="apptime-{{ sesion.ID }}" type="time" name="appt-time"
-                                                        min="09:00:00" max="18:00:00" value="{{sesion.HORASESION}}"
+                                                        value="{{sesion.HORASESION}}"
                                                         {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 </div>
                                             </div>
@@ -354,7 +353,7 @@
                                 </div>
                            </form>
                            <br>
-                            <div class="form-group container col-md-12">
+                            <div class="form-group container col-sm-12 col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"
                                     data-id="{{sesion.ID}}" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}
                                     >Guardar Sesión {{ forloop.counter }}</button>
@@ -427,6 +426,7 @@
     $(document).ready(function () {
         var table = $('#example').DataTable({
             dom: 'lrtip',
+            "ordering": false,
             "lengthMenu": [5],
             "lengthChange": false,
             "autoWidth": false,

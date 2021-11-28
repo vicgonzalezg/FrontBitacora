@@ -381,8 +381,23 @@ function modSesiones(elem) {
     var avancesSesion = document.getElementById("avancesSesion"+'-'+id);
     var link = document.getElementById("link"+'-'+id);
     var proceso = document.getElementById("proceso")
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+
     if (!fechaSesion || !apptime) {
         Swal.fire('Los campos fecha y hora de la sesión son obligatorios!', '', 'info')
+    }
+    else if (fechaSesion < today ){
+        Swal.fire('La fecha no puede ser anterior a la actual!', '', 'info')
     }
     else
     {

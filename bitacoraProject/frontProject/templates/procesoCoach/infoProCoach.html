@@ -187,7 +187,7 @@
                     <div class="content">
                         <div class="panel-body">
                             <!--Registro de Fecha/hora y estado de cada sesión-->
-                            <form class="form-horizontal" enctype="application/x-www-form-urlencoded" action="{% url 'infoSesionCoach' sesion.ID %}"
+                            <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'infoSesionCoach' sesion.ID %}"
                                 id="formSesiones-{{ sesion.ID }}" method="POST">{% csrf_token %}
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -276,9 +276,10 @@
                                 <br>
                                 <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                 <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
+                            <!--
                             </form>
-                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}">
-                            
+                            <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'infoSesionCoach' sesion.ID %}">
+                            -->    
                                 <div class="row">
                                     <!--sector donde se almacenan los documentos y links-->
                                     <div class="form-group col-md-6">

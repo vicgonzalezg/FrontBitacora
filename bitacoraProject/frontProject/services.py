@@ -40,6 +40,17 @@ class ApiCall:
         else:
             r=requests.post(API_ROUTE+url,json=data)
         return r
+    
+    """ def postArchivo(url,data,files,header):
+        r=None
+        print(data)
+        if header is not None:
+            header['content-type'] = 'application/multipart/form-data'
+            print(header)
+            r=requests.post(API_ROUTE+url,files=data,headers=header)
+        else:
+            r=requests.post(API_ROUTE+url,data=data)
+        return r """
 
     def put(url,data,pk,header):
         print(data)

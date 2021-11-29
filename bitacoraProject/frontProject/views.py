@@ -1629,7 +1629,7 @@ def infoProCoach(request, id):
 
 # ----------------------------------Modificar sesiones Coach----------------------------------
 def infoSesionCoach(request, id):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         perfil = perfilUsuario(request)
         
@@ -1648,7 +1648,11 @@ def infoSesionCoach(request, id):
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
                 archivo = request.FILES.get('archivo')
                 link = request.POST.get('link')
-
+                archivo1 = archivo.read()
+                #print(archivo1)
+                #archivo2 = str(archivo1)
+                archivoEncoded = base64.b64encode(archivo1)
+                archivoEncoded1 = str(archivoEncoded)
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
                     "ID": id,
@@ -1667,11 +1671,11 @@ def infoSesionCoach(request, id):
                 }
 
                 gestorArchivo = {
-                    "LINK": archivo,
+                    "LINK": archivoEncoded1,
                     "SESION_ID": id,
                     "TIPOARCHIVO_ID": 1
                 }
-
+                print(gestorArchivo)
                 #metodo para modificar sesion
                 response = SesionesAPICall.put(request,modificarSesionesJson,id)
 
@@ -1715,9 +1719,9 @@ def infoSesionCoach(request, id):
             return redirect(plantilla)
     
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+    #    messages.warning(request,'Ingrese sus credenciales para acceder')
+    #    return redirect('/')
 
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#

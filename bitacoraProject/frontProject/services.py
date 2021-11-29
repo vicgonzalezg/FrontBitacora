@@ -1,8 +1,8 @@
 from bitacoraProject.settings import API_ROUTE,FRONT_ROUTE
 #Ordenar de A-Z
-from . import models
-from django.core import serializers
-from django.apps import apps
+#from . import models
+#from django.core import serializers
+#from django.apps import apps
 import requests
 import json
 

@@ -1648,10 +1648,11 @@ def infoSesionCoach(request, id):
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
                 archivo = request.FILES.get('archivo')
                 link = request.POST.get('link')
-                archivo1 = archivo.read()
+                name=str(archivo.name)
+                archivo1 = archivo.open(name)
                 #print(archivo1)
                 #archivo2 = str(archivo1)
-                archivoEncoded = base64.b64encode(archivo1)
+                archivoEncoded = base64.b64encode(archivo1.read())
                 archivoEncoded1 = str(archivoEncoded)
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
@@ -1671,6 +1672,9 @@ def infoSesionCoach(request, id):
                 }
 
                 gestorArchivo = {
+                    "file_name" : str(request.FILES['archivo']),
+                    "content": str(request.FILES['archivo'].content_type),
+                    "tell" : str(request.FILES['archivo'].tell()),
                     "LINK": archivoEncoded1,
                     "SESION_ID": id,
                     "TIPOARCHIVO_ID": 1

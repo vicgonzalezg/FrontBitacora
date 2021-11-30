@@ -32,6 +32,7 @@ urlpatterns = [
     path('procAsig/', views.procAsig, name='procAsig'),
     path('infoProCoach/<int:id>/', views.infoProCoach, name='infoProCoach'),
     path('infoSesionCoach/<int:id>/', views.infoSesionCoach, name='infoSesionCoach'),
+    path('infoEnlaceSesionCoach/<int:id>/', views.infoEnlaceSesionCoach, name='infoEnlaceSesionCoach'),
 
     #Perteneciente al proceso de Coachee
     path('menuCoachee/', views.menuCoachee, name='menuCoachee'),

@@ -418,6 +418,19 @@ function modSesiones(elem) {
 }
 }
 
+//Modificar sesiones Coach
+function agregarEnlace(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var enlace = document.getElementById("link"+'-'+id);
+    var formEnlace = document.forms["formEnlace-"+id];
+    if (enlace = null) {
+        Swal.fire('Ingrese un enlace para guardar!', '', 'info')
+    }else{
+        var formEnlace = document.forms["formEnlace-"+id];
+            formEnlace.submit();
+}
+}
 /* ######################################################################################### */
 /*                                        Sesiones Coachee                                   */
 

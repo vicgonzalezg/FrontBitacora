@@ -20,15 +20,13 @@
             <div class="panel panel-primary mt-2 px-2 bg-light">
                 <!--Datos personales del coachee-->
                 <div class="panel-body mt-2">
+                    <br>
                     <div class="row">
-                        <div class="form-group col-md-12 p-1">
-                            <br>
-                            <div class="col-md-12 form-group">
-                                <div class="">
-                                    <span class="col-md-6"></span>
-                                    <div class="col-md-6 row float-end">
-                                        <p class="col-sm-12 col-md-4" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</p>
-                                        <select class="col-sm-12 col-md-6 form-select" name="estadoProceso" aria-label="Default select example"
+                        <span class="col-md-6"></span>
+                        <div class="col-md-6" >
+                                    <div class="col-md-12">
+                                        <label class="col-md-6 control-label" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</label>
+                                        <select class="col-md-12 form-select" name="estadoProceso" aria-label="Default select example"
                                         {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
                                             {% for estado in estados %}
                                             <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
@@ -38,8 +36,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -125,11 +121,11 @@
                         <br>
                     </div>
                 </div>
-                <div class="panel panel-primary mt-4 px-2 bg-light">
+                <div class="panel panel-primary px-2 bg-light">
                     <div class="panel-body">
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label" name="nombre">Plan de Acción</label>
+                                <label class="col-md-6 col-lg-4 control-label" name="nombre">Plan de Acción</label>
                                 <div class="col-md-12">
                                     <textarea rows="7" class="form-control" name="planAccionProc"
                                         id="planAccionProc-{{ procesos.ID }}"
@@ -138,6 +134,7 @@
                             </div>
                             <!--Tabla con registro de fechas de las sesiones-->
                             <div class="form-group col-md-6">
+                                <div class="col-md-12">
                                 <table id="listSesion" class="table thead-dark border border-dark">
                                     <thead class="thead-dark">
                                         <tr class="cabecera">
@@ -162,6 +159,7 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -277,11 +275,13 @@
                                 <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                 <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                             </form>
-                            <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}">
+                            
                             
                                 <div class="row">
+                                    
                                     <!--sector donde se almacenan los documentos y links-->
                                     <div class="form-group col-md-6">
+                                        <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}" id="formDocumentos-{{ sesion.ID }}"></form>
                                         <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                         <div class="form-group col-md-12">
                                             <table id="tableDoc" class="table thead-dark border border-dark">
@@ -316,10 +316,15 @@
                                             </div>
                                             <br>
                                         </div>
+                                    </form>
                                     </div>
+                                
+                                
                                     <div class="form-group col-md-6">
                                         <label class="col-md-6 control-label" name="nombre">Links:</label>
                                         <div class="form-group col-md-12">
+                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceSesionCoach' sesion.ID %}" id="formEnlace-{{ sesion.ID }}">{% csrf_token %}
+                                        
                                             <table id="tableLink" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
@@ -342,16 +347,19 @@
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
+                                            <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                            <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
+                                        
                                             <div class="row">
                                                 <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
-                                                    name="link"
-                                                    {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
-                                                <i type="button" data-id="{{sesion.ID}}" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
+                                                    name="link" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
+                                                <i type="button" data-id="{{sesion.ID}}" onclick="agregarEnlace(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                             </div>
                                         </div>
+                                    </form>
                                     </div>
                                 </div>
-                           </form>
+                           
                            <br>
                             <div class="form-group container col-sm-12 col-md-12">
                                 <button type="submit" class="btn btn-primary float-end" onclick="modSesiones(this);"

@@ -1628,8 +1628,56 @@ def infoProCoach(request, id):
         return redirect('/')
 
 # ----------------------------------Modificar sesiones Coach----------------------------------
+def infoEnlaceSesionCoach(request,id):
+    perfil = perfilUsuario(request)
+
+    if perfil['perfil'] == 2:
+            #se obtiene dato desde la vista
+            idP = request.POST.get('proceso')
+            if request.method == 'POST':
+                link = request.POST.get('link')
+
+                gestorEnlace = {
+                    "LINK": link,
+                    "SESION_ID": id,
+                }
+
+                #metodo para modificar sesion
+                responseEnlaces = EnlacesAPICall.post(request,gestorEnlace)
+
+                if responseEnlaces.status_code == 201:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Enlace añadido.')
+                    return redirect('infoProCoach', idP)
+                #mensaje que muestra la vista si la actualización sufre algun problema
+                else:
+                    # se reemplazan comillas dobles que trae el mensaje desde la api
+                    responseEnlaces.encoding = 'utf-8'
+                    messages.error(
+                        request, responseEnlaces.text.replace('"', ''))
+                    return redirect('infoProCoach', idP)
+
+            if request.method == 'DELETE':
+                link = request.POST.get('link')
+
+                gestorEnlace = {
+                    "LINK": link,
+                    "SESION_ID": id,
+                }
+
+            #redirecciona la vista terminado el metodo 
+            return redirect('listProCoach')
+
+        #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
+    else:
+        if perfil['perfil'] == 1:
+            plantilla = 'menuAdmin'
+        elif perfil['perfil'] == 3:
+            plantilla = 'menuCoachee'
+        return redirect(plantilla)
+
 def infoSesionCoach(request, id):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         perfil = perfilUsuario(request)
         
@@ -1646,8 +1694,6 @@ def infoSesionCoach(request, id):
                 AVANCES = request.POST.get('avancesSesion')
                 ASIGNACION = request.POST.get('asigSesion')
                 ESTADOSESION_ID = request.POST.get('estadoSesion1')
-                archivo = request.FILES.get('archivo')
-                link = request.POST.get('link')
 
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
@@ -1661,40 +1707,15 @@ def infoSesionCoach(request, id):
                     "ESTADOSESION_ID": ESTADOSESION_ID
                 }
 
-                gestorEnlace = {
-                    "LINK": link,
-                    "SESION_ID": id
-                }
-
-                gestorArchivo = {
-                    "LINK": archivo,
-                    "SESION_ID": id,
-                    "TIPOARCHIVO_ID": 1
-                }
-
                 #metodo para modificar sesion
                 response = SesionesAPICall.put(request,modificarSesionesJson,id)
-
-                #metodo para modificar sesion
-                responseArchivo = ArchivosAPICall.post(request,gestorArchivo)
-
-                #metodo para modificar sesion
-                responseEnlaces = EnlacesAPICall.post(request,gestorEnlace)
                 
                 #consulta respuesta de la api
                 if response.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa
                     messages.success(request, 'Sesión actualizada con éxito.')
                     return redirect('infoProCoach', idP)
-                    #consulta respuesta de la api
-                elif responseArchivo.status_code == 200:
-                    #mensaje que muestra la vista si la actualización es exitosa
-                    messages.success(request, 'Archivos almacenados con éxito.')
-                    return redirect('infoProCoach', idP)
-                elif responseEnlaces.status_code == 200:
-                    #mensaje que muestra la vista si la actualización es exitosa
-                    messages.success(request, 'Enlaces almacenado con éxito.')
-                    return redirect('infoProCoach', idP)
+
                 #mensaje que muestra la vista si la actualización sufre algun problema
                 else:
                     # se reemplazan comillas dobles que trae el mensaje desde la api
@@ -1715,9 +1736,9 @@ def infoSesionCoach(request, id):
             return redirect(plantilla)
     
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    #except Exception as e:
+     #   messages.warning(request,'Ingrese sus credenciales para acceder')
+      #  return redirect('/')
 
 
 # ------------------------------  Perteneciente al Coachee ----------------------------------------------#

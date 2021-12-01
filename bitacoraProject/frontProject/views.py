@@ -1650,9 +1650,7 @@ def infoSesionCoach(request, id):
                 link = request.POST.get('link')
                 name=str(archivo.name)
                 archivo1 = archivo.open(name)
-                #print(archivo1)
-                #archivo2 = str(archivo1)
-                archivoEncoded = base64.b64encode(archivo1.read())
+                archivoEncoded = base64.b64encode(archivo1.read()).decode('utf-8')
                 archivoEncoded1 = str(archivoEncoded)
                 #se almacenan los datos en una variable
                 modificarSesionesJson = {
@@ -1679,7 +1677,7 @@ def infoSesionCoach(request, id):
                     "SESION_ID": id,
                     "TIPOARCHIVO_ID": 1
                 }
-                print(gestorArchivo)
+                
                 #metodo para modificar sesion
                 response = SesionesAPICall.put(request,modificarSesionesJson,id)
 

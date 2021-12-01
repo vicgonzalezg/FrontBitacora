@@ -6,15 +6,18 @@ html {
     margin: 0;
     margin-bottom: 80px;
   }
-  footer {
+footer {
     background-color: #002b49;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 50px;
     color: white;
-    
+    z-index: 999;
   }
+
+  
+
 
 /*#footer {
     position:fixed;

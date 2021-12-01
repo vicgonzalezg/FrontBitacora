@@ -1,38 +1,13 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menú Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/all.css' %}">
 <script type="text/javascript" src="{% static 'js/sweetalert2@11.js' %}"></script>
 {% endblock %}
 {% block content %}
-<!--Pregunta de seguridad para confirmar acción-->
-<script>
-    function finalizarProceso(id) {
-        Swal.fire({
-            title: '¿Estas seguro de finalizar el proceso?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'No!',
-            confirmButtonText: 'Si, Finalizar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    timer: 2000,
-                    title: 'Finalizado!',
-                    text: 'Operación Realizada con éxito',
-                    showConfirmButton: false,
-                })
-                $('#exampleModal').modal('hide');
-                $(".modal-backdrop").remove();
-            }
-        })
-    }
-</script>
+
 <!--Menu Procesos-->
 
 <div class="list-group flex-column flex-sm-row list-group-horizontal p-2" id="barra2">
@@ -54,10 +29,23 @@
                     <input id="coachUsuario" class="contactInput form-control" placeholder="Buscar por Coachee">
                 </div>
             </div>
-            <span class="col-xs-6 col-md-3 py-1"></span>
             <div class="col-xs-3 col-md-3 py-1">
                 <div class="form-group">
                     <input id="nombre" class="contactInput form-control" placeholder="Buscar por Empresa">
+                </div>
+            </div>
+             <!--filtro Estado Procesos-->
+            <div class="col-xs-3 col-md-3 py-1">
+                <div class="form-group">
+                    <select id="table-filter" name="estado" class="form-select form-control">
+                        <option name="estado" value="">Todos los estados</option>
+                        <option name="estado" >No iniciado</option>
+                        <option name="estado" >Reunión de levantamiento</option>
+                        <option name="estado" >En curso</option>
+                        <option name="estado" >Reunión de avances</option>
+                        <option name="estado" >Reunión de cierre</option>
+                        <option name="estado" >Finalizado</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -89,10 +77,10 @@
                     <th scope="row" name="estado" >{{ proceso.DESCRIPCION }} </th>
                     <th scope="row" class=""><a href="{% url 'visInfoProceso' proceso.ID %}" target="_blank">
                         <i type="button" class="fas fa-book-reader d-flex justify-content-center"></i></a></th>
-                    <th scope="row" class=""><i type="button" class="fas fa-edit d-flex justify-content-center"
+                    <th scope="row" class=""><i type="button" class="fas fa-edit d-flex justify-content-center" style="color: green;" 
                             data-bs-toggle="modal" data-bs-target="#exampleModal-{{ proceso.ID }}"></i></th>
                     <th scope="row" class=""><i type="button"
-                            class="fas fa-clipboard-check d-flex justify-content-center" data-bs-toggle="modal"
+                            class="fas fa-clipboard-check d-flex justify-content-center" style="color: red;"  data-bs-toggle="modal"
                             data-bs-target="#finalizarProc-{{ proceso.ID }}"></i></th>
                 
                     <!-- Button trigger modal -->
@@ -228,6 +216,7 @@
 $(document).ready(function (){
     var table = $('#example').DataTable({
        dom: 'lrtip',
+       "ordering": false,
        "lengthMenu": [10,20,30,40,50],
        "lengthChange": true,
        "autoWidth": false,
@@ -256,6 +245,9 @@ $(document).ready(function (){
     });
     $('#coacheeUsuario').on('keyup change', function () {
         table.column(2).search($(this).val()).draw();
+    });
+    $('#table-filter').on('change', function(){
+       table.search(this.value).draw();   
     });
 });
 </script>

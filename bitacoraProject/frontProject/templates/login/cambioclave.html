@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS necesarios para el Cabmio de Contrasena -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/recuperar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/favicon.ico' %}">
+    <script src="{% static 'js/validaciones.js'%}"></script>
+    <title>Cambiar Contraseña</title>
+</head>
+<body>
+    <section class="login py-3 bg-light">
+        <div class="container">
+            <div class="row g-0">
+                <div class="col-md-12 d-flex justify-content-center py-3">
+                    <img src="{% static 'imagenes/cambioclavelogo.jpg' %}" class="img-clave" alt="logo">
+                </div>
+                <div class="col-md-12 text-center clave py-1">
+                    <h2 class="py-1 pb-2 text-secondary">Ingrese una nueva contraseña</h2>
+                    <form action="" id="cambioclave" method="post">{% csrf_token %}
+                        <div class="form-row py-2">
+                            <div class="mb-4 has-validation d-flex justify-content-center">
+                                <input type="password" class=" inp px-3" name="clave1" id="clave1" placeholder="Ingrese nueva contraseña"
+                                    id="validationPassword" required>
+                                <div class="invalid-feedback">
+                                    Debe ingresar una contraseña.
+                                </div>
+                            </div>
+                            <div class="mb-4 has-validation d-flex justify-content-center">
+                                <input type="password" class="inp px-3" name="clave2" id="clave2" placeholder="Repetir nueva contraseña"
+                                    id="validationPassword" required>
+                                <div class="invalid-feedback">
+                                    Debe ingresar una contraseña.
+                                </div>
+                            </div>
+                            <div id="pswd_info">
+                                <h6>La contraseña debe cumplir los siguientes requerimientos:</h6>
+                                <ul style="list-style:none">
+                                  <li id="letter" class="invalid">Al menos <strong>una letra</strong></li>
+                                  <li id="capital" class="invalid">Al menos <strong>una letra mayúscula</strong></li>
+                                  <li id="number" class="invalid">Al menos <strong>un número</strong></li>
+                                  <li id="length" class="invalid">Al menos <strong>8 carácteres</strong></li>
+                                  <li id="caracter" class="invalid">Al menos <strong>un caracter especial</strong></li>
+                                  <li id="match" class="invalid">Las contraseñas <strong>deben coincidir</strong></li>
+                                  <li id="blank" class="invalid">Las contraseñas <strong>no deben tener espacios</strong></li>
+                                </ul>
+                              </div>
+                            <!-- Boton Recuperar Clave -->
+                            <div class="d-grid d-flex justify-content-center pb-3">
+                                <button type="submit" onclick="cambioclave();" class="btn btn-primary inp px-3">Cambiar Contraseña</button>
+                            </div>    
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<!-- Script JS necesarios para el login -->
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/sweetalert2@11.js' %}"></script>
+<!-- script con los detalles del mensaje -->
+{% if messages %}
+{% for message in messages %}
+    <script>
+        Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{{ message.tags }}',
+                    heightAuto: false,
+                    timer: 6000,
+                    timerProgressBar: true
+                }).then((result) => {
+                        window.location.href = "/"
+                    });
+    </script>
+{% endfor %}
+{% endif %}
+<script src="{% static 'js/claves.js' %}"></script>
+</html>

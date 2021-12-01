@@ -1,9 +1,10 @@
 {% load static %}
+<!-- bucle para recorrer datos que trae entity desde las views y utilizarlos en la vista -->
 {% for procesos in entity %}
 <!--Formulario del proceso y sus sesiones -->
 <div class="bg-light">
     <div class="form-horizontal" id="formModProcesoCoach-{{ procesos.ID }}"
-        action="{% url 'infoProcCoach' procesos.ID %}" method="POST">
+        action="{% url 'infoProCoach' procesos.ID %}" method="POST">
         <div class="container-fluid">
             <div>
                 <image class="col-xs-4">
@@ -26,6 +27,7 @@
                     <td>
                         <p class="texto text-center">{{procesos.FECHACREACION}}</p>
                     </td><td>
+                        <!-- se consulta si el proceso tiene fecha de finalizado -->
                         {% if procesos.FECHATERMINO == None %}
                         <p class="texto text-center">Proceso no Finalizado</p>
                         {% else %}
@@ -42,6 +44,7 @@
                         <th colspan="2" class="cabeceraReporte text-center">Datos Coachee</th>
 
                     </tr>
+                    <!-- se muestran los datos en la tabla -->
                     <tr>
                         <td>Nombre Coachee:</td>
                         <td>{{procesos.NOMBRE}}
@@ -132,7 +135,7 @@
             <div class="nav-item">
                 <h2 class="nav-procesos cabeceraSesiones">Información de las Sesiones</h2>
             </div>
-
+            <!-- bucle para recorrer las sesiones y obtener los datos de estas -->
             {% for sesion in sesiones %}
             <br>
             <div class="nav-item">
@@ -183,7 +186,18 @@
             <br>
             <table class="border w-100">
                 <tr class="border">
-                    <th class="cabeceraReporte text-center">ㅤㅤAvances:ㅤㅤ</th>
+                    <th class="cabeceraReporte text-center">Estado de Asignaciones/acuerdos</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="texto">{{sesion.RESPUESTA}}</p>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="border w-100">
+                <tr class="border">
+                    <th class="cabeceraReporte text-center">Avances:</th>
                 </tr>
                 <tr>
                     <td>

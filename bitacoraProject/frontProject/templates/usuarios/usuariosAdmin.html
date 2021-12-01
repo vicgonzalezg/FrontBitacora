@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menú Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
@@ -27,12 +27,18 @@
     <div class="row">
         
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-            <h3 class="text-center fw-bold">Ultimos 5 Coach Creados</h3>
+            <h3 class="text-center fw-bold">Últimos 5 Coach Creados</h3>
             {% for coachs in list_coachs %}
             <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <h6 class="mb-1">Nombre: {{coachs.NOMBRE}} {{coachs.APELLIDO}}</h6>
                 <p class="mb-1">Email: {{coachs.CORREO}}</p>
                 <p class="mb-1">Telefono: {{coachs.FONO}}</p>
+            </a>
+            {% empty %}
+            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                <div class="d-flex w-100 justify-content-center">
+                    <h5 class="mb-1 text-center">Aún no se ha creado ningún Coach.</h5>
+                </div>
             </a>
             {% endfor %}
         </div>
@@ -40,12 +46,18 @@
         <!--Ultimos 5 usuarios Coachee Creados -->
         
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
-            <h3 class="text-center fw-bold">Ultimos 5 Coachee Creados </h3>
+            <h3 class="text-center fw-bold">Últimos 5 Coachee Creados </h3>
             {% for coachees in list_coachees %}
             <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <h6 class="mb-1">Coachee: {{coachees.NOMBRE}} {{coachees.APELLIDO}}</h6>
                 <p class="mb-1">Empresa: {{coachees.EMPRESA}}</p>
                 <p class="mb-1">Jefe: {{coachees.NOMBREJEFE}}</p>
+            </a>
+            {% empty %}
+            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                <div class="d-flex w-100 justify-content-center">
+                    <h5 class="mb-1 text-center">Aún no se ha creado ningún Coachee.</h5>
+                </div>
             </a>
             {% endfor %}
         </div>

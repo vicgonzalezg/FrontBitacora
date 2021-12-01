@@ -368,7 +368,7 @@
   margin: 5px;
 }
 
-@media screen and (max-width: 428px) {
+@media screen and (max-width: 580px) {
   #barra2{
     display: none;
   }

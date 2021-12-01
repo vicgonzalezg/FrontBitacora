@@ -1,7 +1,8 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Coach{% endblock %}
+{% block title %}Menú Coach{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/progressBar.css' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'css/jalendar.min.css' %}" type="text/css" />
 <script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 <!--jQuery-->
@@ -9,29 +10,45 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
 {% block content %}
-<!-- Listado de Procesos -->
+<!-- Listado de sesiones del dia -->
 
 <div class="container">
     <div class="row">
         <div class="list-group d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center">Procesos del día</h3>
-
-            {% for proceso in entity %} {% if proceso.NOMBREEMPRESA == None %}
-            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                <div class="d-flex w-100 justify-content-center">
-                    <h5 class="mb-1 text-center">No hay procesos para el día de hoy</h5>
-                </div>
-            </a>
-            {% else %}
-            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+            
+            {% for sesiones in entity %}
+            {% if sesiones.ESTADOPROC != 6 %}
+            <a href="{% url 'infoProCoach' sesiones.ID %}"
+                class="rounded-3 border-dark list-group-item list-group-item-action"
+                style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                    <h5 class="mb-1">Proceso Empresa: {{ sesiones.NOMBREEMPRESA }}</h5>
                 </div>
-                <h6 class="mb-1">Estado: {{ proceso.DESCRIPCION }}</h6>
-                <p class="mb-1">Coach: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
-                <p class="mb-1">Coachee: {{ proceso.NOMBRECOACH }} {{ proceso.APELLIDOCOACH }}</p>
+                <h6 class="mb-1">Estado Proceso: {{ sesiones.DESCRIPCIONPROCE }}</h6>
+                <p class="mb-1">Coach: {{ sesiones.NOMBRE }} {{ sesiones.APELLIDO }}</p>
+                <p class="mb-1">Coachee: {{ sesiones.NOMBRECOACH }} {{ sesiones.APELLIDOCOACH }}</p>
+                <div class="containerProgressBar nav col-md-12">
+                    <ul class="progressbar navbuttons col-md-12">
+                        {% for proceso in sesionBar %}
+                            {% if proceso.IDP == sesiones.ID%}
+                                <li {% if proceso.ESTADOSESION_ID != 4 %} class="" 
+                                        {% elif proceso.ESTADOSESION_ID == 4 %}
+                                        class="activeBar" {% endif %}>sesión {{proceso.COUNT}}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
             </a>
-            {% endif %} {% endfor %}
+            {% endif %}
+            {% empty %}
+            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action"
+                style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                <div class="d-flex w-100 justify-content-center">
+                    <h5 class="mb-1 text-center">No hay sesiones para el día de hoy.</h5>
+                </div>
+            </a>
+            {% endfor %}
 
             <!-- Paginación -->
             <div>
@@ -39,30 +56,7 @@
             </div>
         </div>
         <!-- Calendario -->
-        
-        <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6">
-            <div class="col-md-12">
-                <h3 class="text-center fw-bold">Calendario</h3>
-                <div id="yourId" class="jalendar">
-                    {% for procesos in procesosCalendario %}
-                    <div class="added-event" data-type="task" data-date="{{procesos.FECHACREACION}}" data-title="Proceso Empresa: {{ procesos.NOMBREEMPRESA }}">
-                    </div>
-                    {% endfor %}
-                </div>
-            </div> 
-        </div>         
+        {% include "base/calendario.html" %}
     </div>
 </div>
-<script>
-    $('#yourId').jalendar({
-        color: '#FFFFFF',
-        //color2: 'rgba( 255, 255, 255, 0.9 )',
-        lang: 'ES',
-        titleColor: '#000000', // color del mes 
-        weekColor: '#000000', // color de la semana
-        dayColor: '#000000', // color de los dias 
-        todayColor: '#52BE80', // color del dia de hoy 
-        dateType: "yyyy-mm-dd" 
-    });
-</script>
 {% endblock %}

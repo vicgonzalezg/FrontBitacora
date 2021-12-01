@@ -1,28 +1,40 @@
 /* Utilizar el 100% de la pantalla*/
 html,body {
     height: 100%;
+    background-color: #002b49;
   }
   @media screen and (min-width: 425px) {
-    html,body {
-        height: max-content;
-      }
-  }
-  @media screen and (min-width: 320px) {
     html,body {
         height: 100%;
       }
   }
+  @media screen and (min-width: 320px) {
+    /*html,body {
+        height: 100%;
+      }*/
+      .altura-login{
+        height: 100%;
+     }
+
+  }
+.altura-login{
+    height: 100%;
+}
+
 /* Color del texto en el login */
 h3,label {
     color: white;
 }
+h6,label {
+  color: white;
+}
 /* Incorporar la imagen al lado izquierdo */
 .img-login {
-    background-image: url(../imagenes/banner-coaching.jpg);
-    background-repeat: no-repeat;
+    background-image: url(../imagenes/img-assessment2.jpg);
+    background-repeat: round;
     background-size: cover;
 }
 /* Fondo de la parte derecha del login */
 .form-login{
-    background-color: #002b49
+    height: 100%;
 }

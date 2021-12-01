@@ -1,0 +1,26 @@
+<div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
+  <div class="col-md-12 align-items-center">
+    <h3 class="text-center fw-bold">Calendario</h3>
+    <div id="yourId" class="jalendar">
+      <!-- bucles de sesiones para que los liste y se obtengan de cada uno los datos necesarios para el calendario -->
+      {% for sesion in sesiones %}
+          <div class="added-event" data-type="task" data-date="{{sesion.FECHASESION}}" data-title="Empresa: {{ sesion.NOMBREEMPRESA }}
+            - Coachee: {{ sesion.NOMBRE }} {{ sesion.APELLIDO }} - Sesión {{ sesion.CONTADOR }}">
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- atributos del calendario -->
+<script>
+  $('#yourId').jalendar({
+        color: '#FFFFFF',
+        lang: 'ES',
+        titleColor: '#000000', // color del mes 
+        weekColor: '#000000', // color de la semana
+        dayColor: '#000000', // color de los dias 
+        todayColor: '#52BE80', // color del dia de hoy 
+        dateType: "yyyy-mm-dd" 
+    });
+</script>

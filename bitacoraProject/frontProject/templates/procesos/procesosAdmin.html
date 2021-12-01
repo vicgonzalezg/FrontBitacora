@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Administrador{% endblock %}
+{% block title %}Menú Administrador{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/jalendar.min.css' %}" type="text/css" />
@@ -24,52 +24,27 @@
         <div class="list-group d-flex col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1">
             <h3 class="text-center fw-bold">Listado de Procesos</h3>
             {% for proceso in entity %}
-            {% if proceso.NOMBREEMPRESA == None %}
-            <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                <div class="d-flex w-100 justify-content-center">
-                    <h5 class="mb-1 text-center">No hay procesos</h5>
-                </div>
-            </a>
-            {% else %}
-            <a href="{% url 'visInfoProceso' proceso.ID %}" target="_blank" class="rounded-3 border-dark list-group-item list-group-item-action"
-                style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
-                <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
-                <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
-            </a>
-            {% endif %}
+      
+                <a href="{% url 'visInfoProceso' proceso.ID %}" target="_blank" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                    <h5 class="mb-1">Proceso Empresa: {{ proceso.NOMBREEMPRESA }}</h5>
+                    <p class="mb-1">Coachee: {{ proceso.NOMBRE }} {{ proceso.APELLIDO }}</p>
+                    <p class="mb-1">Estado: {{ proceso.DESCRIPCION }}</p>
+                </a>
+            
+            {% empty %}
+                <a href="#" class="rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                    <div class="d-flex w-100 justify-content-center">
+                        <h5 class="mb-1 text-center">Aún no se ha creado ningún proceso.</h5>
+                    </div>
+                </a>
             {% endfor %}
 
         </div>
         <!-- Calendario -->
-        <div class="d-flex col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
-            <div class="col-md-12 align-items-center ps-5">
-                <h3 class="text-center fw-bold">Calendario</h3>
-                <div id="yourId" class="jalendar">
-                    {% for proceso in entity %}
-                    <div class="added-event" data-type="task" data-date="{{proceso.FECHACREACION}}" data-title="Proceso Empresa: {{ proceso.NOMBREEMPRESA }}">
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+        {% include "base/calendario.html" %}
 
 
     </div>
 </div>
-
-<script>
-    $('#yourId').jalendar({
-        color: '#FFFFFF',
-        //color2: 'rgba( 255, 255, 255, 0.9 )',
-        lang: 'ES',
-        titleColor: '#000000', // color del mes 
-        weekColor: '#000000', // color de la semana
-        dayColor: '#000000', // color de los dias 
-        todayColor: '#52BE80', // color del dia de hoy 
-        dateType: "yyyy-mm-dd"
-    });
-</script>
-
 
 {% endblock %}

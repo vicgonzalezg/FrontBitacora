@@ -1,6 +1,6 @@
 {% extends "menu/layoutMenu.html" %}
 {% load static %}
-{% block title %}Menu Coach{% endblock %}
+{% block title %}Menú Coach{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock %}
@@ -11,26 +11,13 @@
 <div class="container">
 
         <div class="justify-content-center list-group d-flex col-12 col-sm-12 col-md-12 p-1">
-            <h3 class="text-center fw-bold text-center">Procesos Asignados(No Iniciados)</h3>
+            <h3 class="text-center fw-bold text-center">Procesos Asignados</h3>
                      
             {% for procesos in entity %}
-                {% if procesos.NOMBREEMPRESA == None %}
-                <br>
-                <div class="row">
-                <span class="col-md-3"></span>
-                <a href="#" class="col-md-6 rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
-                    <div class="col-md-12 d-flex w-100 justify-content-center">
-                        <h5 class="mb-1 text-center">No hay nuevos procesos asignados</h5>
-                    </div>
-                </a>
-                <span class="col-md-3"></span>
-                </div>
-                {% else %}   
-                <br>            
                 <div class="row justify-content-center">
                     <br>
                     <span class="col-md-1"></span>
-                    <a href="{% url 'infoProcCoach' procesos.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action col-md-6" aria-current="true">
+                    <a href="{% url 'infoProCoach' procesos.ID %}" class="rounded-3 border-dark list-group-item list-group-item-action col-md-6" aria-current="true">
                         <div class="text-center">
                             <h5 class="mb-1 text-center">Proceso Empresa: {{procesos.NOMBREEMPRESA}}</h5>
                         </div>
@@ -40,8 +27,19 @@
                     </a>
                     <span class="col-md-1"></span>
                 </div>
-                {% endif %}
-            {% endfor %}
+                <br>
+                               
+                {% empty %}
+                <div class="row">
+                    <span class="col-md-3"></span>
+                    <a href="#" class="col-md-6 rounded-3 border-dark list-group-item list-group-item-action" style="border-radius: 5px; margin-block-end: 10px;" aria-current="true">
+                        <div class="col-md-12 d-flex w-100 justify-content-center">
+                            <h5 class="mb-1 text-center">No hay procesos en estado no iniciados</h5>
+                        </div>
+                    </a>
+                    <span class="col-md-3"></span>
+                    </div>
+                {% endfor %}
            
             <br>
             

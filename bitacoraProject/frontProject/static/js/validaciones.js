@@ -418,19 +418,55 @@ function modSesiones(elem) {
 }
 }
 
-//Modificar sesiones Coach
+//agregar Enlace
 function agregarEnlace(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
     var enlace = document.getElementById("link"+'-'+id);
     var formEnlace = document.forms["formEnlace-"+id];
-    if (enlace = null) {
+    if (enlace == null) {
         Swal.fire('Ingrese un enlace para guardar!', '', 'info')
     }else{
-        var formEnlace = document.forms["formEnlace-"+id];
             formEnlace.submit();
 }
 }
+//agregar Archivo
+function agregarArchivo(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var archivo = document.getElementById("archivo"+'-'+id);
+    
+    var formArchivo = document.forms["formArchivo-"+id];
+    if (archivo == null) {
+        Swal.fire('Ingrese un archivo para guardar!', '', 'info')
+    }else{
+            formArchivo.submit();
+}
+}
+
+//eliminar Enlace
+function eliminarEnlace(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var formEnlaceEliminar = document.forms["formEnlaceEliminar-"+id];
+    if (formEnlaceEliminar == null) {
+        Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
+    }else{
+        formEnlaceEliminar.submit();
+}
+}
+//eliminar Archivo
+function eliminarArchivo(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var formArchivoEliminar = document.forms["formArchivoEliminar-"+id];
+    if (formArchivoEliminar == null) {
+        Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
+    }else{
+        formArchivoEliminar.submit();
+}
+}
+
 /* ######################################################################################### */
 /*                                        Sesiones Coachee                                   */
 

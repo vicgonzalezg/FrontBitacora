@@ -34,7 +34,6 @@ class ApiCall:
 
     def post(url,data,header):
         r=None
-        print(data)
         if header is not None:
             r=requests.post(API_ROUTE+url,json=data,headers=header)
         else:
@@ -42,18 +41,15 @@ class ApiCall:
         return r
 
     def put(url,data,pk,header):
-        print(data)
         r=requests.put(API_ROUTE+url+'/'+str(pk)+'/',json=data,headers=header)
         return r
     
     def put_one(url,pk,data):
-        print(data)
         r=requests.put(API_ROUTE+url+'/'+str(pk)+'/',json=data)
         return r
 
-    def delete(url,data,pk,header):
-        r=requests.delete(API_ROUTE+url+'/'+str(pk),json=data,headers=header)
-        print(r)
+    def delete(url,id,pk,header):
+        r=requests.delete(API_ROUTE+'sesiones'+'/'+str(id)+'/'+url+'/'+str(pk)+'/',headers=header)
         return r
 
 def sesionUsuario(request,r):
@@ -180,11 +176,14 @@ class EstadosProcesosAPICall:
 
 class ArchivosAPICall:
     def get (request,query):
-        r=ApiCall.get('gestor-archivo',query,currentheaders(request))
+        r=ApiCall.get('archivos',query,currentheaders(request))
         return r
     def post (request,data):
-        r=ApiCall.post('gestor-archivo',data,currentheaders(request))
+        r=ApiCall.post('archivos',data,currentheaders(request))
         return r
+    def delete (request,id,pk):
+        r=ApiCall.delete('archivos',id,pk,currentheaders(request))
+        return r    
 
 class EnlacesAPICall:
     def get (request,query):
@@ -192,4 +191,8 @@ class EnlacesAPICall:
         return r
     def post (request,data):
         r=ApiCall.post('enlaces',data,currentheaders(request))
+        return r
+
+    def delete (request,id,pk):
+        r=ApiCall.delete('enlaces',id,pk,currentheaders(request))
         return r

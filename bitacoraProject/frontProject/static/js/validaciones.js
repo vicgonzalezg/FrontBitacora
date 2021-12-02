@@ -418,19 +418,32 @@ function modSesiones(elem) {
 }
 }
 
-//Modificar sesiones Coach
+//agregar Enlace
 function agregarEnlace(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
     var enlace = document.getElementById("link"+'-'+id);
     var formEnlace = document.forms["formEnlace-"+id];
-    if (enlace = null) {
+    if (enlace == null) {
         Swal.fire('Ingrese un enlace para guardar!', '', 'info')
     }else{
-        var formEnlace = document.forms["formEnlace-"+id];
             formEnlace.submit();
 }
 }
+
+//eliminar Enlace
+function eliminarEnlace(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var enlace = document.getElementById("link"+'-'+id);
+    var formEnlaceEliminar = document.forms["formEnlaceEliminar-"+id];
+    if (enlace == null) {
+        Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
+    }else{
+        formEnlaceEliminar.submit();
+}
+}
+
 /* ######################################################################################### */
 /*                                        Sesiones Coachee                                   */
 

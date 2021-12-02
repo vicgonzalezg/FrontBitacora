@@ -1657,13 +1657,39 @@ def infoEnlaceSesionCoach(request,id):
                         request, responseEnlaces.text.replace('"', ''))
                     return redirect('infoProCoach', idP)
 
-            if request.method == 'DELETE':
-                link = request.POST.get('link')
+            #redirecciona la vista terminado el metodo 
+            return redirect('listProCoach')
 
-                gestorEnlace = {
-                    "LINK": link,
-                    "SESION_ID": id,
-                }
+        #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
+    else:
+        if perfil['perfil'] == 1:
+            plantilla = 'menuAdmin'
+        elif perfil['perfil'] == 3:
+            plantilla = 'menuCoachee'
+        return redirect(plantilla)
+
+def infoEnlaceEliminar(request, id):
+    perfil = perfilUsuario(request)
+
+    if perfil['perfil'] == 2:
+            #se obtiene dato desde la vista
+            idP = request.POST.get('proceso')
+            if request.method == 'POST':
+
+                #metodo para modificar sesion
+                responseEnlaces = EnlacesAPICall.delete(request,id)
+
+                if responseEnlaces.status_code == 200:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Enlace Eliminado.')
+                    return redirect('infoProCoach', idP)
+                #mensaje que muestra la vista si la actualización sufre algun problema
+                else:
+                    # se reemplazan comillas dobles que trae el mensaje desde la api
+                    responseEnlaces.encoding = 'utf-8'
+                    messages.error(
+                        request, responseEnlaces.text.replace('"', ''))
+                    return redirect('infoProCoach', idP)
 
             #redirecciona la vista terminado el metodo 
             return redirect('listProCoach')

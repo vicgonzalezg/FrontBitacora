@@ -313,6 +313,9 @@
                                                     <input type="file" class="col-md-9" name="archivo" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                     <i type="button" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                                 </div>
+                                                <div>
+                                                    <label style="font-size: 10px; color: red;">*Solo se pueden añadir archivos con formato: doc, docx, xls, ppt, pptx, pdf, jpeg, xlsx</label>
+                                                </div>
                                             </div>
                                             <br>
                                         </div>
@@ -323,8 +326,7 @@
                                     <div class="form-group col-md-6">
                                         <label class="col-md-6 control-label" name="nombre">Links:</label>
                                         <div class="form-group col-md-12">
-                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceSesionCoach' sesion.ID %}" id="formEnlace-{{ sesion.ID }}">{% csrf_token %}
-                                        
+                                           
                                             <table id="tableLink" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
@@ -335,10 +337,13 @@
                                                 <tbody>
                                                     {% for gestor in gestoresEnlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID %}
+                                                        <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceEliminar' sesion.ID %}" id="formEnlaceEliminar-{{ gestor.IDLINKEN }}">{% csrf_token %}
+                                                            <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                                             <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">LINK: {{ forloop.counter }}</a></th>
-                                                                <th scope="row"><i class="far fa-trash-alt float-end mt-1" style="color: red;"></i></th>
+                                                                <th scope="row"><button type="button" data-id="{{gestor.IDLINKEN}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarEnlace(this);" style="color: red;"></a></button></th>
                                                             </tr>
+                                                        </form>
                                                         {% endif %}
                                                         {% empty %}
                                                     <tr class="bg-light">
@@ -347,16 +352,20 @@
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
-                                            <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
-                                        
-                                            <div class="row">
-                                                <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
-                                                    name="link" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
-                                                <i type="button" data-id="{{sesion.ID}}" onclick="agregarEnlace(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
-                                            </div>
+
+                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceSesionCoach' sesion.ID %}" id="formEnlace-{{ sesion.ID }}">{% csrf_token %}
+                                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
+                                            
+                                                <div class="row">
+                                                    <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
+                                                        name="link" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
+                                                    <i type="button" data-id="{{sesion.ID}}" onclick="agregarEnlace(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
+                                                </div>
+                                               
+                                            </form>
                                         </div>
-                                    </form>
+                                        
                                     </div>
                                 </div>
                            

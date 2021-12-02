@@ -33,6 +33,7 @@ urlpatterns = [
     path('infoProCoach/<int:id>/', views.infoProCoach, name='infoProCoach'),
     path('infoSesionCoach/<int:id>/', views.infoSesionCoach, name='infoSesionCoach'),
     path('infoEnlaceSesionCoach/<int:id>/', views.infoEnlaceSesionCoach, name='infoEnlaceSesionCoach'),
+    path('infoEnlaceEliminar/<int:id>/', views.infoEnlaceEliminar, name='infoEnlaceEliminar'),
 
     #Perteneciente al proceso de Coachee
     path('menuCoachee/', views.menuCoachee, name='menuCoachee'),

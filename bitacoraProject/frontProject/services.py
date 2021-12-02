@@ -33,6 +33,7 @@ class ApiCall:
         return r
 
     def post(url,data,header):
+        print('vengo de post')
         r=None
         print(data)
         if header is not None:
@@ -51,9 +52,11 @@ class ApiCall:
         r=requests.put(API_ROUTE+url+'/'+str(pk)+'/',json=data)
         return r
 
-    def delete(url,data,pk,header):
-        r=requests.delete(API_ROUTE+url+'/'+str(pk),json=data,headers=header)
-        print(r)
+    def delete(url,pk,header):
+        print('vengo de delete')
+        
+        r=requests.delete(API_ROUTE+url+'/'+str(pk),headers=header)
+        print('aca',r)
         return r
 
 def sesionUsuario(request,r):
@@ -192,4 +195,8 @@ class EnlacesAPICall:
         return r
     def post (request,data):
         r=ApiCall.post('enlaces',data,currentheaders(request))
+        return r
+
+    def delete (request,pk):
+        r=ApiCall.delete('enlaces',pk,currentheaders(request))
         return r

@@ -424,7 +424,7 @@ function agregarEnlace(elem) {
     var id = $(elem).data("id");
     var enlace = document.getElementById("link"+'-'+id);
     var formEnlace = document.forms["formEnlace-"+id];
-    if (enlace == null) {
+    if (enlace.value == "") {
         Swal.fire('Ingrese un enlace para guardar!', '', 'info')
     }else{
             formEnlace.submit();
@@ -437,7 +437,7 @@ function agregarArchivo(elem) {
     var archivo = document.getElementById("archivo"+'-'+id);
     
     var formArchivo = document.forms["formArchivo-"+id];
-    if (archivo == null) {
+    if (archivo.value == "") {
         Swal.fire('Ingrese un archivo para guardar!', '', 'info')
     }else{
             formArchivo.submit();

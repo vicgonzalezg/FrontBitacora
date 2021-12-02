@@ -8,20 +8,12 @@ import json
 
 class ApiCall:
 
-    """    
-    def get(url,header):
-        r=None
-        r=requests.get(API_ROUTE+url,headers=header).json()
-        #print(r)
-        return r
-    """
     def get(url,query,header):
         r=None
         if query is not None:
             r=requests.get(API_ROUTE+url+'?'+query,headers=header).json()
         else:
             r=requests.get(API_ROUTE+url,headers=header).json()
-        #print(r)
         return r
 
     def get_one(url,header,pk):

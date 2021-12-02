@@ -1583,11 +1583,13 @@ def infoProCoach(request, id):
                 for s in sesiones:
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
+                            nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
                             linkGestor = g['LINK']
                             datosLG = [{
                                     "ID": g['ID'],
                                     "IDLINKGE": g['SESION_ID'],
-                                    "LINKGE": linkGestor
+                                    "LINKGE": linkGestor,
+                                    "NOMBREARCHIVO": nombre
                                 }]
                             
                             listadoGestorArchivo = datosLG + listadoGestorArchivo
@@ -1647,7 +1649,7 @@ def infoEnlaceSesionCoach(request,id):
                 #metodo para modificar sesion
                 responseEnlaces = EnlacesAPICall.post(request,gestorEnlace)
 
-                if responseEnlaces.status_code == 201:
+                if responseEnlaces.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa
                     messages.success(request, 'Enlace añadido.')
                     return redirect('infoProCoach', idP)
@@ -1693,6 +1695,7 @@ def infoArchivoSesionCoach(request,id):
                 
 
                 #metodo para modificar sesion
+
                 responseArchivo = ArchivosAPICall.post(request,gestorArchivo)
 
                 if responseArchivo.status_code == 201:
@@ -1725,7 +1728,6 @@ def infoEnlaceEliminar(request, id):
             #se obtiene dato desde la vista
             idP = request.POST.get('proceso')
             sesid = request.POST.get('sesion')
-            print('esta sesion',sesid, 'supuesto archivo',id)
             if request.method == 'POST':
 
                 #metodo para modificar sesion
@@ -1761,7 +1763,6 @@ def infoArchivoEliminar(request,id):
             #se obtiene dato desde la vista
             idP = request.POST.get('proceso')
             superid = request.POST.get('sesion')
-            print('id de sesion',superid,'id archivo',id)
             if request.method == 'POST':
 
                 #metodo para modificar sesion

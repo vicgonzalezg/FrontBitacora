@@ -430,6 +430,19 @@ function agregarEnlace(elem) {
             formEnlace.submit();
 }
 }
+//agregar Archivo
+function agregarArchivo(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var archivo = document.getElementById("archivo"+'-'+id);
+    alert(archivo)
+    var formArchivo = document.forms["formArchivo-"+id];
+    if (archivo == null) {
+        Swal.fire('Ingrese un archivo para guardar!', '', 'info')
+    }else{
+            formArchivo.submit();
+}
+}
 
 //eliminar Enlace
 function eliminarEnlace(elem) {
@@ -441,6 +454,18 @@ function eliminarEnlace(elem) {
         Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
     }else{
         formEnlaceEliminar.submit();
+}
+}
+//eliminar Archivo
+function eliminarArchivo(elem) {
+    event.preventDefault();
+    var id = $(elem).data("id");
+    var archivo = document.getElementById("archivo"+'-'+id);
+    var formArchivoEliminar = document.forms["formArchivoEliminar-"+id];
+    if (archivo == null) {
+        Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
+    }else{
+        formArchivoEliminar.submit();
 }
 }
 

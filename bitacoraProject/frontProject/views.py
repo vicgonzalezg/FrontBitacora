@@ -1476,7 +1476,7 @@ def procAsig(request):
 
 #---------------------------------- Obtener y modificar de los procesos coach----------------------------------
 def infoProCoach(request, id):
-    try:
+    #try:
         #se obtine json con token y datos del perfil del usuario
         perfil = perfilUsuario(request)
         #se consulta si el perfil de usuario corresponde al coach
@@ -1623,9 +1623,9 @@ def infoProCoach(request, id):
             return redirect(plantilla)
 
     #si ingresa a la url de menuCoachee sin token de seguridad redirecciona al login
-    except Exception as e:
-        messages.warning(request,'Ingrese sus credenciales para acceder')
-        return redirect('/')
+    # except Exception as e:
+    #     messages.warning(request,'Ingrese sus credenciales para acceder')
+    #     return redirect('/')
 
 # ----------------------------------Modificar sesiones Coach----------------------------------
 def infoEnlaceSesionCoach(request,id):
@@ -1667,6 +1667,53 @@ def infoEnlaceSesionCoach(request,id):
         elif perfil['perfil'] == 3:
             plantilla = 'menuCoachee'
         return redirect(plantilla)
+def infoArchivoSesionCoach(request,id):
+    perfil = perfilUsuario(request)
+
+    if perfil['perfil'] == 2:
+            #se obtiene dato desde la vista
+            idP = request.POST.get('proceso')
+            if request.method == 'POST':
+                archivo = request.FILES.get('archivo')
+                name=str(archivo.name)
+                archivo1 = archivo.open(name)
+                archivoEncoded = base64.b64encode(archivo1.read()).decode('utf-8')
+                archivoEncoded1 = str(archivoEncoded)
+                gestorArchivo = {
+                                    "file_name" : str(request.FILES['archivo']),
+                                    "content": str(request.FILES['archivo'].content_type),
+                                    "tell" : str(request.FILES['archivo'].tell()),
+                                    "LINK": archivoEncoded1,
+                                    "SESION_ID": id,
+                                    "TIPOARCHIVO_ID": 1
+                                }
+                
+
+                #metodo para modificar sesion
+                responseArchivo = ArchivosAPICall.post(request,gestorArchivo)
+
+                if responseArchivo.status_code == 201:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Archivo añadido.')
+                    return redirect('infoProCoach', idP)
+                #mensaje que muestra la vista si la actualización sufre algun problema
+                else:
+                    # se reemplazan comillas dobles que trae el mensaje desde la api
+                    responseArchivo.encoding = 'utf-8'
+                    messages.error(
+                        request, responseArchivo.text.replace('"', ''))
+                    return redirect('infoProCoach', idP)
+
+            #redirecciona la vista terminado el metodo 
+            return redirect('listProCoach')
+
+        #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
+    else:
+        if perfil['perfil'] == 1:
+            plantilla = 'menuAdmin'
+        elif perfil['perfil'] == 3:
+            plantilla = 'menuCoachee'
+        return redirect(plantilla)
 
 def infoEnlaceEliminar(request, id):
     perfil = perfilUsuario(request)
@@ -1689,6 +1736,39 @@ def infoEnlaceEliminar(request, id):
                     responseEnlaces.encoding = 'utf-8'
                     messages.error(
                         request, responseEnlaces.text.replace('"', ''))
+                    return redirect('infoProCoach', idP)
+
+            #redirecciona la vista terminado el metodo 
+            return redirect('listProCoach')
+
+        #si la consulta por perfil no corresponde redirige al usuario a su perfil correspondiente en el menu principal
+    else:
+        if perfil['perfil'] == 1:
+            plantilla = 'menuAdmin'
+        elif perfil['perfil'] == 3:
+            plantilla = 'menuCoachee'
+        return redirect(plantilla)
+def infoArchivoEliminar(request, id):
+    perfil = perfilUsuario(request)
+
+    if perfil['perfil'] == 2:
+            #se obtiene dato desde la vista
+            idP = request.POST.get('proceso')
+            if request.method == 'POST':
+
+                #metodo para modificar sesion
+                responseArchivo = ArchivosAPICall.delete(request,id)
+
+                if responseArchivo.status_code == 200:
+                    #mensaje que muestra la vista si la actualización es exitosa
+                    messages.success(request, 'Archivo Eliminado.')
+                    return redirect('infoProCoach', idP)
+                #mensaje que muestra la vista si la actualización sufre algun problema
+                else:
+                    # se reemplazan comillas dobles que trae el mensaje desde la api
+                    responseArchivo.encoding = 'utf-8'
+                    messages.error(
+                        request, responseArchivo.text.replace('"', ''))
                     return redirect('infoProCoach', idP)
 
             #redirecciona la vista terminado el metodo 

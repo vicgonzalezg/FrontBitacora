@@ -183,11 +183,14 @@ class EstadosProcesosAPICall:
 
 class ArchivosAPICall:
     def get (request,query):
-        r=ApiCall.get('gestor-archivo',query,currentheaders(request))
+        r=ApiCall.get('archivos',query,currentheaders(request))
         return r
     def post (request,data):
-        r=ApiCall.post('gestor-archivo',data,currentheaders(request))
+        r=ApiCall.post('archivos',data,currentheaders(request))
         return r
+    def delete (request,pk):
+        r=ApiCall.delete('archivos',pk,currentheaders(request))
+        return r    
 
 class EnlacesAPICall:
     def get (request,query):

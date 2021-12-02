@@ -1682,6 +1682,7 @@ def infoArchivoSesionCoach(request,id):
                 archivo = request.FILES.get('archivo')
                 name=str(archivo.name)
                 archivo1 = archivo.open(name)
+                
                 archivoEncoded = base64.b64encode(archivo1.read()).decode('utf-8')
                 archivoEncoded1 = str(archivoEncoded)
                 gestorArchivo = {

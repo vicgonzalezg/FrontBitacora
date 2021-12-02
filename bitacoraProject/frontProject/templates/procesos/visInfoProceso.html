@@ -247,7 +247,7 @@
                                                             {% for gestor in gestores %}
                                                                 {% if gestor.IDLINKGE == sesion.ID %}
                                                                     <tr class="bg-light">
-                                                                        <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
+                                                                        <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">{{gestor.NOMBREARCHIVO}}</a></th>
                                                                         <th scope="row"><i class="far fa-file-archive"></i>
                                                                         </th>
                                                                     </tr>
@@ -272,10 +272,10 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {% for gestor in gestores %}
+                                                            {% for gestor in enlaces %}
                                                                 {% if gestor.IDLINKEN == sesion.ID %}
                                                                     <tr class="bg-light">
-                                                                        <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">Link: {{ forloop.counter }}</a></th>
+                                                                        <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>
                                                                         <th scope="row"><i class="far fa-paper-plane"></i></th>
                                                                     </tr>
                                                                 {% endif %}

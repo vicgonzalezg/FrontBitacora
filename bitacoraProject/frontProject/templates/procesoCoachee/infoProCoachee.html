@@ -266,7 +266,7 @@
                                                         {% for gestor in gestores %}
                                                         {% if gestor.IDLINKGE == sesion.ID and gestor.LINKGE != None %}
                                                             <tr class="bg-light">
-                                                                <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">{{gestor.LINKGE}}</a></th>
+                                                                <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">{{gestor.NOMBREARCHIVO}}</a></th>
                                                                 <th scope="row"><i class="far fa-file-archive"></i>
                                                                 </th>
                                                             </tr>
@@ -292,7 +292,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for gestor in gestores %}
+                                                        {% for gestor in enlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID and gestor.LINKEN != None %}
                                                             <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>

@@ -298,11 +298,12 @@
                                                                 <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
                                                                 <th scope="row"><i class="far fa-trash-alt float-end mt-1" style="color: red;"></i></th>
                                                             </tr> -->
-                                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoArchivoEliminar' sesion.ID %}" id="formArchivoEliminar-{{gestor.LINKGE}}">{% csrf_token %}
+                                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoArchivoEliminar' gestor.ID %}" id="formArchivoEliminar-{{sesion.ID}}">{% csrf_token %}
                                                                 <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                                                 <tr class="bg-light">
                                                                     <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
-                                                                    <th scope="row"><button type="button" data-id="{{gestor.LINKGE}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarArchivo(this);" style="color: red;"></a></button></th>
+                                                                    <th scope="row"><button type="button" data-id="{{gestor.IDLINKGE}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarArchivo(this);" style="color: red;"></a></button></th>
                                                                 </tr>
                                                             </form>
                                                         {% endif %}
@@ -325,7 +326,7 @@
                                                     <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                                 
                                                     <div class="row">
-                                                        <input type="file" class="col-md-9" name="archivo" id="archivo-{{ sesion.ID }} " {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
+                                                        <input type="file" class="col-md-9" name="archivo" id="archivo-{{ sesion.ID }}" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                         <i type="button" data-id="{{sesion.ID}}" onclick="agregarArchivo(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                                     </div>
                                                     <div>
@@ -353,8 +354,9 @@
                                                 <tbody>
                                                     {% for gestor in gestoresEnlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID %}
-                                                        <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceEliminar' sesion.ID %}" id="formEnlaceEliminar-{{ gestor.IDLINKEN }}">{% csrf_token %}
+                                                        <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceEliminar' gestor.ID %}" id="formEnlaceEliminar-{{ sesion.ID }}">{% csrf_token %}
                                                             <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                                            <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                                             <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">LINK: {{ forloop.counter }}</a></th>
                                                                 <th scope="row"><button type="button" data-id="{{gestor.IDLINKEN}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarEnlace(this);" style="color: red;"></a></button></th>

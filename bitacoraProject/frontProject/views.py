@@ -1585,6 +1585,7 @@ def infoProCoach(request, id):
                         if s['ID'] == g['SESION_ID']:
                             linkGestor = g['LINK']
                             datosLG = [{
+                                    "ID": g['ID'],
                                     "IDLINKGE": g['SESION_ID'],
                                     "LINKGE": linkGestor
                                 }]
@@ -1596,6 +1597,7 @@ def infoProCoach(request, id):
                         if s['ID'] == en['SESION_ID']:
                             linkEnlace = en['LINK']  
                             datosLE = [{
+                                    "ID": en['ID'],
                                     "IDLINKEN": en['SESION_ID'],
                                     "LINKEN": linkEnlace
                                 }]
@@ -1667,6 +1669,7 @@ def infoEnlaceSesionCoach(request,id):
         elif perfil['perfil'] == 3:
             plantilla = 'menuCoachee'
         return redirect(plantilla)
+
 def infoArchivoSesionCoach(request,id):
     perfil = perfilUsuario(request)
 
@@ -1721,10 +1724,12 @@ def infoEnlaceEliminar(request, id):
     if perfil['perfil'] == 2:
             #se obtiene dato desde la vista
             idP = request.POST.get('proceso')
+            sesid = request.POST.get('sesion')
+            print('esta sesion',sesid, 'supuesto archivo',id)
             if request.method == 'POST':
 
                 #metodo para modificar sesion
-                responseEnlaces = EnlacesAPICall.delete(request,id)
+                responseEnlaces = EnlacesAPICall.delete(request,sesid,id)
 
                 if responseEnlaces.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa
@@ -1748,16 +1753,19 @@ def infoEnlaceEliminar(request, id):
         elif perfil['perfil'] == 3:
             plantilla = 'menuCoachee'
         return redirect(plantilla)
-def infoArchivoEliminar(request, id):
+
+def infoArchivoEliminar(request,id):
     perfil = perfilUsuario(request)
 
     if perfil['perfil'] == 2:
             #se obtiene dato desde la vista
             idP = request.POST.get('proceso')
+            superid = request.POST.get('sesion')
+            print('id de sesion',superid,'id archivo',id)
             if request.method == 'POST':
 
                 #metodo para modificar sesion
-                responseArchivo = ArchivosAPICall.delete(request,id)
+                responseArchivo = ArchivosAPICall.delete(request,superid,id)
 
                 if responseArchivo.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa

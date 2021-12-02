@@ -435,7 +435,7 @@ function agregarArchivo(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
     var archivo = document.getElementById("archivo"+'-'+id);
-    alert(archivo)
+    
     var formArchivo = document.forms["formArchivo-"+id];
     if (archivo == null) {
         Swal.fire('Ingrese un archivo para guardar!', '', 'info')
@@ -448,9 +448,8 @@ function agregarArchivo(elem) {
 function eliminarEnlace(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
-    var enlace = document.getElementById("link"+'-'+id);
     var formEnlaceEliminar = document.forms["formEnlaceEliminar-"+id];
-    if (enlace == null) {
+    if (formEnlaceEliminar == null) {
         Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
     }else{
         formEnlaceEliminar.submit();
@@ -460,9 +459,8 @@ function eliminarEnlace(elem) {
 function eliminarArchivo(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
-    var archivo = document.getElementById("archivo"+'-'+id);
     var formArchivoEliminar = document.forms["formArchivoEliminar-"+id];
-    if (archivo == null) {
+    if (formArchivoEliminar == null) {
         Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
     }else{
         formArchivoEliminar.submit();

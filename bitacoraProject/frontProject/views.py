@@ -1647,7 +1647,7 @@ def infoEnlaceSesionCoach(request,id):
                 #metodo para modificar sesion
                 responseEnlaces = EnlacesAPICall.post(request,gestorEnlace)
 
-                if responseEnlaces.status_code == 201:
+                if responseEnlaces.status_code == 200:
                     #mensaje que muestra la vista si la actualización es exitosa
                     messages.success(request, 'Enlace añadido.')
                     return redirect('infoProCoach', idP)
@@ -1680,6 +1680,7 @@ def infoArchivoSesionCoach(request,id):
                 archivo = request.FILES.get('archivo')
                 name=str(archivo.name)
                 archivo1 = archivo.open(name)
+                
                 archivoEncoded = base64.b64encode(archivo1.read()).decode('utf-8')
                 archivoEncoded1 = str(archivoEncoded)
                 gestorArchivo = {

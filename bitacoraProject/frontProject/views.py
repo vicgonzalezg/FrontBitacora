@@ -960,12 +960,14 @@ def visInfoProceso(request, id):
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
                             nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
+                            nombreSeparado = nombre.split('.')
+                            nombreArchivo = nombreSeparado[0][:-7] + '.' + nombreSeparado[1]
                             idLinkGestor    = g['SESION_ID']
                             linkGestor      = g['LINK']
                             datosGestor = [{
                                 "IDLINKGE"  : idLinkGestor,
                                 "LINKGE"    : linkGestor,
-                                "NOMBREARCHIVO": nombre,
+                                "NOMBREARCHIVO": nombreArchivo,
                             }]
 
                             listadoGestor = datosGestor + listadoGestor
@@ -1593,12 +1595,14 @@ def infoProCoach(request, id):
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
                             nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
+                            nombreSeparado = nombre.split('.')
+                            nombreArchivo = nombreSeparado[0][:-7] + '.' + nombreSeparado[1]
                             linkGestor = g['LINK']
                             datosLG = [{
                                     "ID": g['ID'],
                                     "IDLINKGE": g['SESION_ID'],
                                     "LINKGE": linkGestor,
-                                    "NOMBREARCHIVO": nombre
+                                    "NOMBREARCHIVO": nombreArchivo
                                 }]
                             
                             listadoGestorArchivo = datosLG + listadoGestorArchivo
@@ -1608,7 +1612,7 @@ def infoProCoach(request, id):
                     queryEnlaces = 'SESION_ID='+str(s['ID'])
                     enlaces = EnlacesAPICall.get(request,queryEnlaces)
                     for en in enlaces:
-                        print(s['ID'])
+                        #print(s['ID'])
                         if s['ID'] == en['SESION_ID']:
                             linkEnlace = en['LINK']  
                             datosLE = [{
@@ -1618,8 +1622,7 @@ def infoProCoach(request, id):
                                 }]
                                 #se almacena una array de objetos
                             listadoGestorEnlace = datosLE + listadoGestorEnlace
-                    
-                print(listadoGestorEnlace)
+                
                 #se almacenan las variables con los datos en un objeto para enviarlo a la vista
                 data = {
                     'usuario': perfil,
@@ -1952,12 +1955,14 @@ def infoProCoachee(request, id):
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
                             nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
+                            nombreSeparado = nombre.split('.')
+                            nombreArchivo = nombreSeparado[0][:-7] + '.' + nombreSeparado[1]
                             idLinkGestor = g['SESION_ID']
                             linkGestor = g['LINK']
                             datosGE = [{
                                         "IDLINKGE": idLinkGestor,
                                         "LINKGE": linkGestor,
-                                        "NOMBREARCHIVO": nombre,
+                                        "NOMBREARCHIVO": nombreArchivo,
                                     }]
                             listadoGestor = datosGE + listadoGestor
                 for s in sesiones:

@@ -293,7 +293,7 @@
                                                 </thead>
                                                 <tbody>
                                                     {% for gestor in gestoresArchivos %}
-                                                        {% if gestor.IDLINKGE == sesion.ID and gestor.LINKGE != None %}
+                                                        {% if gestor.IDLINKGE == sesion.ID %}
                                                             <!-- <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">Archivo: {{ forloop.counter }}</a></th>
                                                                 <th scope="row"><i class="far fa-trash-alt float-end mt-1" style="color: red;"></i></th>
@@ -306,11 +306,13 @@
                                                                     <th scope="row"><button type="button" data-id="{{gestor.IDLINKGE}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarArchivo(this);" style="color: red;"></a></button></th>
                                                                 </tr>
                                                             </form>
-                                                        {% else %}
-                                                            <tr class="bg-light">
-                                                                <th scope="row">Aun no ha añadido archivos</th>
-                                                            </tr>
-                                                        {% endif %}                                                   
+                                                        {% elif sesion.ID != gestor.IDLINKGE %}
+                                                            {% if forloop.first %}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row">Aun no ha añadido archivos</th>
+                                                                </tr>
+                                                            {% endif %}                                               
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
@@ -344,7 +346,7 @@
                                         <label class="col-md-6 control-label" name="nombre">Links:</label>
                                         <div class="form-group col-md-12">
                                            
-                                            <table id="tableLink" class="table thead-dark border border-dark">
+                                            <table id="tableLink" on class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
                                                         <th scope="col">Dirección</th>
@@ -353,24 +355,25 @@
                                                 </thead>
                                                 <tbody>
                                                     {% for gestor in gestoresEnlaces %}
+                                                    <p>{{sesion.ID}} {{gestor.IDLINKEN}}</p>
                                                         {% if gestor.IDLINKEN == sesion.ID %}
-                                                            {% if gestor.LINKEN != None %}
-                                                                <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceEliminar' gestor.ID %}" id="formEnlaceEliminar-{{ sesion.ID }}">{% csrf_token %}
-                                                                    <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
-                                                                    <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
-                                                                    <tr class="bg-light">
-                                                                        <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">LINK: {{ forloop.counter }}</a></th>
-                                                                        <th scope="row"><button type="button" data-id="{{gestor.IDLINKEN}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarEnlace(this);" style="color: red;"></a></button></th>
-                                                                    </tr>
-                                                                </form>
-                                                          
-                                                            {% else  %}
+                                                            <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="{% url 'infoEnlaceEliminar' gestor.ID %}" id="formEnlaceEliminar-{{ sesion.ID }}">{% csrf_token %}
+                                                                <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
+                                                                <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                                                 <tr class="bg-light">
-                                                                    <th scope="row">No hay links para esta sesión {{gestor.LINKEN}}</th>
+                                                                    <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>
+                                                                    <th scope="row"><button type="button" data-id="{{gestor.IDLINKEN}}" class="far fa-trash-alt float-end mt-1" onclick="eliminarEnlace(this);" style="color: red;"></a></button></th>
+                                                                </tr>
+                                                            </form>
+                                                        {% elif sesion.ID %}
+                                                            {% if forloop.first	%}
+                                                                <tr class="bg-light">
+                                                                    <th scope="row">No hay links para esta sesión</th>
                                                                 </tr>
                                                             {% endif %}
                                                         {% endif %}
                                                     {% endfor %}
+                                                    
                                                 </tbody>
                                             </table>
 

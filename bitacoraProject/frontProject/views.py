@@ -1519,8 +1519,6 @@ def infoProCoach(request, id):
                 estado = EstadosProcesosAPICall.get(request, None)
                 sesiones = SesionesAPICall.get(request, querySesiones)
                 estadoSesion = EstadosSesionesAPICall.get(request, None)
-                gestorArchivo = ArchivosAPICall.get(request,None)
-                enlace = EnlacesAPICall.get(request, None)
                 #variable que almacenara el listado de procesos y sus datos
                 listadoDatos = []
                 #variable que almacenara el listado de archivos
@@ -1581,6 +1579,8 @@ def infoProCoach(request, id):
 
                 #consulta para obtener la id de los archivos y links asociados a la sesion
                 for s in sesiones:
+                    queryArchivos = 'SESION_ID='+str(s['ID'])
+                    gestorArchivo = ArchivosAPICall.get(request,queryArchivos)
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
                             nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
@@ -1593,9 +1593,13 @@ def infoProCoach(request, id):
                                 }]
                             
                             listadoGestorArchivo = datosLG + listadoGestorArchivo
+                            
                 
                 for s in sesiones:
-                    for en in enlace:
+                    queryEnlaces = 'SESION_ID='+str(s['ID'])
+                    enlaces = EnlacesAPICall.get(request,queryEnlaces)
+                    for en in enlaces:
+                        print(s['ID'])
                         if s['ID'] == en['SESION_ID']:
                             linkEnlace = en['LINK']  
                             datosLE = [{
@@ -1603,9 +1607,10 @@ def infoProCoach(request, id):
                                     "IDLINKEN": en['SESION_ID'],
                                     "LINKEN": linkEnlace
                                 }]
-                            #se almacena una array de objetos
+                                #se almacena una array de objetos
                             listadoGestorEnlace = datosLE + listadoGestorEnlace
-                
+                    
+                print(listadoGestorEnlace)
                 #se almacenan las variables con los datos en un objeto para enviarlo a la vista
                 data = {
                     'usuario': perfil,

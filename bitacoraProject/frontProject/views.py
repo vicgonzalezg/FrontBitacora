@@ -902,6 +902,7 @@ def visInfoProceso(request, id):
             #variable que almacenara el listado de procesos y sus datos
             listadoDatos = []
             listadoGestor = []
+            listadoEnlaces = []
             #consulta de procesos por estadoproceso y usuarios
             for p in proceso:
                 for e in estado:
@@ -958,21 +959,28 @@ def visInfoProceso(request, id):
                 for s in sesiones:
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
+                            nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
                             idLinkGestor    = g['SESION_ID']
                             linkGestor      = g['LINK']
+                            datosGestor = [{
+                                "IDLINKGE"  : idLinkGestor,
+                                "LINKGE"    : linkGestor,
+                                "NOMBREARCHIVO": nombre,
+                            }]
+
+                            listadoGestor = datosGestor + listadoGestor
+                for s in sesiones:
                     for en in enlace:
                         if s['ID'] == en['SESION_ID']:
                             idlinkEnlace    = en['SESION_ID']
                             linkEnlace      = en['LINK']   
-                            datosGestor = [{
-                                "IDLINKGE"  : idlinkEnlace,
-                                "LINKGE"    : linkEnlace,
+                            datosEnlaces = [{
                                 "IDLINKEN"  : idlinkEnlace,
                                 "LINKEN"    : linkEnlace
                             }]
 
                             #se almacena una array de objetos
-                            listadoGestor = datosGestor + listadoGestor
+                            listadoEnlaces = datosEnlaces + listadoEnlaces
 
             #se almacenan las variables con los datos en un objeto para enviarlo a la vista
             data = {
@@ -980,7 +988,8 @@ def visInfoProceso(request, id):
                 'entity'        : listadoDatos,
                 'sesiones'      : sesiones,
                 'estadosSesion' : estadoSesion,
-                'gestores'      : listadoGestor
+                'gestores'      : listadoGestor,
+                'enlaces'       : listadoEnlaces
             }
 
             #renderiza la vista y envia los datos
@@ -1885,9 +1894,10 @@ def infoProCoachee(request, id):
                 gestorArchivo   = ArchivosAPICall.get(request, None)
                 enlace          = EnlacesAPICall.get(request,None)
                 #variable que almacenara el listado de procesos y sus datos
-                listadoDatos = []
+                listadoDatos    = []
                 #variable que almacenara los archivos de las sesiones
-                listadoGestor = []
+                listadoGestor   = []
+                listadoEnlaces  = []
                 #consulta de procesos por estadoproceso y usuarios
                 for p in proceso:
                     for e in estado:
@@ -1941,20 +1951,26 @@ def infoProCoachee(request, id):
                 for s in sesiones:
                     for g in gestorArchivo:
                         if s['ID'] == g['SESION_ID']:
+                            nombre = g['LINK'].replace("https://res.cloudinary.com/duocuc/raw/upload/v1/upload/",'')
                             idLinkGestor = g['SESION_ID']
                             linkGestor = g['LINK']
+                            datosGE = [{
+                                        "IDLINKGE": idLinkGestor,
+                                        "LINKGE": linkGestor,
+                                        "NOMBREARCHIVO": nombre,
+                                    }]
+                            listadoGestor = datosGE + listadoGestor
+                for s in sesiones:
                     for en in enlace:
                         if s['ID'] == en['SESION_ID']:
                             idlinkEnlace = en['SESION_ID']
                             linkEnlace = en['LINK']   
-                            datosGE = [{
-                                "IDLINKGE": idlinkEnlace,
-                                "LINKGE": linkEnlace,
+                            datosEN = [{
                                 "IDLINKEN": idlinkEnlace,
                                 "LINKEN": linkEnlace
                             }]
                             #se almacena una array de objetos
-                            listadoGestor = datosGE + listadoGestor
+                            listadoEnlaces = datosEN + listadoEnlaces
                 #se almacenan las variables con los datos en un objeto para enviarlo a la vista
                 data = {
                     'usuario': perfil,
@@ -1962,7 +1978,8 @@ def infoProCoachee(request, id):
                     'sesiones': sesiones,
                     'estados': estado,
                     'estadosSesion': estadoSesion,
-                    'gestores':listadoDatos
+                    'gestores':listadoGestor,
+                    'enlaces':listadoEnlaces
                 }
 
                 #renderiza la vista de informacion de procesos coachee y envia los datos a esta

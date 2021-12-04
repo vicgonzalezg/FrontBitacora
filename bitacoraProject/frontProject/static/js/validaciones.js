@@ -428,7 +428,9 @@ function agregarArchivo(elem) {
 function eliminarEnlace(elem) {
     event.preventDefault();
     var id = $(elem).data("id");
+    console.log(id)
     var formEnlaceEliminar = document.forms["formEnlaceEliminar-"+id];
+    console.log(formEnlaceEliminar)
     if (formEnlaceEliminar == null) {
         Swal.fire('Ha ocurrido un error al eliminar!', '', 'info')
     }else{

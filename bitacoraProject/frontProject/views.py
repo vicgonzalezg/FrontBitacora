@@ -1596,8 +1596,8 @@ def infoProCoach(request, id):
                             nombreArchivo = nombreSeparado[0][:-7] + '.' + nombreSeparado[1]
                             linkGestor = g['LINK']
                             datosLG = [{
-                                    "ID": g['ID'],
-                                    "IDLINKGE": g['SESION_ID'],
+                                    "IDARCHIVO": g['ID'],
+                                    "IDSESION": g['SESION_ID'],
                                     "LINKGE": linkGestor,
                                     "NOMBREARCHIVO": nombreArchivo
                                 }]
@@ -1608,13 +1608,14 @@ def infoProCoach(request, id):
                 for s in sesiones:
                     queryEnlaces = 'SESION_ID='+str(s['ID'])
                     enlaces = EnlacesAPICall.get(request,queryEnlaces)
+                    print(enlaces)
                     for en in enlaces:
                         #print(s['ID'])
                         if s['ID'] == en['SESION_ID']:
                             linkEnlace = en['LINK']  
                             datosLE = [{
-                                    "ID": en['ID'],
-                                    "IDLINKEN": en['SESION_ID'],
+                                    "IDLINK": en['ID'],
+                                    "IDSESION": en['SESION_ID'],
                                     "LINKEN": linkEnlace
                                 }]
                                 #se almacena una array de objetos

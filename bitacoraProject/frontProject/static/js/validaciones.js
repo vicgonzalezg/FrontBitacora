@@ -374,7 +374,7 @@ function modSesiones(elem) {
         Swal.fire('Los campos fecha y hora de la sesión son obligatorios!', '', 'info')
     }
     else if (fechaSesion < today && estadoSesion == 1){
-        Swal.fire('La fecha no puede ser anterior a la actual o el estado debe ser agendado!', '', 'info')
+        Swal.fire('La fecha no puede ser anterior a la actual!', '', 'info')
     }
     else
     {

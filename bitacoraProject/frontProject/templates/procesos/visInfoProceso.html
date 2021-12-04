@@ -77,14 +77,14 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                 </div>
             </div>
             <!--detalles del proceso-->
-            <div class="panel panel-primary mt-4 px-2 bg-light">
+            <div class="panel panel-primary px-2 bg-light">
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-6">
+                            <br>
                             <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                             <div class="col-md-12">
                                 <textarea rows="5" class="form-control" name="objetivosProc"
@@ -92,6 +92,7 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
+                            <br>
                             <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                             <div class="col-md-12 col-lg-8">
                                 <textarea rows="5" class="form-control" name="indicadoresProc"
@@ -99,10 +100,10 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                 </div>
+                <br>
             </div>
-            <div class="panel panel-primary mt-4 px-2 bg-light">
+            <div class="panel panel-primary px-2 bg-light">
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -114,7 +115,8 @@
                         </div>
                         <!--Tabla con registro de fechas de las sesiones-->
                         <div class="form-group col-md-6">
-                            <table id="listSesion" class="table thead-dark border border-dark">
+                            <br>
+                            <table id="fechas" class="table thead-dark border border-dark">
                                 <thead class="thead-dark">
                                     <tr class="cabecera">
                                         <th scope="col">Sesión</th>
@@ -189,9 +191,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="row">
                                             <div class="form-group col-md-6">
+                                                <br>
                                                 <label class="col-md-6 control-label" name="descSesion">Descripción
                                                     sesión:</label>
 
@@ -201,6 +203,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
+                                                <br>
                                                 <label class="col-md-6 control-label"
                                                     name="asigSesion">Asignaciones/Acuerdos:</label>
 
@@ -210,9 +213,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="row">
                                             <div class="form-group col-md-6">
+                                                <br>
                                                 <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
     
                                                 <div class="col-md-12">
@@ -222,6 +225,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
+                                                <br>
                                                 <label class="col-md-6 control-label" name="avancesSesion">Estado de asignaciones:</label>
     
                                                 <div class="col-md-12">
@@ -229,14 +233,14 @@
                                                     readonly>{{sesion.RESPUESTA}}</textarea>
                                                 </div>
                                             </div>
-                                    </div>
+                                        </div>
                                         <br>
                                         <div class="row">
                                             <!--sector donde se almacenan los documentos y links-->
                                             <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                                 <div class="form-group col-md-12">
-                                                    <table id="example1" class="table thead-dark border border-dark">
+                                                    <table id="archivos" class="table thead-dark border border-dark">
                                                         <thead class="thead-dark">
                                                             <tr class="cabecera">
                                                                 <th scope="col">Nombre</th>
@@ -264,7 +268,7 @@
                                             <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="nombre">Links:</label>
                                                 <div class="form-group col-md-12">
-                                                    <table id="example2" class="table thead-dark border border-dark">
+                                                    <table id="enlaces" class="table thead-dark border border-dark">
                                                         <thead class="thead-dark">
                                                             <tr class="cabecera">
                                                                 <th scope="col">Nombre</th>
@@ -340,25 +344,34 @@
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
     $(document).ready(function () {
-        var table = $('#example').DataTable({
+        var table = $('#fechas').DataTable({
             dom: 'lrtip',
-            "lengthMenu": [5],
+            "lengthMenu": false,
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
-            "language": {
-                "zeroRecords": "No se encontraron registros.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-            },
-
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#archivos').DataTable({
+            dom: 'lrtip',
+            "lengthMenu": false,
+            "lengthChange": false,
+            "autoWidth": false,
+            "scrollX": true,
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#enlaces').DataTable({
+            dom: 'lrtip',
+            "lengthMenu": false,
+            "lengthChange": false,
+            "autoWidth": false,
+            "scrollX": true,
         });
     });
 </script>

@@ -24,18 +24,18 @@
                     <div class="row">
                         <span class="col-md-6"></span>
                         <div class="col-md-6" >
-                                    <div class="col-md-12">
-                                        <label class="col-md-6 control-label" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</label>
-                                        <select class="col-md-12 form-select" name="estadoProceso" aria-label="Default select example"
-                                        {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
-                                            {% for estado in estados %}
-                                            <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
-                                            {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} 
-                                            {% if estado.ID == 6 %} hidden {% endif %}>{{estado.DESCRIPCION}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="col-md-12">
+                                <label class="col-md-6 control-label" style="font-weight: bold;padding-left: 0px;padding-right: 0px;">Estado Proceso:</label>
+                                <select class="col-md-12 form-select" name="estadoProceso" aria-label="Default select example"
+                                {% if procesos.IDESTADOPROCESO == 6 %} disabled {% endif %}>
+                                    {% for estado in estados %}
+                                    <option value="{{estado.ID}}" {% if estado.ID < procesos.IDESTADOPROCESO %} hidden {% endif %} 
+                                    {% if estado.ID == procesos.IDESTADOPROCESO %} selected {% endif %} 
+                                    {% if estado.ID == 6 %} hidden {% endif %}>{{estado.DESCRIPCION}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-6 col-lg-4 control-label">Nombre Jefe</label>
+                            <label class="col-md-6 control-label">Nombre Jefe</label>
                             <div class="col-md-12 col-lg-8">
                                 <input class="form-control" name="nombreJefe" id="nombreJefe-{{ procesos.ID }}"
                                     value="{{procesos.NOMBREJEFE}}" readonly>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-5 col-lg-4 control-label">Email Jefe</label>
+                            <label class="col-md-5 control-label">Email Jefe</label>
                             <div class="col-md-12 col-lg-8">
                                 <input class="form-control" name="correoJefe" id="correoJefe-{{ procesos.ID }}"
                                     value="{{procesos.EMAILJEFE}}" readonly>
@@ -77,7 +77,7 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-6 control-label" name="telefono">Telefono Coachee</label>
+                            <label class="col-md-10 control-label" name="telefono">Telefono Coachee</label>
 
                             <div class="col-md-12">
                                 <input class="form-control" name="telefonoCoachee"
@@ -86,7 +86,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <br>
-                            <label class="col-md-6 col-lg-4 control-label">Telefono Jefe</label>
+                            <label class="col-md-6 col control-label">Telefono Jefe</label>
                             <div>
                                 <div class="col-md-12 col-lg-8">
                                     <input class="form-control" name="telefonoJefe" id="telefonoJefe-{{ procesos.ID }}"
@@ -102,6 +102,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="form-group col-md-6">
+                                <br class="col-xs-12">
                                 <label class="col-md-6 control-label" name="nombre">Objetivo del proceso:</label>
                                 <div class="col-md-12">
                                     <textarea rows="5" class="form-control" name="objetivosProc"
@@ -109,7 +110,9 @@
                                         {% if procesos.IDESTADOPROCESO == 6 %} readonly {% endif %}>{{procesos.OBJETIVOS}}</textarea>
                                 </div>
                             </div>
+                            
                             <div class="form-group col-md-6">
+                                <br class="col-xs-12">
                                 <label class="col-md-6 col-lg-4 control-label">Indicadores de exito:</label>
                                 <div class="col-md-12 col-lg-8">
                                     <textarea rows="5" class="form-control" name="indicadoresProc"
@@ -133,9 +136,10 @@
                                 </div>
                             </div>
                             <!--Tabla con registro de fechas de las sesiones-->
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                <table id="listSesion" class="table thead-dark border border-dark">
+                            <div class=" form-group col-md-6">
+                                <br>
+                                <div class=" navbuttons col-md-12">
+                                <table id="example" class="table thead-dark border border-dark">
                                     <thead class="thead-dark">
                                         <tr class="cabecera">
                                             <th scope="col">Sesión</th>
@@ -228,9 +232,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="row">
                                     <div class="form-group col-md-6">
+                                        <br>
                                         <label class="col-md-6 control-label" name="descSesion">Descripción
                                             sesión:</label>
 
@@ -241,6 +245,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
+                                        <br>
                                         <label class="col-md-6 control-label"
                                             name="asigSesion">Asignaciones/Acuerdos:</label>
 
@@ -251,9 +256,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="row">
                                         <div class="form-group col-md-6">
+                                            <br>
                                             <label class="col-md-6 control-label" name="avancesSesion">Avances:</label>
 
                                             <div class="col-md-12">
@@ -263,6 +268,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
+                                            <br>
                                             <label class="col-md-6 control-label" name="avancesSesion">Estado de asignaciones:</label>
 
                                             <div class="col-md-12">
@@ -284,7 +290,7 @@
                                         <form class="form-horizontal" action="{% url 'infoSesionCoach' sesion.ID %}" id="formDocumentos-{{ sesion.ID }}"></form>
                                         <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                         <div class="form-group col-md-12">
-                                            <table id="tableDoc" class="table thead-dark border border-dark">
+                                            <table id="tablaArchivos" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
                                                         <th scope="col">Nombre</th>
@@ -325,7 +331,7 @@
                                                     <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                                     <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                                 
-                                                    <div class="row">
+                                                    <div class="row justify-content-center mt-2">
                                                         <input type="file" class="col-md-9" name="archivo" id="archivo-{{ sesion.ID }}" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                         <i type="button" data-id="{{sesion.ID}}" onclick="agregarArchivo(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
                                                     </div>
@@ -334,7 +340,6 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                            <br>
                                         </div>
                                     </form>
                                     </div>
@@ -344,7 +349,7 @@
                                         <label class="col-md-6 control-label" name="nombre">Links:</label>
                                         <div class="form-group col-md-12">
                                            
-                                            <table id="tableLink" class="table thead-dark border border-dark">
+                                            <table id="enlaces" class="table thead-dark border border-dark">
                                                 <thead class="thead-dark">
                                                     <tr class="cabecera">
                                                         <th scope="col">Dirección</th>
@@ -378,10 +383,10 @@
                                                 <input type="text" name="proceso" id="proceso" class="d-none" value="{{procesos.ID}}">
                                                 <input type="text" name="sesion" id="sesion" class="d-none" value="{{sesion.ID}}">
                                             
-                                                <div class="row">
-                                                    <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-9 ms-3" id="link-{{ sesion.ID }}"
+                                                <div class="row justify-content-center mt-2">
+                                                    <textarea style="overflow:auto;resize:none" rows="1" class="form-control col-md-8" id="link-{{ sesion.ID }}"
                                                         name="link" {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} readonly {% endif %}></textarea>
-                                                    <i type="button" data-id="{{sesion.ID}}" onclick="agregarEnlace(this);" class="fas fa-plus-square d-flex justify-content-center col-md-1 mt-2" style="color: green;"></i>
+                                                    <i type="button" data-id="{{sesion.ID}}" onclick="agregarEnlace(this);" class="fas fa-plus-square d-flex justify-content-center col-md-2 mt-2" style="color: green;"></i>
                                                 </div>
                                                
                                             </form>
@@ -411,11 +416,14 @@
 </div>
 <!--Boton para almacena la informacion del proceso-->
 <div class="container">
+    <div class="row">
     <br>
     <a href="{% url 'listProCoach' %}" class="btn btn-secondary float-start col-md-2">Volver</a>
-    <span class="col-md-1"></span>
+    <span class="col-md-8"></span>
+<br>
     <a target="_blank" href="{% url 'imprimirProceso' procesos.ID %}" type="submit"
         class="btn btn-primary float-end col-md-2">Reporte</a>
+    </div>
 </div>
 <br>
 <br>
@@ -463,6 +471,60 @@
 <script>
     $(document).ready(function () {
         var table = $('#example').DataTable({
+            dom: 'lrtip',
+            "ordering": false,
+            "lengthMenu": [5],
+            "lengthChange": false,
+            "autoWidth": false,
+            "scrollX": true,
+            "info": false,
+            "paginate": false,
+            "language": {
+                "zeroRecords": "No se encontraron registros.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#tablaArchivos').DataTable({
+            dom: 'lrtip',
+            "ordering": false,
+            "lengthMenu": [5],
+            "lengthChange": false,
+            "autoWidth": false,
+            "scrollX": true,
+            "info": false,
+            "paginate": false,
+            "language": {
+                "zeroRecords": "No se encontraron registros.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#enlaces').DataTable({
             dom: 'lrtip',
             "ordering": false,
             "lengthMenu": [5],

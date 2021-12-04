@@ -356,6 +356,8 @@ function modSesiones(elem) {
     var id = $(elem).data("id");
     var fechaSesion = document.getElementById("fechaSesion"+'-'+id).value;
     var apptime = document.getElementById("apptime"+'-'+id).value;
+    var estadoSesion = document.getElementById("estadoSesion1"+'-'+id).value;
+    console.log(estadoSesion)
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -371,8 +373,8 @@ function modSesiones(elem) {
     if (!fechaSesion || !apptime) {
         Swal.fire('Los campos fecha y hora de la sesión son obligatorios!', '', 'info')
     }
-    else if (fechaSesion < today ){
-        Swal.fire('La fecha no puede ser anterior a la actual!', '', 'info')
+    else if (fechaSesion < today && estadoSesion == 1){
+        Swal.fire('La fecha no puede ser anterior a la actual o el estado debe ser agendado!', '', 'info')
     }
     else
     {

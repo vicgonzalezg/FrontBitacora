@@ -220,7 +220,7 @@
                                         <label class="col-md-6 control-label" name="estadoSesion">Estado
                                             sesión:</label>
                                         <div class="col-md-12">
-                                            <select class="form-select" name="estadoSesion1"
+                                            <select class="form-select" name="estadoSesion1" id="estadoSesion1-{{ sesion.ID }}"
                                                 aria-label="Default select example"
                                                 {% if procesos.IDESTADOPROCESO == 6 or sesion.ESTADOSESION_ID == 4 %} disabled {% endif %}>
                                                 {% for estSesion in estadosSesion %}

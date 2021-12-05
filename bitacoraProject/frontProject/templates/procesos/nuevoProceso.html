@@ -65,7 +65,7 @@
               <option disabled="disabled" selected>Seleccione un Coachee</option>
               {% for usuarios in list_usuario %}
               {% if usuarios.PERFIL_ID == 3 and usuarios.ACTIVO == 1%}
-              <option value="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}}</option>
+              <option value="{{usuarios.ID}}">{{usuarios.NOMBRE}} {{usuarios.APELLIDO}} - {{ usuarios.EMPRESA }}</option>
               {% endif %}
               {% endfor %}
             </select>

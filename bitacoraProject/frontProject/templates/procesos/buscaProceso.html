@@ -107,7 +107,7 @@
                                                                 class="col-sm-2 col-form-label">Nombre
                                                                 Empresa</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" name="nombreEmpresa"
+                                                                <input {% if proceso.DESCRIPCION == 'Finalizado' %} disabled {% endif %} class="form-control" name="nombreEmpresa"
                                                                 id="nombreEmpre-{{ proceso.ID }}" value="{{proceso.NOMBREEMPRESA}}">
                                                             </div>
                                                         </div>
@@ -116,7 +116,7 @@
                                                                 class="col-sm-2 col-form-label">Cantidad de
                                                                 Sesiones</label>
                                                             <div class="col-sm-10">
-                                                                <input class="form-control" name="cantidadSesiones" id="cantiSesiones-{{ proceso.ID }}"
+                                                                <input {% if proceso.DESCRIPCION == 'Finalizado' %} disabled {% endif %} class="form-control" name="cantidadSesiones" id="cantiSesiones-{{ proceso.ID }}"
                                                                  value="{{proceso.CANTSESIONES}}">
                                                             </div>
                                                         </div>
@@ -151,7 +151,7 @@
                                                     data-bs-dismiss="modal">Cancelar</button>
                                                 <span class="col-md-1"></span>
 
-                                                <button type="submit"
+                                                <button {% if proceso.DESCRIPCION == 'Finalizado' %} disabled {% endif %} type="submit"
                                                 onclick="modProceso(this);"
                                                 data-id="{{proceso.ID}}" class="btn btn-primary">Guardar
                                                     Cambios</button>

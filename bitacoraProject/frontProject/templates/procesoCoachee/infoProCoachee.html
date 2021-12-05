@@ -260,7 +260,7 @@
                                             <br>
                                             <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                             <div class="form-group col-md-12">
-                                                <table id="archivos" class="table thead-dark border border-dark">
+                                                <table id="" class="table thead-dark border border-dark">
                                                     <thead class="thead-dark">
                                                         <tr class="cabecera">
                                                             <th scope="col">Nombre</th>
@@ -268,17 +268,12 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for gestor in gestores %}
+                                                    {% for gestor in gestores %}
                                                         {% if gestor.IDLINKGE == sesion.ID and gestor.LINKGE != None %}
                                                             <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKGE}}" target="_blank">{{gestor.NOMBREARCHIVO}}</a></th>
                                                                 <th scope="row"><i class="far fa-file-archive"></i>
                                                                 </th>
-                                                            </tr>
-                                    
-                                                        {% elif gestor.IDLINKGE == sesion.ID and gestor.LINKGE == None  %}
-                                                            <tr class="bg-light">
-                                                                <th scope="row">No hay archivos que mostrar para esta sesión</th>
                                                             </tr>
                                                         {% endif %}
                                                     {% endfor %}
@@ -290,7 +285,7 @@
                                             <br>
                                             <label class="col-md-6 control-label" name="nombre">Links:</label>
                                             <div class="form-group col-md-12">
-                                                <table id="enlaces" class="table thead-dark border border-dark">
+                                                <table id="" class="table thead-dark border border-dark">
                                                     <thead class="thead-dark">
                                                         <tr class="cabecera">
                                                             <th scope="col">Dirección</th>
@@ -298,16 +293,12 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for gestor in enlaces %}
+                                                    {% for gestor in enlaces %}
                                                         {% if gestor.IDLINKEN == sesion.ID and gestor.LINKEN != None %}
                                                             <tr class="bg-light">
                                                                 <th scope="row"><a href="{{gestor.LINKEN}}" target="_blank">{{gestor.LINKEN}}</a></th>
                                                                 <th scope="row"><i class="far fa-paper-plane"></i>
                                                                 </th>
-                                                            </tr>
-                                                        {% else %}
-                                                            <tr class="bg-light">
-                                                                <th scope="row">No hay links que mostrar para esta sesión</th>
                                                             </tr>
                                                         {% endif %}
                                                     {% endfor %}
@@ -375,25 +366,13 @@
     $(document).ready(function () {
         var table = $('#fechas').DataTable({
             dom: 'lrtip',
-            "lengthMenu": [5],
+            "ordering": false,
+            "lengthMenu": false,
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
             "info": false,
-            "paginate": false,
-            "language": {
-                "zeroRecords": "No se encontraron registros.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-            },
-
+            "paging": false,
         });
     });
 </script>

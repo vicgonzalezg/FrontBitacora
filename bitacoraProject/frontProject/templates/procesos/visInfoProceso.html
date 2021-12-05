@@ -240,7 +240,7 @@
                                             <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="nombre">Documentos:</label>
                                                 <div class="form-group col-md-12">
-                                                    <table id="archivos" class="table thead-dark border border-dark">
+                                                    <table id="" class="table thead-dark border border-dark">
                                                         <thead class="thead-dark">
                                                             <tr class="cabecera">
                                                                 <th scope="col">Nombre</th>
@@ -256,10 +256,6 @@
                                                                         </th>
                                                                     </tr>
                                                                 {% endif %}
-                                                                {% empty %}
-                                                                <tr class="bg-light">
-                                                                    <th scope="row">Sin archivos para mostrar en esta sesión</th>
-                                                                </tr>
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -268,7 +264,7 @@
                                             <div class="form-group col-md-6">
                                                 <label class="col-md-6 control-label" name="nombre">Links:</label>
                                                 <div class="form-group col-md-12">
-                                                    <table id="enlaces" class="table thead-dark border border-dark">
+                                                    <table id="" class="table thead-dark border border-dark">
                                                         <thead class="thead-dark">
                                                             <tr class="cabecera">
                                                                 <th scope="col">Nombre</th>
@@ -283,10 +279,6 @@
                                                                         <th scope="row"><i class="far fa-paper-plane"></i></th>
                                                                     </tr>
                                                                 {% endif %}
-                                                                {% empty %}
-                                                                <tr class="bg-light">
-                                                                    <th scope="row">Sin links para mostrar en esta sesión</th>
-                                                                </tr>
                                                             {% endfor %}
                                                         </tbody>
                                                     </table>
@@ -346,10 +338,13 @@
     $(document).ready(function () {
         var table = $('#fechas').DataTable({
             dom: 'lrtip',
+            "ordering": false,
             "lengthMenu": false,
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
+            "info": false,
+            "paging": false,
         });
     });
 </script>

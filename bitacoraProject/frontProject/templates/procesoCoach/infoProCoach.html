@@ -139,7 +139,7 @@
                             <div class=" form-group col-md-6">
                                 <br>
                                 <div class=" navbuttons col-md-12">
-                                <table id="example" class="table thead-dark border border-dark">
+                                <table id="fechas" class="table thead-dark border border-dark">
                                     <thead class="thead-dark">
                                         <tr class="cabecera">
                                             <th scope="col">Sesión</th>
@@ -462,28 +462,15 @@
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script>
     $(document).ready(function () {
-        var table = $('#example').DataTable({
+        var table = $('#fechas').DataTable({
             dom: 'lrtip',
             "ordering": false,
-            "lengthMenu": [5],
+            "lengthMenu": false,
             "lengthChange": false,
             "autoWidth": false,
             "scrollX": true,
             "info": false,
-            "paginate": false,
-            "language": {
-                "zeroRecords": "No se encontraron registros.",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
-            },
-
+            "paging": false,
         });
     });
 </script>
